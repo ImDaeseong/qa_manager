@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템 · ai_test</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 1.4rem; }
+  a.back { font-size: .85rem; }
+  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
+  .stat .n { font-size: 1.6rem; font-weight: 700; }
+  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
+  .badge.pass { background: #d4edda; color: #1e7e34; }
+  .badge.fail { background: #f8d7da; color: #a71d2a; }
+  .badge.pending { background: #e2e3e5; color: #555; }
+  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
+  details.requirement { background: #fafafa; }
+  details.dev-item { background: #fff; margin-top: .5rem; }
+  summary { cursor: pointer; font-weight: 600; }
+  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
+  li.test-item.pass { border-left-color: #1e7e34; }
+  li.test-item.fail { border-left-color: #a71d2a; }
+  .row { display: flex; align-items: center; gap: .5rem; }
+  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
+  p.desc { margin: .3rem 0 0; font-size: .9rem; }
+  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #eee; }
+    .stat { border-color: #444; }
+    details { border-color: #444; }
+    details.requirement { background: #222; }
+    details.dev-item { background: #1a1a1a; }
+    li.test-item { background: #222; }
+    p.check { color: #aaa; }
+    .meta { color: #aaa; }
+    .desc-inline { color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<h1>ai_test</h1>
+<p class="meta">projects/ai_test/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<div class="summary">
+  <div class="stat"><div class="n">1</div>요구사항</div>
+  <div class="stat"><div class="n">11</div>검사항목</div>
+  <div class="stat"><div class="n">0</div>통과한 요구사항</div>
+  <div class="stat"><div class="n">1</div>실패한 요구사항</div>
+</div>
+
+    <details class="requirement fail" open>
+      <summary>
+        <code>R1</code> <span class="badge fail">FAIL</span>
+        <span class="desc-inline">저장소 전체를 묶는 실행기가 없으므로, 실제 테스트 스위트가 존재하는 각 서브프로젝트는 자체 pytest를 개별적으로 통과해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">Analysis_music</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>analysis-music-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">Analysis_music/tests/test_core.py</p>
+          <p class="check"><code>cd Analysis_music &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D2</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">Pexels</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>pexels-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">Pexels/tests/ (conftest.py + 8 test files)</p>
+          <p class="check"><code>cd Pexels &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D3</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">ai-webtoon</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-webtoon-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">ai-webtoon/tests_unit.py (conftest.py + pytest.ini)</p>
+          <p class="check"><code>cd ai-webtoon &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D4</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">ai-webtoon_capcut</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-webtoon-capcut-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">ai-webtoon_capcut/tests/ (pyproject.toml, [tool.unittest] config, own PowerShell test wrapper)</p>
+          <p class="check"><code>cd ai-webtoon_capcut &amp;&amp; powershell.exe -NoProfile -File scripts\test.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D5</code> <span class="badge fail">FAIL</span>
+          <span class="desc-inline">findstring_foldfiles</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>findstring-foldfiles-tests</code>
+            <span class="category">basic</span>
+            <span class="badge fail">FAIL</span>
+          </div>
+          <p class="desc">findstring_foldfiles/tests/test_search_worker.py — live run fails with ModuleNotFoundError: No module named &#x27;find_string_app&#x27; under the raw `python`/`pytest` this checklist uses; likely needs that subproject&#x27;s own virtualenv activated (not verified further)</p>
+          <p class="check"><code>cd findstring_foldfiles &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D6</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">lyrics_tag</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>lyrics-tag-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">lyrics_tag/tests/test_core.py</p>
+          <p class="check"><code>cd lyrics_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D7</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">master_tag</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>master-tag-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">master_tag/tests/test_core.py (conftest.py present)</p>
+          <p class="check"><code>cd master_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D8</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">mp4_tag</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>mp4-tag-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">mp4_tag/tests/test_core.py</p>
+          <p class="check"><code>cd mp4_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D9</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">security_scanning</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-scanning-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">security_scanning/tests/test_core.py</p>
+          <p class="check"><code>cd security_scanning &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D10</code> <span class="badge fail">FAIL</span>
+          <span class="desc-inline">weather_alarm</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>weather-alarm-tests</code>
+            <span class="category">basic</span>
+            <span class="badge fail">FAIL</span>
+          </div>
+          <p class="desc">weather_alarm/tests/ — live run: 30 failed, 25 passed. Failures are ModuleNotFoundError (loguru, discord) and missing pytest-asyncio plugin under the raw `python`/`pytest` this checklist uses, not confirmed logic defects; likely needs that subproject&#x27;s own virtualenv activated (not verified further)</p>
+          <p class="check"><code>cd weather_alarm &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D11</code> <span class="badge fail">FAIL</span>
+          <span class="desc-inline">windows-port-monitor</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>windows-port-monitor-tests</code>
+            <span class="category">basic</span>
+            <span class="badge fail">FAIL</span>
+          </div>
+          <p class="desc">windows-port-monitor/tests/ (conftest.py + 4 test files: collector/storage/service/config_logging) — live run fails with ModuleNotFoundError: No module named &#x27;psutil&#x27; under the raw `python`/`pytest` this checklist uses; likely needs that subproject&#x27;s own virtualenv activated (not verified further)</p>
+          <p class="check"><code>cd windows-port-monitor &amp;&amp; pytest tests/ -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 1.5rem; }
+  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+  ul.projects { list-style: none; padding: 0; }
+  li.project { border: 1px solid #e0e0e0; border-radius: 8px; padding: .8rem 1rem; margin-bottom: .6rem; }
+  li.project a { text-decoration: none; color: inherit; font-weight: 600; font-size: 1.05rem; }
+  .counts { display: block; font-size: .8rem; color: #666; margin-top: .3rem; }
+  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
+  .badge.pass { background: #d4edda; color: #1e7e34; }
+  .badge.fail { background: #f8d7da; color: #a71d2a; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #eee; }
+    li.project { border-color: #444; }
+    .counts { color: #aaa; }
+    .meta { color: #aaa; }
+  }
+</style>
+</head>
+<body>
+<h1>검수 시스템</h1>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-05. 프로젝트를 추가하려면 README.md 참고.</p>
+<ul class="projects">
+    <li class="project pass">
+      <a href="projects/ai-workspace/dashboard.html">
+        <span class="name">ai-workspace</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 5개 · 검사항목 5개 · 실패 0건</span>
+    </li>
+    <li class="project pass">
+      <a href="projects/ai_prompt/dashboard.html">
+        <span class="name">ai_prompt</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 5개 · 검사항목 5개 · 실패 0건</span>
+    </li>
+    <li class="project fail">
+      <a href="projects/ai_test/dashboard.html">
+        <span class="name">ai_test</span>
+        <span class="badge fail">FAIL</span>
+      </a>
+      <span class="counts">요구사항 1개 · 검사항목 11개 · 실패 1건</span>
+    </li>
+    <li class="project pass">
+      <a href="projects/ai_test1/dashboard.html">
+        <span class="name">ai_test1</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 2개 · 검사항목 11개 · 실패 0건</span>
+    </li>
+    <li class="project pass">
+      <a href="projects/ai_test2/dashboard.html">
+        <span class="name">ai_test2</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 1개 · 검사항목 6개 · 실패 0건</span>
+    </li>
+    <li class="project fail">
+      <a href="projects/ai_test3/dashboard.html">
+        <span class="name">ai_test3</span>
+        <span class="badge fail">FAIL</span>
+      </a>
+      <span class="counts">요구사항 1개 · 검사항목 4개 · 실패 1건</span>
+    </li>
+    <li class="project pass">
+      <a href="projects/hermes-agents/dashboard.html">
+        <span class="name">hermes-agents</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 7개 · 검사항목 8개 · 실패 0건</span>
+    </li>
+    <li class="project pass">
+      <a href="projects/skills/dashboard.html">
+        <span class="name">skills</span>
+        <span class="badge pass">PASS</span>
+      </a>
+      <span class="counts">요구사항 3개 · 검사항목 3개 · 실패 0건</span>
+    </li>
+</ul>
+</body>
+</html>

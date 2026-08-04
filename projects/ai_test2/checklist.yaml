@@ -1,0 +1,67 @@
+# Verification checklist for ai_test2 (independent repo, C:\Users\cs930\Desktop\ai_test2).
+# See ../hermes-agents/checklist.yaml's header comment for the full schema
+# explanation.
+#
+# This repo has NO repo-wide CI or aggregate runner (confirmed: no
+# .github/workflows/, no root .ps1/.py verify script). VERIFICATION.md
+# documents concrete per-subproject commands under "Required Commands" — real
+# and copy-pasteable, but a manually-run log, not an enforced gate (the file
+# itself says not to treat its dated history sections as current). The
+# commands below are taken verbatim from that file.
+
+project: ai_test2
+repo_root: ai_test2
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "저장소 전체를 묶는 실행기가 없으므로, VERIFICATION.md에 문서화된 각 서브프로젝트의 테스트를 개별적으로 통과해야 한다"
+    dev_items:
+      - id: R1-D1
+        description: "ai_anime"
+        test_items:
+          - id: ai-anime-tests
+            category: basic
+            check: "cd ai_anime && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D2
+        description: "ai_img_video_aiBoygirl"
+        test_items:
+          - id: ai-img-video-aiboygirl-tests
+            category: basic
+            check: "cd ai_img_video_aiBoygirl && python -m pytest -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D3
+        description: "ai_img_video_prompt_capcut"
+        test_items:
+          - id: ai-img-video-prompt-capcut-tests
+            category: basic
+            check: "cd ai_img_video_prompt_capcut && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D4
+        description: "ai_multi_agent"
+        test_items:
+          - id: ai-multi-agent-tests
+            category: basic
+            check: "cd ai_multi_agent && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D5
+        description: "youtube_research"
+        test_items:
+          - id: youtube-research-tests
+            category: basic
+            check: "cd youtube_research && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D6
+        description: "music_insight_studio (unittest 기반, conftest.py 없음, 자체 .venv 필요 — 다른 서브프로젝트와 다른 구조)"
+        test_items:
+          - id: music-insight-studio-tests
+            category: basic
+            check: "cd music_insight_studio && .venv\\Scripts\\python.exe -m unittest discover -s tests"
+            status: pass
+            last_verified: 2026-08-05

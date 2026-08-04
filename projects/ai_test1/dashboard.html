@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템 · ai_test1</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 1.4rem; }
+  a.back { font-size: .85rem; }
+  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
+  .stat .n { font-size: 1.6rem; font-weight: 700; }
+  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
+  .badge.pass { background: #d4edda; color: #1e7e34; }
+  .badge.fail { background: #f8d7da; color: #a71d2a; }
+  .badge.pending { background: #e2e3e5; color: #555; }
+  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
+  details.requirement { background: #fafafa; }
+  details.dev-item { background: #fff; margin-top: .5rem; }
+  summary { cursor: pointer; font-weight: 600; }
+  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
+  li.test-item.pass { border-left-color: #1e7e34; }
+  li.test-item.fail { border-left-color: #a71d2a; }
+  .row { display: flex; align-items: center; gap: .5rem; }
+  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
+  p.desc { margin: .3rem 0 0; font-size: .9rem; }
+  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #eee; }
+    .stat { border-color: #444; }
+    details { border-color: #444; }
+    details.requirement { background: #222; }
+    details.dev-item { background: #1a1a1a; }
+    li.test-item { background: #222; }
+    p.check { color: #aaa; }
+    .meta { color: #aaa; }
+    .desc-inline { color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<h1>ai_test1</h1>
+<p class="meta">projects/ai_test1/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test1), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<div class="summary">
+  <div class="stat"><div class="n">2</div>요구사항</div>
+  <div class="stat"><div class="n">11</div>검사항목</div>
+  <div class="stat"><div class="n">2</div>통과한 요구사항</div>
+  <div class="stat"><div class="n">0</div>실패한 요구사항</div>
+</div>
+
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">문서(README.md/PROJECT_STATUS.md/각 서브프로젝트 CLAUDE.md)에 적힌 테스트 개수가 실제 테스트 수와 일치해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">test_repository_consistency.py — 각 서브프로젝트에서 pytest --collect-only로 실제 테스트 수를 세어 문서와 대조, setup_env.ps1 구문·루트 마크다운 링크도 함께 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>repo-consistency-check</code>
+            <span class="category">full</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">documented test counts match actual pytest collection counts per subproject; setup_env.ps1 is valid PowerShell; root markdown links resolve</p>
+          <p class="check"><code>python -m pytest test_repository_consistency.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">저장소 전체를 묶는 실행기가 없으므로, 각 서브프로젝트는 자체 pytest(tests_unit.py)를 개별적으로 통과해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">ai_Scenario</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-scenario-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd ai_Scenario &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D2</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">ai_story</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-story-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd ai_story &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D3</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">aim_music_app</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>aim-music-app-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd aim_music_app &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D4</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">aim_music_character_app (pytest.ini + tests_unit.py, conftest.py 없음 — 다른 서브프로젝트와 다른 구조)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>aim-music-character-app-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd aim_music_character_app &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D5</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_beats</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-beats-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_beats &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D6</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_codes</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-codes-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_codes &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D7</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_lyric</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-lyric-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_lyric &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D8</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_skills</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_skills &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D9</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_skills_trot</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-trot-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_skills_trot &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D10</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">music_skills_unpredictable</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-unpredictable-tests</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc"></p>
+          <p class="check"><code>cd music_skills_unpredictable &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+</body>
+</html>

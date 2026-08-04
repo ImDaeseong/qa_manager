@@ -1,0 +1,134 @@
+# Verification checklist for hermes-agents, one project within the
+# qa_manager verification system (C:\Users\cs930\Desktop\qa_manager).
+#
+# Purpose: make requirements, the dev items that satisfy them, and the test
+# items that verify each dev item all visible and manageable in one place —
+# separately from hermes-agents' own AGENTS.md Test Scope Rule (which states
+# the policy this file tracks in practice). Rendered as a webpage by
+# scripts/generate_checklist_dashboard.py into dashboard.html (same folder as
+# this file), and listed on the system-wide index.html alongside every other
+# project's checklist.
+#
+# `repo_root` (required): this project's repo path relative to qa_manager's
+# parent folder (the common ancestor of every project qa_manager inspects).
+# Every test_item's `check` command below runs with that resolved path as
+# its working directory, not qa_manager's own folder.
+#
+# Hierarchy: requirements -> dev_items -> test_items (leaf; has `check`).
+# A dev_item's status is the AND of its test_items' live results; a
+# requirement's status is the AND of its dev_items'. `status`/`last_verified`
+# on a test_item are hand-recorded from the last run of
+# scripts/run_checklist.py or scripts/generate_checklist_dashboard.py — both
+# re-run every `check` live rather than trusting these fields, so treat them
+# as a record of the last known-good run, not as current truth.
+#
+# category values (test_item only):
+#   basic      - covers one specific item/module; run whenever that item changes
+#   full       - runs the full existing suite/gate script; run before calling work done
+#   regression - added after a specific defect was found, to catch that defect class again
+# status values: pass | fail | pending
+
+project: hermes-agents
+repo_root: hermes-agents
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "커밋되는 .claude/settings.json 권한 항목은 안전한 범위여야 한다 (과도하게 넓은 패턴이나 손상된 항목이 섞이면 안 됨)"
+    dev_items:
+      - id: R1-D1
+        description: "settings.json 권한 항목 형식 검증 로직"
+        test_items:
+          - id: claude-settings-guard
+            category: basic
+            description: ".claude/settings.json permission entries are well-formed (no unbalanced parens/quotes, no trailing dangling command)"
+            check: "python scripts/check_claude_settings.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R2
+    description: "AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다"
+    dev_items:
+      - id: R2-D1
+        description: "changelog 동기화 검사"
+        test_items:
+          - id: agents-md-changelog-guard
+            category: basic
+            description: "a staged AGENTS.md change has a matching dated entry in README.md's changelog"
+            check: "python scripts/check_agents_md_changelog.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R3
+    description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"
+    dev_items:
+      - id: R3-D1
+        description: "비밀정보처럼 보이는 값 패턴 검사"
+        test_items:
+          - id: no-example-secrets-guard
+            category: basic
+            description: "no real-looking secrets (API keys, tokens) introduced into tracked files, including .env.example-style files"
+            check: "python scripts/check_no_example_secrets.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R4
+    description: "Telegram 봇의 의존성 메타데이터가 실제 import와 일치해야 한다"
+    dev_items:
+      - id: R4-D1
+        description: "요구사항 파일이 bot.py의 import를 실제로 커버하는지 검사"
+        test_items:
+          - id: telegram-requirements-guard
+            category: basic
+            description: "the dependency file used by SETUP.md exists and covers the packages imported by bots/telegram/bot.py"
+            check: "python scripts/check_telegram_requirements.py"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R4-D2
+        description: "패키지명 파싱이 버전 지정자/extras 구문을 정확히 처리 (회귀: 과거 openai>=1 을 openai> 로 잘못 파싱한 결함)"
+        test_items:
+          - id: telegram-requirements-parsing-regression
+            category: regression
+            description: "package-name parsing handles version specifiers and extras correctly (openai>=1, python-telegram-bot[all]>=20, etc.)"
+            check: "python scripts/check_telegram_requirements_test.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R5
+    description: "Telegram 봇은 사용자 메시지 본문을 애플리케이션 로그에 남기면 안 된다 (개인정보 보호)"
+    dev_items:
+      - id: R5-D1
+        description: "메시지 본문 변수가 로깅 호출에 전달되지 않는지 검사"
+        test_items:
+          - id: bot-privacy-guard
+            category: basic
+            description: "Telegram message body content is never passed to application logging"
+            check: "python scripts/check_bot_privacy.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R6
+    description: "커밋되는 배치 파일(.bat/.cmd)이 Windows cmd.exe에서 개행 문제로 조용히 실패하면 안 된다"
+    dev_items:
+      - id: R6-D1
+        description: "개행 문자(CRLF) 검사"
+        test_items:
+          - id: batch-line-endings-guard
+            category: basic
+            description: "tracked .bat/.cmd files use CRLF line endings (bare LF can fail silently under cmd.exe)"
+            check: "python scripts/check_batch_line_endings.py"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R7
+    description: "위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다"
+    dev_items:
+      - id: R7-D1
+        description: "통합 게이트 스크립트 실행"
+        test_items:
+          - id: verify-repo-full
+            category: full
+            description: "all guards above pass together, and running verification itself causes no Git-visible working-tree side effects"
+            check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
+            status: pass
+            last_verified: 2026-08-05

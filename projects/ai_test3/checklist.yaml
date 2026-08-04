@@ -1,0 +1,54 @@
+# Verification checklist for ai_test3 (independent repo, C:\Users\cs930\Desktop\ai_test3).
+# See ../hermes-agents/checklist.yaml's header comment for the full schema
+# explanation.
+#
+# This repo currently holds one active project, CareerDiff/app (a Next.js/
+# TypeScript job-fit-analyzer web app). No CI workflow exists anywhere in the
+# repo — verification is manual/local-only, per CareerDiff/docs/VERIFICATION.md.
+# The commands below are the exact npm scripts defined in
+# CareerDiff/app/package.json. Deliberately not included: `test:e2e`
+# (Playwright, runs against a production build + started server — heavier
+# and can hang a live checklist run rather than fail cleanly) — run it by
+# hand per CareerDiff/docs/VERIFICATION.md when needed, not from this
+# checklist's automated `check` commands.
+
+project: ai_test3
+repo_root: ai_test3
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "CareerDiff 웹앱이 타입 체크·린트·유닛테스트·빌드를 통과해야 한다"
+    dev_items:
+      - id: R1-D1
+        description: "타입 체크 (tsc --noEmit)"
+        test_items:
+          - id: careerdiff-typecheck
+            category: basic
+            check: "cd CareerDiff\\app && npm run typecheck"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D2
+        description: "린트 (eslint) — live run: 2 errors (react-hooks/set-state-in-effect) in src/app/page.tsx:35 and src/features/candidate-profile-input/CandidateProfileInputPanel.tsx:31, both a useEffect calling setState synchronously"
+        test_items:
+          - id: careerdiff-lint
+            category: basic
+            check: "cd CareerDiff\\app && npm run lint"
+            status: fail
+            last_verified: 2026-08-05
+      - id: R1-D3
+        description: "유닛/컴포넌트 테스트 (vitest) — AnalysisOrchestrator/LocalAnalysisProvider/jobKoreaImporter 등"
+        test_items:
+          - id: careerdiff-unit-tests
+            category: basic
+            check: "cd CareerDiff\\app && npm test"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R1-D4
+        description: "프로덕션 빌드 (next build)"
+        test_items:
+          - id: careerdiff-build
+            category: full
+            check: "cd CareerDiff\\app && npm run build"
+            status: pass
+            last_verified: 2026-08-05

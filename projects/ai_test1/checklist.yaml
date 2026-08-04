@@ -1,0 +1,117 @@
+# Verification checklist for ai_test1 (independent repo, C:\Users\cs930\Desktop\ai_test1).
+# See ../hermes-agents/checklist.yaml's header comment for the full schema
+# explanation.
+#
+# This repo has NO repo-wide CI or "run everything" script (confirmed: no
+# .github/workflows/, setup_env.ps1 only sets up environment). The one
+# root-level automated check, test_repository_consistency.py, is a
+# doc-consistency check (asserts README/PROJECT_STATUS/per-project CLAUDE.md
+# report the correct current test count) — not an aggregate test runner.
+# Everything else is per-subproject pytest, listed below for every
+# subdirectory confirmed to have conftest.py + pytest.ini + tests_unit.py.
+# mov_img_skills is intentionally not listed: it has zero .py files (pure
+# markdown prompt/workflow docs), so there is nothing to run pytest against.
+# No ruff/mypy/pyright config exists anywhere in this repo (verified by
+# direct grep, despite a prior assumption that pyright was configured here).
+
+project: ai_test1
+repo_root: ai_test1
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "문서(README.md/PROJECT_STATUS.md/각 서브프로젝트 CLAUDE.md)에 적힌 테스트 개수가 실제 테스트 수와 일치해야 한다"
+    dev_items:
+      - id: R1-D1
+        description: "test_repository_consistency.py — 각 서브프로젝트에서 pytest --collect-only로 실제 테스트 수를 세어 문서와 대조, setup_env.ps1 구문·루트 마크다운 링크도 함께 검사"
+        test_items:
+          - id: repo-consistency-check
+            category: full
+            description: "documented test counts match actual pytest collection counts per subproject; setup_env.ps1 is valid PowerShell; root markdown links resolve"
+            check: "python -m pytest test_repository_consistency.py -q"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R2
+    description: "저장소 전체를 묶는 실행기가 없으므로, 각 서브프로젝트는 자체 pytest(tests_unit.py)를 개별적으로 통과해야 한다"
+    dev_items:
+      - id: R2-D1
+        description: "ai_Scenario"
+        test_items:
+          - id: ai-scenario-tests
+            category: basic
+            check: "cd ai_Scenario && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D2
+        description: "ai_story"
+        test_items:
+          - id: ai-story-tests
+            category: basic
+            check: "cd ai_story && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D3
+        description: "aim_music_app"
+        test_items:
+          - id: aim-music-app-tests
+            category: basic
+            check: "cd aim_music_app && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D4
+        description: "aim_music_character_app (pytest.ini + tests_unit.py, conftest.py 없음 — 다른 서브프로젝트와 다른 구조)"
+        test_items:
+          - id: aim-music-character-app-tests
+            category: basic
+            check: "cd aim_music_character_app && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D5
+        description: "music_beats"
+        test_items:
+          - id: music-beats-tests
+            category: basic
+            check: "cd music_beats && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D6
+        description: "music_codes"
+        test_items:
+          - id: music-codes-tests
+            category: basic
+            check: "cd music_codes && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D7
+        description: "music_lyric"
+        test_items:
+          - id: music-lyric-tests
+            category: basic
+            check: "cd music_lyric && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D8
+        description: "music_skills"
+        test_items:
+          - id: music-skills-tests
+            category: basic
+            check: "cd music_skills && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D9
+        description: "music_skills_trot"
+        test_items:
+          - id: music-skills-trot-tests
+            category: basic
+            check: "cd music_skills_trot && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05
+      - id: R2-D10
+        description: "music_skills_unpredictable"
+        test_items:
+          - id: music-skills-unpredictable-tests
+            category: basic
+            check: "cd music_skills_unpredictable && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-05

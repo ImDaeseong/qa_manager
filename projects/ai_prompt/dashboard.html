@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템 · ai_prompt</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 1.4rem; }
+  a.back { font-size: .85rem; }
+  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
+  .stat .n { font-size: 1.6rem; font-weight: 700; }
+  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
+  .badge.pass { background: #d4edda; color: #1e7e34; }
+  .badge.fail { background: #f8d7da; color: #a71d2a; }
+  .badge.pending { background: #e2e3e5; color: #555; }
+  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
+  details.requirement { background: #fafafa; }
+  details.dev-item { background: #fff; margin-top: .5rem; }
+  summary { cursor: pointer; font-weight: 600; }
+  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
+  li.test-item.pass { border-left-color: #1e7e34; }
+  li.test-item.fail { border-left-color: #a71d2a; }
+  .row { display: flex; align-items: center; gap: .5rem; }
+  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
+  p.desc { margin: .3rem 0 0; font-size: .9rem; }
+  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #eee; }
+    .stat { border-color: #444; }
+    details { border-color: #444; }
+    details.requirement { background: #222; }
+    details.dev-item { background: #1a1a1a; }
+    li.test-item { background: #222; }
+    p.check { color: #aaa; }
+    .meta { color: #aaa; }
+    .desc-inline { color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<h1>ai_prompt</h1>
+<p class="meta">projects/ai_prompt/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\hermes-agents\ai_prompt), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<div class="summary">
+  <div class="stat"><div class="n">5</div>요구사항</div>
+  <div class="stat"><div class="n">5</div>검사항목</div>
+  <div class="stat"><div class="n">5</div>통과한 요구사항</div>
+  <div class="stat"><div class="n">0</div>실패한 요구사항</div>
+</div>
+
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">CI가 검증하는 로컬 가드 전체가 저장소 루트에서 부작용 없이 통과해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">verify_repo.ps1 오케스트레이터 (하위 가드 체인 + 실행 전후 git status 동일성 검사)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-full</code>
+            <span class="category">full</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">verify_repo.ps1 runs validate_skills.ps1 + validate_links.ps1 in order and asserts `git status --porcelain` is unchanged before/after</p>
+          <p class="check"><code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">스킬 파일의 frontmatter와 상호참조가 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">validate_skills.ps1 (frontmatter name/description 누락·중복, 존재하지 않는 관련 스킬 참조, NOTICE.md 상호링크 누락 검사)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-skills-guard</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">skill frontmatter and cross-references (related-skill links, NOTICE.md backlinks) are well-formed</p>
+          <p class="check"><code>powershell.exe -NoProfile -File scripts/validate_skills.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">마크다운 문서 내부 링크가 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">validate_links.ps1 (코드펜스/인라인 코드 제외 후 로컬 링크 대상 존재 여부 검사)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-links-guard</code>
+            <span class="category">basic</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">local markdown links resolve to existing files (code fences/inline code excluded to avoid false positives)</p>
+          <p class="check"><code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">install-git-hooks.ps1이 과거 발견된 3개 결함(외부 pre-commit 훅 덮어쓰기, .git/hooks 경로 하드코딩, core.hooksPath 미생성 디렉토리)을 재발시키지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">test_install_git_hooks.ps1 — 임시 저장소에서 install-git-hooks.ps1을 실제로 실행해 회귀 검증</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>install-hooks-regression</code>
+            <span class="category">regression</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">install-git-hooks.ps1 does not overwrite a foreign pre-commit hook, does not hardcode .git/hooks path, and handles a not-yet-created core.hooksPath directory</p>
+          <p class="check"><code>powershell.exe -NoProfile -File scripts/test_install_git_hooks.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R5</code> <span class="badge pass">PASS</span>
+        <span class="desc-inline">CI 부작용 감지 메커니즘(실행 전후 git status 비교) 자체가 실제로 동작해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R5-D1</code> <span class="badge pass">PASS</span>
+          <span class="desc-inline">verify_repo.ps1 -SideEffectSelfTest — 임시 저장소에서 의도적으로 파일을 만들어 감지되는지 자가검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-side-effect-selftest</code>
+            <span class="category">regression</span>
+            <span class="badge pass">PASS</span>
+          </div>
+          <p class="desc">the before/after git-status diffing mechanism inside verify_repo.ps1 actually detects a newly created untracked file</p>
+          <p class="check"><code>powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+</body>
+</html>

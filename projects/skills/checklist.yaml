@@ -1,0 +1,56 @@
+# Verification checklist for skills (independent repo, C:\Users\cs930\Desktop\skills,
+# "ImDaeseong/skills", MIT). See ../hermes-agents/checklist.yaml's header
+# comment for the full schema explanation.
+#
+# Every item below is taken directly from .github/workflows/validate.yml and
+# the scripts/*.ps1 it calls (confirmed by reading them, not guessed).
+#
+# NOT included: skills/last30days/ — it is git-ignored, not vendored into
+# this repo, and has its own fully independent CI (validate.yml, release.yml,
+# security.yml, osv-scanner.yml, scorecard.yml, zizmor.yml). The root
+# validate_workspace.ps1 explicitly excludes it. Treat it as out of scope for
+# this checklist, matching the repo's own boundary.
+
+project: skills
+repo_root: skills
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "스킬 워크스페이스 거버넌스 규칙(CORE-LAWS 준수 언급, marketplace.json-스킬 폴더 1:1 일치, ROUTING.md 무결성, allowed-tools 필수셋 등)이 깨지지 않아야 한다"
+    dev_items:
+      - id: R1-D1
+        description: "validate_workspace.ps1 -AsOfDate <오늘(KST)> — 모든 SKILL.md/README.md/LICENSE/NOTICE.md/ROUTING.md/marketplace.json을 대상으로 검사"
+        test_items:
+          - id: validate-workspace-guard
+            category: full
+            description: "every SKILL.md's frontmatter name matches its folder, commits to CORE-LAWS, has required allowed-tools; ROUTING.md has no duplicate/orphan/unrouted routes; marketplace.json matches skill folders 1:1; no markdown file is dated later than today (KST)"
+            check: "powershell.exe -NoProfile -Command \"$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,'Korea Standard Time').Date; & ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate\""
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R2
+    description: "마크다운 문서 내부 링크가 깨지지 않아야 한다"
+    dev_items:
+      - id: R2-D1
+        description: "validate_links.ps1"
+        test_items:
+          - id: validate-links-guard
+            category: basic
+            description: "local markdown links resolve to existing files repo-wide"
+            check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R3
+    description: "검증 스크립트들의 .gitignore 기반 제외 로직(last30days/ 등 벤더링되지 않은 폴더 스킵)이 정확해야 한다"
+    dev_items:
+      - id: R3-D1
+        description: "test_validators_ignore_scan.ps1"
+        test_items:
+          - id: validators-ignore-scan-regression
+            category: regression
+            description: "validate_workspace.ps1 and validate_links.ps1 correctly skip top-level dirs listed in .gitignore instead of scanning them"
+            check: "powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1"
+            status: pass
+            last_verified: 2026-08-05

@@ -1,0 +1,77 @@
+# Verification checklist for ai_prompt (independent repo, nested at
+# hermes-agents/ai_prompt on this machine but unrelated to hermes-agents).
+# See ../hermes-agents/checklist.yaml's header comment for the full schema
+# explanation (requirements -> dev_items -> test_items, repo_root, etc.).
+#
+# Every item below is taken directly from .github/workflows/validate.yml and
+# the scripts/*.ps1 it calls (confirmed by reading them, not guessed).
+
+project: ai_prompt
+repo_root: hermes-agents/ai_prompt
+updated: 2026-08-05
+
+requirements:
+  - id: R1
+    description: "CI가 검증하는 로컬 가드 전체가 저장소 루트에서 부작용 없이 통과해야 한다"
+    dev_items:
+      - id: R1-D1
+        description: "verify_repo.ps1 오케스트레이터 (하위 가드 체인 + 실행 전후 git status 동일성 검사)"
+        test_items:
+          - id: verify-repo-full
+            category: full
+            description: "verify_repo.ps1 runs validate_skills.ps1 + validate_links.ps1 in order and asserts `git status --porcelain` is unchanged before/after"
+            check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R2
+    description: "스킬 파일의 frontmatter와 상호참조가 깨지지 않아야 한다"
+    dev_items:
+      - id: R2-D1
+        description: "validate_skills.ps1 (frontmatter name/description 누락·중복, 존재하지 않는 관련 스킬 참조, NOTICE.md 상호링크 누락 검사)"
+        test_items:
+          - id: validate-skills-guard
+            category: basic
+            description: "skill frontmatter and cross-references (related-skill links, NOTICE.md backlinks) are well-formed"
+            check: "powershell.exe -NoProfile -File scripts/validate_skills.ps1"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R3
+    description: "마크다운 문서 내부 링크가 깨지지 않아야 한다"
+    dev_items:
+      - id: R3-D1
+        description: "validate_links.ps1 (코드펜스/인라인 코드 제외 후 로컬 링크 대상 존재 여부 검사)"
+        test_items:
+          - id: validate-links-guard
+            category: basic
+            description: "local markdown links resolve to existing files (code fences/inline code excluded to avoid false positives)"
+            check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R4
+    description: "install-git-hooks.ps1이 과거 발견된 3개 결함(외부 pre-commit 훅 덮어쓰기, .git/hooks 경로 하드코딩, core.hooksPath 미생성 디렉토리)을 재발시키지 않아야 한다"
+    dev_items:
+      - id: R4-D1
+        description: "test_install_git_hooks.ps1 — 임시 저장소에서 install-git-hooks.ps1을 실제로 실행해 회귀 검증"
+        test_items:
+          - id: install-hooks-regression
+            category: regression
+            description: "install-git-hooks.ps1 does not overwrite a foreign pre-commit hook, does not hardcode .git/hooks path, and handles a not-yet-created core.hooksPath directory"
+            check: "powershell.exe -NoProfile -File scripts/test_install_git_hooks.ps1"
+            status: pass
+            last_verified: 2026-08-05
+
+  - id: R5
+    description: "CI 부작용 감지 메커니즘(실행 전후 git status 비교) 자체가 실제로 동작해야 한다"
+    dev_items:
+      - id: R5-D1
+        description: "verify_repo.ps1 -SideEffectSelfTest — 임시 저장소에서 의도적으로 파일을 만들어 감지되는지 자가검사"
+        test_items:
+          - id: verify-repo-side-effect-selftest
+            category: regression
+            description: "the before/after git-status diffing mechanism inside verify_repo.ps1 actually detects a newly created untracked file"
+            check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest"
+            status: pass
+            last_verified: 2026-08-05
