@@ -89,6 +89,8 @@
   details.dev-item { margin-top: .5rem; }
 
   .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  p.coverage { font-size: .76rem; color: var(--text-muted); margin: .2rem 0 .6rem; }
+  p.coverage.uncovered { color: var(--fail-text); font-weight: 700; }
   .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
 
   ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
@@ -126,6 +128,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">CareerDiff(채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스)가 코드 오류·품질 문제 없이 정상적으로 빌드되어야 한다</span>
       </summary>
+      <p class="coverage covered">커버리지: 개발항목 4개 · 검사항목 4개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>

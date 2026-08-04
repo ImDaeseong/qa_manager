@@ -89,6 +89,8 @@
   details.dev-item { margin-top: .5rem; }
 
   .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  p.coverage { font-size: .76rem; color: var(--text-muted); margin: .2rem 0 .6rem; }
+  p.coverage.uncovered { color: var(--fail-text); font-weight: 700; }
   .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
 
   ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
@@ -126,6 +128,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
+      <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>

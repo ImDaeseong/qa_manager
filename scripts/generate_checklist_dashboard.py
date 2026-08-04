@@ -79,19 +79,25 @@ def render_dev_item(dev_item: dict, cwd: Path) -> tuple[str, str]:
 
 
 def render_requirement(req: dict, cwd: Path) -> tuple[str, str]:
+    dev_items = req.get("dev_items", [])
     dev_html = []
     statuses = []
-    for dev_item in req.get("dev_items", []):
+    test_item_count = 0
+    for dev_item in dev_items:
         html, status = render_dev_item(dev_item, cwd)
         dev_html.append(html)
         statuses.append(status)
+        test_item_count += len(dev_item.get("test_items", []))
     req_status = "pass" if statuses and all(s == "pass" for s in statuses) else "fail" if statuses else "pending"
+    coverage = f"커버리지: 개발항목 {len(dev_items)}개 · 검사항목 {test_item_count}개 연결됨" if dev_items else "커버리지: 연결된 검사항목 없음"
+    coverage_class = "covered" if dev_items else "uncovered"
     html = f"""
     <details class="requirement {req_status}" open>
       <summary>
         <code>{escape(req.get('id', ''))}</code> {badge(req_status)}
         <span class="desc-inline">{escape(req.get('description', ''))}</span>
       </summary>
+      <p class="coverage {coverage_class}">{escape(coverage)}</p>
       <div class="dev-items">{''.join(dev_html)}
       </div>
     </details>"""

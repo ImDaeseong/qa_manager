@@ -27,6 +27,15 @@
 #   full       - runs the full existing suite/gate script; run before calling work done
 #   regression - added after a specific defect was found, to catch that defect class again
 # status values: pass | fail | pending
+#
+# This schema follows the Requirements Traceability Matrix (RTM) concept
+# (ISTQB Glossary: "Traceability Matrix") — requirement -> linked test(s) ->
+# test status, plus an explicit coverage indicator rendered per requirement.
+# One standard RTM field is deliberately not implemented: Defect ID (a link
+# to a tracked bug/issue on failure). This system has no issue tracker wired
+# in, so a failing test_item's `description` carries the failure explanation
+# in prose instead of a ticket reference — decided over adding a placeholder
+# field with nothing real to link to.
 
 project: hermes-agents
 repo_root: hermes-agents

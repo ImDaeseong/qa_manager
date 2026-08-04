@@ -91,6 +91,8 @@ STYLE = """
   details.dev-item { margin-top: .5rem; }
 
   .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  p.coverage { font-size: .76rem; color: var(--text-muted); margin: .2rem 0 .6rem; }
+  p.coverage.uncovered { color: var(--fail-text); font-weight: 700; }
   .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
 
   ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
