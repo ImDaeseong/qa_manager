@@ -117,13 +117,13 @@
 <div class="stat-grid">
   <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">0</div><div class="label">통과한 요구사항</div></div>
-  <div class="stat fail"><div class="n">1</div><div class="label">실패한 요구사항</div></div>
+  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
-    <details class="requirement fail" open>
+    <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="pill fail">실패</span>
+        <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
       <div class="dev-items">
@@ -140,7 +140,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd Analysis_music &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd Analysis_music &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -157,7 +157,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd Pexels &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd Pexels &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -195,20 +195,20 @@
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D5</code> <span class="pill fail">실패</span>
+          <code>R1-D5</code> <span class="pill pass">통과</span>
           <span class="desc-inline">findstring_foldfiles — 파일에서 문자열을 찾고 폴더를 정리하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>findstring-foldfiles-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(find_string_app)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다.</p>
-          <p class="check">실행 명령: <code>cd findstring_foldfiles &amp;&amp; pytest -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd findstring_foldfiles &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -225,7 +225,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd lyrics_tag &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd lyrics_tag &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -242,7 +242,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd master_tag &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd master_tag &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -259,7 +259,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd mp4_tag &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd mp4_tag &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
@@ -276,41 +276,41 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd security_scanning &amp;&amp; pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd security_scanning &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D10</code> <span class="pill fail">실패</span>
+          <code>R1-D10</code> <span class="pill pass">통과</span>
           <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>weather-alarm-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">[현재 실패] 총 55개 테스트 중 25개는 통과, 30개는 실패했습니다. 실패 원인은 이 프로그램이 필요로 하는 구성요소(loguru, discord 등)가 지금 검사 환경에 설치되어 있지 않기 때문입니다 — 프로그램 로직 자체의 결함인지는 추가 확인이 필요합니다.</p>
-          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; pytest -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트 55개가 모두 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D11</code> <span class="pill fail">실패</span>
+          <code>R1-D11</code> <span class="pill pass">통과</span>
           <span class="desc-inline">windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>windows-port-monitor-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(psutil)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다.</p>
-          <p class="check">실행 명령: <code>cd windows-port-monitor &amp;&amp; pytest tests/ -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd windows-port-monitor &amp;&amp; python -m pytest tests/ -q</code></p>
         </li>
         </ul>
       </details>

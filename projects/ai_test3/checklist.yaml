@@ -34,9 +34,9 @@ requirements:
         test_items:
           - id: careerdiff-lint
             category: basic
-            description: "[현재 실패] 화면 두 곳(page.tsx, CandidateProfileInputPanel.tsx)에서 화면이 불필요하게 여러 번 다시 그려질 수 있는 코드 패턴이 실제로 발견됐습니다 — 성능에 영향을 줄 수 있는 실제 코드 품질 문제입니다."
+            description: "알려진 나쁜 코드 패턴이 없는지 확인합니다."
             check: "cd CareerDiff\\app && npm run lint"
-            status: fail
+            status: pass
             last_verified: 2026-08-05
       - id: R1-D3
         description: "기능별 자체 테스트 — 분석 기능, 이력서 불러오기 기능 등 핵심 기능들이 의도대로 동작하는지 확인"

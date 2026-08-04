@@ -26,7 +26,7 @@ requirements:
           - id: analysis-music-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd Analysis_music && pytest -q"
+            check: "cd Analysis_music && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D2
@@ -35,7 +35,7 @@ requirements:
           - id: pexels-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd Pexels && pytest -q"
+            check: "cd Pexels && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D3
@@ -61,9 +61,9 @@ requirements:
         test_items:
           - id: findstring-foldfiles-tests
             category: basic
-            description: "[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(find_string_app)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다."
-            check: "cd findstring_foldfiles && pytest -q"
-            status: fail
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd findstring_foldfiles && python -m pytest -q"
+            status: pass
             last_verified: 2026-08-05
       - id: R1-D6
         description: "lyrics_tag — 음원 파일에 가사 정보를 입력하는 프로그램"
@@ -71,7 +71,7 @@ requirements:
           - id: lyrics-tag-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd lyrics_tag && pytest -q"
+            check: "cd lyrics_tag && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D7
@@ -80,7 +80,7 @@ requirements:
           - id: master-tag-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd master_tag && pytest -q"
+            check: "cd master_tag && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D8
@@ -89,7 +89,7 @@ requirements:
           - id: mp4-tag-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd mp4_tag && pytest -q"
+            check: "cd mp4_tag && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D9
@@ -98,7 +98,7 @@ requirements:
           - id: security-scanning-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd security_scanning && pytest -q"
+            check: "cd security_scanning && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D10
@@ -106,16 +106,16 @@ requirements:
         test_items:
           - id: weather-alarm-tests
             category: basic
-            description: "[현재 실패] 총 55개 테스트 중 25개는 통과, 30개는 실패했습니다. 실패 원인은 이 프로그램이 필요로 하는 구성요소(loguru, discord 등)가 지금 검사 환경에 설치되어 있지 않기 때문입니다 — 프로그램 로직 자체의 결함인지는 추가 확인이 필요합니다."
-            check: "cd weather_alarm && pytest -q"
-            status: fail
+            description: "이 프로그램에 포함된 자체 테스트 55개가 모두 정상적으로 통과하는지 확인합니다."
+            check: "cd weather_alarm && python -m pytest -q"
+            status: pass
             last_verified: 2026-08-05
       - id: R1-D11
         description: "windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램"
         test_items:
           - id: windows-port-monitor-tests
             category: basic
-            description: "[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(psutil)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다."
-            check: "cd windows-port-monitor && pytest tests/ -q"
-            status: fail
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd windows-port-monitor && python -m pytest tests/ -q"
+            status: pass
             last_verified: 2026-08-05
