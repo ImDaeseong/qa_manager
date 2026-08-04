@@ -4,74 +4,143 @@
 <meta charset="utf-8">
 <title>검수 시스템 · skills</title>
 <style>
-  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-  h1 { font-size: 1.4rem; }
-  a.back { font-size: .85rem; }
-  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
-  .stat .n { font-size: 1.6rem; font-weight: 700; }
-  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
-  .badge.pass { background: #d4edda; color: #1e7e34; }
-  .badge.fail { background: #f8d7da; color: #a71d2a; }
-  .badge.pending { background: #e2e3e5; color: #555; }
-  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
-  details.requirement { background: #fafafa; }
-  details.dev-item { background: #fff; margin-top: .5rem; }
-  summary { cursor: pointer; font-weight: 600; }
-  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
-  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
-  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
-  li.test-item.pass { border-left-color: #1e7e34; }
-  li.test-item.fail { border-left-color: #a71d2a; }
-  .row { display: flex; align-items: center; gap: .5rem; }
-  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
-  p.desc { margin: .3rem 0 0; font-size: .9rem; }
-  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a1a; color: #eee; }
-    .stat { border-color: #444; }
-    details { border-color: #444; }
-    details.requirement { background: #222; }
-    details.dev-item { background: #1a1a1a; }
-    li.test-item { background: #222; }
-    p.check { color: #aaa; }
-    .meta { color: #aaa; }
-    .desc-inline { color: #ccc; }
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
 </style>
 </head>
 <body>
-<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>skills</h1>
 <p class="meta">projects/skills/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\skills), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
-<div class="summary">
-  <div class="stat"><div class="n">3</div>요구사항</div>
-  <div class="stat"><div class="n">3</div>검사항목</div>
-  <div class="stat"><div class="n">3</div>통과한 요구사항</div>
-  <div class="stat"><div class="n">0</div>실패한 요구사항</div>
+<div class="stat-grid">
+  <div class="stat"><div class="n">3</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="badge pass">PASS</span>
-        <span class="desc-inline">스킬 워크스페이스 거버넌스 규칙(CORE-LAWS 준수 언급, marketplace.json-스킬 폴더 1:1 일치, ROUTING.md 무결성, allowed-tools 필수셋 등)이 깨지지 않아야 한다</span>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">스킬(도구 설명서) 저장소 전체가 정해진 규칙을 지키고 있어야 한다 — 이름/설명이 빠짐없고, 목록 파일과 실제 폴더가 일치하며, 안내 문서의 경로 연결이 끊어지지 않아야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">validate_workspace.ps1 -AsOfDate &lt;오늘(KST)&gt; — 모든 SKILL.md/README.md/LICENSE/NOTICE.md/ROUTING.md/marketplace.json을 대상으로 검사</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">전체 규칙 준수 검사 — 모든 스킬 문서와 안내 문서를 오늘 날짜 기준으로 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>validate-workspace-guard</code>
-            <span class="category">full</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">every SKILL.md&#x27;s frontmatter name matches its folder, commits to CORE-LAWS, has required allowed-tools; ROUTING.md has no duplicate/orphan/unrouted routes; marketplace.json matches skill folders 1:1; no markdown file is dated later than today (KST)</p>
-          <p class="check"><code>powershell.exe -NoProfile -Command &quot;$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,&#x27;Korea Standard Time&#x27;).Date; &amp; ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate&quot;</code></p>
+          <p class="desc">각 스킬 설명서의 이름이 폴더명과 일치하는지, 공통 규칙 문서를 따른다고 명시했는지, 목록 파일(marketplace.json)이 실제 폴더 구성과 정확히 일치하는지, 문서 안 날짜가 미래로 잘못 적히지 않았는지 등을 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -Command &quot;$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,&#x27;Korea Standard Time&#x27;).Date; &amp; ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate&quot;</code></p>
         </li>
         </ul>
       </details>
@@ -79,24 +148,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R2</code> <span class="badge pass">PASS</span>
-        <span class="desc-inline">마크다운 문서 내부 링크가 깨지지 않아야 한다</span>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">문서 안의 내부 링크가 깨지지 않아야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R2-D1</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">validate_links.ps1</span>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">문서 내부 링크 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>validate-links-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">local markdown links resolve to existing files repo-wide</p>
-          <p class="check"><code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+          <p class="desc">문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
         </li>
         </ul>
       </details>
@@ -104,24 +173,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R3</code> <span class="badge pass">PASS</span>
-        <span class="desc-inline">검증 스크립트들의 .gitignore 기반 제외 로직(last30days/ 등 벤더링되지 않은 폴더 스킵)이 정확해야 한다</span>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R3-D1</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">test_validators_ignore_scan.ps1</span>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">제외 목록 처리 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>validators-ignore-scan-regression</code>
-            <span class="category">regression</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">validate_workspace.ps1 and validate_links.ps1 correctly skip top-level dirs listed in .gitignore instead of scanning them</p>
-          <p class="check"><code>powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1</code></p>
+          <p class="desc">전체 규칙 검사와 링크 검사가, 별도로 관리되는 하위 폴더를 검사 대상에서 올바르게 제외하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1</code></p>
         </li>
         </ul>
       </details>

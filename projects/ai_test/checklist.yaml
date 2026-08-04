@@ -18,104 +18,104 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "저장소 전체를 묶는 실행기가 없으므로, 실제 테스트 스위트가 존재하는 각 서브프로젝트는 자체 pytest를 개별적으로 통과해야 한다"
+    description: "이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다"
     dev_items:
       - id: R1-D1
-        description: "Analysis_music"
+        description: "Analysis_music — 음악 데이터를 분석하는 프로그램"
         test_items:
           - id: analysis-music-tests
             category: basic
-            description: "Analysis_music/tests/test_core.py"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd Analysis_music && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D2
-        description: "Pexels"
+        description: "Pexels — 무료 이미지/영상 소스(Pexels)에서 소재를 가져오는 프로그램"
         test_items:
           - id: pexels-tests
             category: basic
-            description: "Pexels/tests/ (conftest.py + 8 test files)"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd Pexels && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D3
-        description: "ai-webtoon"
+        description: "ai-webtoon — 웹툰 관련 자동화 프로그램"
         test_items:
           - id: ai-webtoon-tests
             category: basic
-            description: "ai-webtoon/tests_unit.py (conftest.py + pytest.ini)"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai-webtoon && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D4
-        description: "ai-webtoon_capcut"
+        description: "ai-webtoon_capcut — 웹툰 영상을 캡컷(CapCut) 편집 형식으로 변환하는 프로그램"
         test_items:
           - id: ai-webtoon-capcut-tests
             category: basic
-            description: "ai-webtoon_capcut/tests/ (pyproject.toml, [tool.unittest] config, own PowerShell test wrapper)"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai-webtoon_capcut && powershell.exe -NoProfile -File scripts\\test.ps1"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D5
-        description: "findstring_foldfiles"
+        description: "findstring_foldfiles — 파일에서 문자열을 찾고 폴더를 정리하는 프로그램"
         test_items:
           - id: findstring-foldfiles-tests
             category: basic
-            description: "findstring_foldfiles/tests/test_search_worker.py — live run fails with ModuleNotFoundError: No module named 'find_string_app' under the raw `python`/`pytest` this checklist uses; likely needs that subproject's own virtualenv activated (not verified further)"
+            description: "[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(find_string_app)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다."
             check: "cd findstring_foldfiles && pytest -q"
             status: fail
             last_verified: 2026-08-05
       - id: R1-D6
-        description: "lyrics_tag"
+        description: "lyrics_tag — 음원 파일에 가사 정보를 입력하는 프로그램"
         test_items:
           - id: lyrics-tag-tests
             category: basic
-            description: "lyrics_tag/tests/test_core.py"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd lyrics_tag && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D7
-        description: "master_tag"
+        description: "master_tag — 음원 마스터링 파일에 태그 정보를 입력하는 프로그램"
         test_items:
           - id: master-tag-tests
             category: basic
-            description: "master_tag/tests/test_core.py (conftest.py present)"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd master_tag && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D8
-        description: "mp4_tag"
+        description: "mp4_tag — mp4 영상 파일에 태그 정보를 입력하는 프로그램"
         test_items:
           - id: mp4-tag-tests
             category: basic
-            description: "mp4_tag/tests/test_core.py"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd mp4_tag && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D9
-        description: "security_scanning"
+        description: "security_scanning — 보안 취약점을 점검하는 프로그램"
         test_items:
           - id: security-scanning-tests
             category: basic
-            description: "security_scanning/tests/test_core.py"
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd security_scanning && pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D10
-        description: "weather_alarm"
+        description: "weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램"
         test_items:
           - id: weather-alarm-tests
             category: basic
-            description: "weather_alarm/tests/ — live run: 30 failed, 25 passed. Failures are ModuleNotFoundError (loguru, discord) and missing pytest-asyncio plugin under the raw `python`/`pytest` this checklist uses, not confirmed logic defects; likely needs that subproject's own virtualenv activated (not verified further)"
+            description: "[현재 실패] 총 55개 테스트 중 25개는 통과, 30개는 실패했습니다. 실패 원인은 이 프로그램이 필요로 하는 구성요소(loguru, discord 등)가 지금 검사 환경에 설치되어 있지 않기 때문입니다 — 프로그램 로직 자체의 결함인지는 추가 확인이 필요합니다."
             check: "cd weather_alarm && pytest -q"
             status: fail
             last_verified: 2026-08-05
       - id: R1-D11
-        description: "windows-port-monitor"
+        description: "windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램"
         test_items:
           - id: windows-port-monitor-tests
             category: basic
-            description: "windows-port-monitor/tests/ (conftest.py + 4 test files: collector/storage/service/config_logging) — live run fails with ModuleNotFoundError: No module named 'psutil' under the raw `python`/`pytest` this checklist uses; likely needs that subproject's own virtualenv activated (not verified further)"
+            description: "[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(psutil)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다."
             check: "cd windows-port-monitor && pytest tests/ -q"
             status: fail
             last_verified: 2026-08-05

@@ -17,40 +17,40 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "스킬 워크스페이스 거버넌스 규칙(CORE-LAWS 준수 언급, marketplace.json-스킬 폴더 1:1 일치, ROUTING.md 무결성, allowed-tools 필수셋 등)이 깨지지 않아야 한다"
+    description: "스킬(도구 설명서) 저장소 전체가 정해진 규칙을 지키고 있어야 한다 — 이름/설명이 빠짐없고, 목록 파일과 실제 폴더가 일치하며, 안내 문서의 경로 연결이 끊어지지 않아야 한다"
     dev_items:
       - id: R1-D1
-        description: "validate_workspace.ps1 -AsOfDate <오늘(KST)> — 모든 SKILL.md/README.md/LICENSE/NOTICE.md/ROUTING.md/marketplace.json을 대상으로 검사"
+        description: "전체 규칙 준수 검사 — 모든 스킬 문서와 안내 문서를 오늘 날짜 기준으로 검사"
         test_items:
           - id: validate-workspace-guard
             category: full
-            description: "every SKILL.md's frontmatter name matches its folder, commits to CORE-LAWS, has required allowed-tools; ROUTING.md has no duplicate/orphan/unrouted routes; marketplace.json matches skill folders 1:1; no markdown file is dated later than today (KST)"
+            description: "각 스킬 설명서의 이름이 폴더명과 일치하는지, 공통 규칙 문서를 따른다고 명시했는지, 목록 파일(marketplace.json)이 실제 폴더 구성과 정확히 일치하는지, 문서 안 날짜가 미래로 잘못 적히지 않았는지 등을 확인합니다."
             check: "powershell.exe -NoProfile -Command \"$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,'Korea Standard Time').Date; & ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate\""
             status: pass
             last_verified: 2026-08-05
 
   - id: R2
-    description: "마크다운 문서 내부 링크가 깨지지 않아야 한다"
+    description: "문서 안의 내부 링크가 깨지지 않아야 한다"
     dev_items:
       - id: R2-D1
-        description: "validate_links.ps1"
+        description: "문서 내부 링크 검사"
         test_items:
           - id: validate-links-guard
             category: basic
-            description: "local markdown links resolve to existing files repo-wide"
+            description: "문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R3
-    description: "검증 스크립트들의 .gitignore 기반 제외 로직(last30days/ 등 벤더링되지 않은 폴더 스킵)이 정확해야 한다"
+    description: "검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다"
     dev_items:
       - id: R3-D1
-        description: "test_validators_ignore_scan.ps1"
+        description: "제외 목록 처리 검사"
         test_items:
           - id: validators-ignore-scan-regression
             category: regression
-            description: "validate_workspace.ps1 and validate_links.ps1 correctly skip top-level dirs listed in .gitignore instead of scanning them"
+            description: "전체 규칙 검사와 링크 검사가, 별도로 관리되는 하위 폴더를 검사 대상에서 올바르게 제외하는지 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1"
             status: pass
             last_verified: 2026-08-05

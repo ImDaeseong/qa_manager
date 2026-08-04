@@ -1,11 +1,15 @@
 """Build the qa_manager verification system's landing page: index.html.
 
-This is the system-level entry point — it is not scoped to any one project.
-It discovers every projects/<name>/checklist.yaml, regenerates that project's
-own dashboard.html via generate_checklist_dashboard.generate() (each running
-its checks inside its own `repo_root`), and lists all of them here with a
-live pass/fail summary and a link into each. Adding a project is just
-dropping a new projects/<name>/checklist.yaml in — no change needed here.
+This is the system-level entry point — it is not scoped to any one project,
+and it shows every project's full requirement/dev-item/test-item detail
+directly on this page (not just a summary count), so nothing is hidden a
+click away. It discovers every projects/<name>/checklist.yaml, regenerates
+that project's own dashboard.html via generate_checklist_dashboard.generate()
+(each running its checks inside its own `repo_root`, exactly once — the same
+render is reused here rather than re-running every check a second time), and
+lists all of them with their live detail and a link into each project's own
+page. Adding a project is just dropping a new
+projects/<name>/checklist.yaml in — no change needed here.
 
 Usage:
     python scripts/generate_system_index.py
@@ -21,6 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _checklist_lib as lib  # noqa: E402
 import generate_checklist_dashboard as dash  # noqa: E402
+from _style import STYLE  # noqa: E402
 
 OUTPUT_PATH = lib.QA_ROOT / "index.html"
 
@@ -38,53 +43,51 @@ def main() -> int:
 
     rows = []
     total_fail = 0
+    total_requirements = 0
+    total_test_items = 0
     for checklist_path in checklist_paths:
-        summary = dash.generate(checklist_path)
-        total_fail += summary["fail"]
-        overall = "pass" if summary["fail"] == 0 else "fail"
+        result = dash.generate(checklist_path)  # writes that project's own dashboard.html too
+        total_fail += result["fail"]
+        total_requirements += result["requirements"]
+        total_test_items += result["test_items"]
+        overall = "pass" if result["fail"] == 0 else "fail"
         rel_link = f"projects/{checklist_path.parent.name}/dashboard.html"
+
         rows.append(f"""
-    <li class="project {overall}">
-      <a href="{escape(rel_link)}">
-        <span class="name">{escape(summary['project'])}</span>
+    <details class="project {overall}" {"open" if overall == "fail" else ""}>
+      <summary>
+        <span>{escape(result['project'])}</span>
         {dash.badge(overall)}
-      </a>
-      <span class="counts">요구사항 {summary['requirements']}개 · 검사항목 {summary['test_items']}개 · 실패 {summary['fail']}건</span>
-    </li>""")
+        <span class="counts-inline">요구사항 {result['requirements']}개 · 검사항목 {result['test_items']}개 · 실패 {result['fail']}건 · <a href="{escape(rel_link)}">전체 페이지 열기 →</a></span>
+      </summary>
+      {''.join(result['req_html'])}
+    </details>""")
         print(
-            f"{'OK  ' if overall == 'pass' else 'FAIL'} {summary['project']}: "
-            f"{summary['requirements']} requirements, {summary['fail']} failing"
+            f"{'OK  ' if overall == 'pass' else 'FAIL'} {result['project']}: "
+            f"{result['requirements']} requirements, {result['fail']} failing"
         )
+
+    fail_projects = sum(1 for row in rows if 'class="project fail"' in row)
+    pass_projects = len(checklist_paths) - fail_projects
 
     html_doc = f"""<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <title>검수 시스템</title>
-<style>
-  body {{ font-family: -apple-system, Segoe UI, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }}
-  h1 {{ font-size: 1.5rem; }}
-  .meta {{ color: #666; font-size: .9rem; margin-bottom: 1.5rem; }}
-  ul.projects {{ list-style: none; padding: 0; }}
-  li.project {{ border: 1px solid #e0e0e0; border-radius: 8px; padding: .8rem 1rem; margin-bottom: .6rem; }}
-  li.project a {{ text-decoration: none; color: inherit; font-weight: 600; font-size: 1.05rem; }}
-  .counts {{ display: block; font-size: .8rem; color: #666; margin-top: .3rem; }}
-  .badge {{ display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }}
-  .badge.pass {{ background: #d4edda; color: #1e7e34; }}
-  .badge.fail {{ background: #f8d7da; color: #a71d2a; }}
-  @media (prefers-color-scheme: dark) {{
-    body {{ background: #1a1a1a; color: #eee; }}
-    li.project {{ border-color: #444; }}
-    .counts {{ color: #aaa; }}
-    .meta {{ color: #aaa; }}
-  }}
-</style>
+<style>{STYLE}</style>
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 {date.today().isoformat()}. 프로젝트를 추가하려면 README.md 참고.</p>
-<ul class="projects">{''.join(rows)}
-</ul>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 {date.today().isoformat()} — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<div class="stat-grid">
+  <div class="stat"><div class="n">{len(checklist_paths)}</div><div class="label">프로젝트</div></div>
+  <div class="stat"><div class="n">{total_requirements}</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">{total_test_items}</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">{pass_projects}</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">{fail_projects}</div><div class="label">실패한 프로젝트</div></div>
+</div>
+{''.join(rows)}
 </body>
 </html>
 """

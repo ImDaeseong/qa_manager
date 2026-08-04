@@ -15,8 +15,9 @@ Usage:
 With no argument, uses projects/hermes-agents/checklist.yaml. Writes
 dashboard.html next to the checklist.yaml it read. Open it directly in a
 browser; no server or external network resource is required (self-contained
-HTML/CSS). generate_system_index.py imports `generate()` below to build every
-project's page in one pass.
+HTML/CSS). generate_system_index.py imports `render_project()` below to
+embed every project's detail directly on the system index, reusing the same
+live check run instead of running every check a second time.
 """
 
 from __future__ import annotations
@@ -28,25 +29,31 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _checklist_lib as lib  # noqa: E402
+from _style import STYLE  # noqa: E402
 
-STATUS_LABEL = {"pass": "PASS", "fail": "FAIL", "pending": "PENDING"}
+STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기"}
+CATEGORY_LABEL = {"basic": "기본검사", "full": "통합검사", "regression": "재발방지검사"}
 
 
 def badge(status: str) -> str:
-    return f'<span class="badge {status}">{STATUS_LABEL.get(status, status.upper())}</span>'
+    return f'<span class="pill {status}">{STATUS_LABEL.get(status, status.upper())}</span>'
 
 
 def render_test_item(test_item: dict, cwd: Path) -> tuple[str, str]:
     live_status, output = lib.run_test_item(test_item, cwd)
+    description = test_item.get("description", "")
+    desc_html = f'<p class="desc">{escape(description)}</p>' if description else ""
+    category = test_item.get("category", "")
+    category_label = CATEGORY_LABEL.get(category, category)
     html = f"""
         <li class="test-item {live_status}">
           <div class="row">
             <code>{escape(test_item.get('id', ''))}</code>
-            <span class="category">{escape(test_item.get('category', ''))}</span>
+            <span class="category">{escape(category_label)}</span>
             {badge(live_status)}
           </div>
-          <p class="desc">{escape(test_item.get('description', ''))}</p>
-          <p class="check"><code>{escape(test_item.get('check', ''))}</code></p>
+          {desc_html}
+          <p class="check">실행 명령: <code>{escape(test_item.get('check', ''))}</code></p>
         </li>"""
     return html, live_status
 
@@ -91,12 +98,17 @@ def render_requirement(req: dict, cwd: Path) -> tuple[str, str]:
     return html, req_status
 
 
-def generate(checklist_path: Path) -> dict:
-    """Regenerate dashboard.html next to `checklist_path`. Returns a summary dict."""
+def render_project(checklist_path: Path) -> dict:
+    """Run every check in `checklist_path` live once. Returns rendered HTML + stats.
+
+    Used both to write that project's own dashboard.html and, by
+    generate_system_index.py, to embed the same detail on the system index
+    without running the checks a second time.
+    """
     data = lib.load(checklist_path)
     project = data.get("project", checklist_path.parent.name)
-    output_path = checklist_path.parent / "dashboard.html"
     cwd = lib.project_root(data)
+    checklist_rel = checklist_path.relative_to(lib.QA_ROOT).as_posix()
 
     req_html = []
     req_statuses = []
@@ -109,74 +121,49 @@ def generate(checklist_path: Path) -> dict:
 
     pass_count = req_statuses.count("pass")
     fail_count = req_statuses.count("fail")
-    checklist_rel = checklist_path.relative_to(lib.QA_ROOT).as_posix()
 
-    html_doc = f"""<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<title>검수 시스템 · {escape(project)}</title>
-<style>
-  body {{ font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }}
-  h1 {{ font-size: 1.4rem; }}
-  a.back {{ font-size: .85rem; }}
-  .meta {{ color: #666; font-size: .9rem; margin-bottom: 1.5rem; }}
-  .summary {{ display: flex; gap: 1rem; margin-bottom: 1.5rem; }}
-  .stat {{ border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }}
-  .stat .n {{ font-size: 1.6rem; font-weight: 700; }}
-  .badge {{ display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }}
-  .badge.pass {{ background: #d4edda; color: #1e7e34; }}
-  .badge.fail {{ background: #f8d7da; color: #a71d2a; }}
-  .badge.pending {{ background: #e2e3e5; color: #555; }}
-  details {{ border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }}
-  details.requirement {{ background: #fafafa; }}
-  details.dev-item {{ background: #fff; margin-top: .5rem; }}
-  summary {{ cursor: pointer; font-weight: 600; }}
-  .desc-inline {{ font-weight: 400; color: #444; margin-left: .4rem; }}
-  ul.test-items {{ list-style: none; padding-left: 0; margin: .5rem 0 0; }}
-  li.test-item {{ border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }}
-  li.test-item.pass {{ border-left-color: #1e7e34; }}
-  li.test-item.fail {{ border-left-color: #a71d2a; }}
-  .row {{ display: flex; align-items: center; gap: .5rem; }}
-  .category {{ font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }}
-  p.desc {{ margin: .3rem 0 0; font-size: .9rem; }}
-  p.check {{ margin: .2rem 0 0; font-size: .8rem; color: #555; }}
-  @media (prefers-color-scheme: dark) {{
-    body {{ background: #1a1a1a; color: #eee; }}
-    .stat {{ border-color: #444; }}
-    details {{ border-color: #444; }}
-    details.requirement {{ background: #222; }}
-    details.dev-item {{ background: #1a1a1a; }}
-    li.test-item {{ background: #222; }}
-    p.check {{ color: #aaa; }}
-    .meta {{ color: #aaa; }}
-    .desc-inline {{ color: #ccc; }}
-  }}
-</style>
-</head>
-<body>
-<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
-<h1>{escape(project)}</h1>
-<p class="meta">{escape(checklist_rel)} 기반 (실행 위치: {escape(str(cwd))}), 생성시각 {date.today().isoformat()} — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
-<div class="summary">
-  <div class="stat"><div class="n">{len(req_statuses)}</div>요구사항</div>
-  <div class="stat"><div class="n">{total_test_items}</div>검사항목</div>
-  <div class="stat"><div class="n">{pass_count}</div>통과한 요구사항</div>
-  <div class="stat"><div class="n">{fail_count}</div>실패한 요구사항</div>
-</div>
-{''.join(req_html)}
-</body>
-</html>
-"""
-    output_path.write_text(html_doc, encoding="utf-8")
     return {
         "project": project,
-        "output_path": output_path,
+        "checklist_path": checklist_path,
+        "checklist_rel": checklist_rel,
+        "cwd": cwd,
+        "req_html": req_html,
         "requirements": len(req_statuses),
         "test_items": total_test_items,
         "pass": pass_count,
         "fail": fail_count,
     }
+
+
+def generate(checklist_path: Path) -> dict:
+    """Run render_project() and write that project's standalone dashboard.html."""
+    result = render_project(checklist_path)
+    output_path = checklist_path.parent / "dashboard.html"
+
+    html_doc = f"""<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템 · {escape(result['project'])}</title>
+<style>{STYLE}</style>
+</head>
+<body>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
+<h1>{escape(result['project'])}</h1>
+<p class="meta">{escape(result['checklist_rel'])} 기반 (실행 위치: {escape(str(result['cwd']))}), 생성시각 {date.today().isoformat()} — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<div class="stat-grid">
+  <div class="stat"><div class="n">{result['requirements']}</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">{result['test_items']}</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">{result['pass']}</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">{result['fail']}</div><div class="label">실패한 요구사항</div></div>
+</div>
+{''.join(result['req_html'])}
+</body>
+</html>
+"""
+    output_path.write_text(html_doc, encoding="utf-8")
+    result["output_path"] = output_path
+    return result
 
 
 def main(argv: list[str]) -> int:

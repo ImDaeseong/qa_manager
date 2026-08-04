@@ -12,66 +12,66 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "CI가 검증하는 로컬 가드 전체가 저장소 루트에서 부작용 없이 통과해야 한다"
+    description: "전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다"
     dev_items:
       - id: R1-D1
-        description: "verify_repo.ps1 오케스트레이터 (하위 가드 체인 + 실행 전후 git status 동일성 검사)"
+        description: "통합 검사 실행기 — 아래 R2, R3의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인"
         test_items:
           - id: verify-repo-full
             category: full
-            description: "verify_repo.ps1 runs validate_skills.ps1 + validate_links.ps1 in order and asserts `git status --porcelain` is unchanged before/after"
+            description: "스킬 문서 검사와 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R2
-    description: "스킬 파일의 frontmatter와 상호참조가 깨지지 않아야 한다"
+    description: "스킬 설명 문서의 필수 정보와 문서 간 연결이 깨지지 않아야 한다"
     dev_items:
       - id: R2-D1
-        description: "validate_skills.ps1 (frontmatter name/description 누락·중복, 존재하지 않는 관련 스킬 참조, NOTICE.md 상호링크 누락 검사)"
+        description: "스킬 문서 형식 검사 — 이름/설명 누락이나 중복, 존재하지 않는 다른 스킬 문서 참조, 라이선스 문서 상호 연결 누락을 확인"
         test_items:
           - id: validate-skills-guard
             category: basic
-            description: "skill frontmatter and cross-references (related-skill links, NOTICE.md backlinks) are well-formed"
+            description: "각 스킬 설명 문서에 이름·설명이 빠짐없이 채워져 있고, 다른 스킬을 가리키는 링크가 실제로 존재하는 문서를 가리키는지 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/validate_skills.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R3
-    description: "마크다운 문서 내부 링크가 깨지지 않아야 한다"
+    description: "문서 안의 내부 링크가 깨지지 않아야 한다"
     dev_items:
       - id: R3-D1
-        description: "validate_links.ps1 (코드펜스/인라인 코드 제외 후 로컬 링크 대상 존재 여부 검사)"
+        description: "문서 내부 링크 검사 — 코드 예시 안의 텍스트는 제외하고 실제 링크만 대상 문서 존재 여부 확인"
         test_items:
           - id: validate-links-guard
             category: basic
-            description: "local markdown links resolve to existing files (code fences/inline code excluded to avoid false positives)"
+            description: "문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 확인합니다(코드 예시 안의 글자는 링크로 오인하지 않도록 제외)."
             check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R4
-    description: "install-git-hooks.ps1이 과거 발견된 3개 결함(외부 pre-commit 훅 덮어쓰기, .git/hooks 경로 하드코딩, core.hooksPath 미생성 디렉토리)을 재발시키지 않아야 한다"
+    description: "저장소를 새로 내려받았을 때 자동 검사 도구를 설치하는 스크립트가 과거 발견된 3가지 문제(다른 도구의 설정 덮어쓰기, 특정 폴더 구조에서만 동작, 폴더가 없을 때 오류)를 다시 일으키면 안 된다"
     dev_items:
       - id: R4-D1
-        description: "test_install_git_hooks.ps1 — 임시 저장소에서 install-git-hooks.ps1을 실제로 실행해 회귀 검증"
+        description: "설치 스크립트 회귀 검사 — 임시 저장소를 만들어 설치 스크립트를 실제로 실행해봄"
         test_items:
           - id: install-hooks-regression
             category: regression
-            description: "install-git-hooks.ps1 does not overwrite a foreign pre-commit hook, does not hardcode .git/hooks path, and handles a not-yet-created core.hooksPath directory"
+            description: "자동 검사 도구를 설치하는 스크립트가 기존에 설정된 다른 도구를 덮어쓰지 않고, 폴더 구조가 다르거나 폴더가 아직 없어도 정상 동작하는지 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/test_install_git_hooks.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R5
-    description: "CI 부작용 감지 메커니즘(실행 전후 git status 비교) 자체가 실제로 동작해야 한다"
+    description: "검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다"
     dev_items:
       - id: R5-D1
-        description: "verify_repo.ps1 -SideEffectSelfTest — 임시 저장소에서 의도적으로 파일을 만들어 감지되는지 자가검사"
+        description: "안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인"
         test_items:
           - id: verify-repo-side-effect-selftest
             category: regression
-            description: "the before/after git-status diffing mechanism inside verify_repo.ps1 actually detects a newly created untracked file"
+            description: "검사 전후 파일 변경을 감지하는 안전장치가, 실제로 새 파일이 생기면 그걸 놓치지 않고 잡아내는지 자체 점검합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest"
             status: pass
             last_verified: 2026-08-05

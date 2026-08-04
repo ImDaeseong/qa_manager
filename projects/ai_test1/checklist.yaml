@@ -20,98 +20,108 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "문서(README.md/PROJECT_STATUS.md/각 서브프로젝트 CLAUDE.md)에 적힌 테스트 개수가 실제 테스트 수와 일치해야 한다"
+    description: "안내 문서(README 등)에 적힌 '테스트 몇 개 통과'라는 숫자가, 실제 테스트 개수와 항상 일치해야 한다"
     dev_items:
       - id: R1-D1
-        description: "test_repository_consistency.py — 각 서브프로젝트에서 pytest --collect-only로 실제 테스트 수를 세어 문서와 대조, setup_env.ps1 구문·루트 마크다운 링크도 함께 검사"
+        description: "문서-실제 개수 일치 검사 — 각 프로그램의 실제 테스트 개수를 세어 문서에 적힌 숫자와 비교, 설치 스크립트 문법과 문서 링크도 함께 확인"
         test_items:
           - id: repo-consistency-check
             category: full
-            description: "documented test counts match actual pytest collection counts per subproject; setup_env.ps1 is valid PowerShell; root markdown links resolve"
+            description: "안내 문서에 적힌 테스트 개수가 실제와 다르지 않은지, 설치 스크립트에 문법 오류가 없는지, 문서 안 링크가 깨지지 않았는지 확인합니다."
             check: "python -m pytest test_repository_consistency.py -q"
             status: pass
             last_verified: 2026-08-05
 
   - id: R2
-    description: "저장소 전체를 묶는 실행기가 없으므로, 각 서브프로젝트는 자체 pytest(tests_unit.py)를 개별적으로 통과해야 한다"
+    description: "이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다"
     dev_items:
       - id: R2-D1
-        description: "ai_Scenario"
+        description: "ai_Scenario — 드라마 시나리오를 생성하는 프로그램"
         test_items:
           - id: ai-scenario-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_Scenario && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D2
-        description: "ai_story"
+        description: "ai_story — 소설 스토리를 생성하는 프로그램"
         test_items:
           - id: ai-story-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_story && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D3
-        description: "aim_music_app"
+        description: "aim_music_app — 음악과 캐릭터 이미지·영상을 함께 만드는 프로그램"
         test_items:
           - id: aim-music-app-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd aim_music_app && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D4
-        description: "aim_music_character_app (pytest.ini + tests_unit.py, conftest.py 없음 — 다른 서브프로젝트와 다른 구조)"
+        description: "aim_music_character_app — 음악 캐릭터 관련 프로그램 (aim_music_app과 유사하지만 별도 구성)"
         test_items:
           - id: aim-music-character-app-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd aim_music_character_app && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D5
-        description: "music_beats"
+        description: "music_beats — 인스트루멘탈(가사 없는) 비트를 만들어 판매용으로 준비하는 프로그램"
         test_items:
           - id: music-beats-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_beats && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D6
-        description: "music_codes"
+        description: "music_codes — 음악 작곡 패턴(코드 진행)을 모아놓은 프로그램"
         test_items:
           - id: music-codes-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_codes && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D7
-        description: "music_lyric"
+        description: "music_lyric — 노래 가사를 생성하는 프로그램"
         test_items:
           - id: music-lyric-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_lyric && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D8
-        description: "music_skills"
+        description: "music_skills — 음악 제작에 쓰이는 여러 기법을 모아놓은 프로그램"
         test_items:
           - id: music-skills-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_skills && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D9
-        description: "music_skills_trot"
+        description: "music_skills_trot — 트로트 장르 전용 음악 제작 프로그램"
         test_items:
           - id: music-skills-trot-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_skills_trot && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D10
-        description: "music_skills_unpredictable"
+        description: "music_skills_unpredictable — 실험적/예측불가 스타일 음악 제작 프로그램"
         test_items:
           - id: music-skills-unpredictable-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_skills_unpredictable && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05

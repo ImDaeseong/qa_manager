@@ -4,84 +4,1287 @@
 <meta charset="utf-8">
 <title>검수 시스템</title>
 <style>
-  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-  h1 { font-size: 1.5rem; }
-  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-  ul.projects { list-style: none; padding: 0; }
-  li.project { border: 1px solid #e0e0e0; border-radius: 8px; padding: .8rem 1rem; margin-bottom: .6rem; }
-  li.project a { text-decoration: none; color: inherit; font-weight: 600; font-size: 1.05rem; }
-  .counts { display: block; font-size: .8rem; color: #666; margin-top: .3rem; }
-  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
-  .badge.pass { background: #d4edda; color: #1e7e34; }
-  .badge.fail { background: #f8d7da; color: #a71d2a; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a1a; color: #eee; }
-    li.project { border-color: #444; }
-    .counts { color: #aaa; }
-    .meta { color: #aaa; }
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
 </style>
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-05. 프로젝트를 추가하려면 README.md 참고.</p>
-<ul class="projects">
-    <li class="project pass">
-      <a href="projects/ai-workspace/dashboard.html">
-        <span class="name">ai-workspace</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 5개 · 검사항목 5개 · 실패 0건</span>
-    </li>
-    <li class="project pass">
-      <a href="projects/ai_prompt/dashboard.html">
-        <span class="name">ai_prompt</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 5개 · 검사항목 5개 · 실패 0건</span>
-    </li>
-    <li class="project fail">
-      <a href="projects/ai_test/dashboard.html">
-        <span class="name">ai_test</span>
-        <span class="badge fail">FAIL</span>
-      </a>
-      <span class="counts">요구사항 1개 · 검사항목 11개 · 실패 1건</span>
-    </li>
-    <li class="project pass">
-      <a href="projects/ai_test1/dashboard.html">
-        <span class="name">ai_test1</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 2개 · 검사항목 11개 · 실패 0건</span>
-    </li>
-    <li class="project pass">
-      <a href="projects/ai_test2/dashboard.html">
-        <span class="name">ai_test2</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 1개 · 검사항목 6개 · 실패 0건</span>
-    </li>
-    <li class="project fail">
-      <a href="projects/ai_test3/dashboard.html">
-        <span class="name">ai_test3</span>
-        <span class="badge fail">FAIL</span>
-      </a>
-      <span class="counts">요구사항 1개 · 검사항목 4개 · 실패 1건</span>
-    </li>
-    <li class="project pass">
-      <a href="projects/hermes-agents/dashboard.html">
-        <span class="name">hermes-agents</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 7개 · 검사항목 8개 · 실패 0건</span>
-    </li>
-    <li class="project pass">
-      <a href="projects/skills/dashboard.html">
-        <span class="name">skills</span>
-        <span class="badge pass">PASS</span>
-      </a>
-      <span class="counts">요구사항 3개 · 검사항목 3개 · 실패 0건</span>
-    </li>
-</ul>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-05 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<div class="stat-grid">
+  <div class="stat"><div class="n">8</div><div class="label">프로젝트</div></div>
+  <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">53</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">6</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">2</div><div class="label">실패한 프로젝트</div></div>
+</div>
+
+    <details class="project pass" >
+      <summary>
+        <span>ai-workspace</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 5개 · 검사항목 5개 · 실패 0건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>handoff-hygiene-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">가장 최근에 기록된 작업 항목이 단계별 근거 없이 곧바로 &#x27;완료&#x27;로 표시되지 않았는지, 그리고 문서가 전체 이력을 나열하는 대신 현재 상태 위주로 유지되는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_handoff_hygiene.py --both</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">문서 안의 내부 링크가 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">문서 내부 링크 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-links-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">작업 인계 문서를 점검하는 도구 자체에 오류가 재발하면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">점검 도구 자체 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>handoff-hygiene-unit-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">작업 인계 문서를 점검하는 도구가 스스로 올바르게 판단하는지 확인하는 자체 테스트입니다.</p>
+          <p class="check">실행 명령: <code>python scripts/test_check_handoff_hygiene.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-full</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">작업 인계 문서 점검과 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R5</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R5-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-side-effect-selftest</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">검사 전후 파일 변경을 감지하는 안전장치가, 실제로 새 파일이 생기면 그걸 놓치지 않고 잡아내는지 자체 점검합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project pass" >
+      <summary>
+        <span>ai_prompt</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 5개 · 검사항목 5개 · 실패 0건 · <a href="projects/ai_prompt/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">통합 검사 실행기 — 아래 R2, R3의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-full</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">스킬 문서 검사와 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">스킬 설명 문서의 필수 정보와 문서 간 연결이 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">스킬 문서 형식 검사 — 이름/설명 누락이나 중복, 존재하지 않는 다른 스킬 문서 참조, 라이선스 문서 상호 연결 누락을 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-skills-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">각 스킬 설명 문서에 이름·설명이 빠짐없이 채워져 있고, 다른 스킬을 가리키는 링크가 실제로 존재하는 문서를 가리키는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_skills.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">문서 안의 내부 링크가 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">문서 내부 링크 검사 — 코드 예시 안의 텍스트는 제외하고 실제 링크만 대상 문서 존재 여부 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-links-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 확인합니다(코드 예시 안의 글자는 링크로 오인하지 않도록 제외).</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">저장소를 새로 내려받았을 때 자동 검사 도구를 설치하는 스크립트가 과거 발견된 3가지 문제(다른 도구의 설정 덮어쓰기, 특정 폴더 구조에서만 동작, 폴더가 없을 때 오류)를 다시 일으키면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">설치 스크립트 회귀 검사 — 임시 저장소를 만들어 설치 스크립트를 실제로 실행해봄</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>install-hooks-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">자동 검사 도구를 설치하는 스크립트가 기존에 설정된 다른 도구를 덮어쓰지 않고, 폴더 구조가 다르거나 폴더가 아직 없어도 정상 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_install_git_hooks.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R5</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R5-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-side-effect-selftest</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">검사 전후 파일 변경을 감지하는 안전장치가, 실제로 새 파일이 생기면 그걸 놓치지 않고 잡아내는지 자체 점검합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project fail" open>
+      <summary>
+        <span>ai_test</span>
+        <span class="pill fail">실패</span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 11개 · 실패 1건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement fail" open>
+      <summary>
+        <code>R1</code> <span class="pill fail">실패</span>
+        <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">Analysis_music — 음악 데이터를 분석하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>analysis-music-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd Analysis_music &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">Pexels — 무료 이미지/영상 소스(Pexels)에서 소재를 가져오는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>pexels-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd Pexels &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai-webtoon — 웹툰 관련 자동화 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-webtoon-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai-webtoon &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai-webtoon_capcut — 웹툰 영상을 캡컷(CapCut) 편집 형식으로 변환하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-webtoon-capcut-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai-webtoon_capcut &amp;&amp; powershell.exe -NoProfile -File scripts\test.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D5</code> <span class="pill fail">실패</span>
+          <span class="desc-inline">findstring_foldfiles — 파일에서 문자열을 찾고 폴더를 정리하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>findstring-foldfiles-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill fail">실패</span>
+          </div>
+          <p class="desc">[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(find_string_app)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다.</p>
+          <p class="check">실행 명령: <code>cd findstring_foldfiles &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D6</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">lyrics_tag — 음원 파일에 가사 정보를 입력하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>lyrics-tag-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd lyrics_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D7</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">master_tag — 음원 마스터링 파일에 태그 정보를 입력하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>master-tag-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd master_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D8</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">mp4_tag — mp4 영상 파일에 태그 정보를 입력하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>mp4-tag-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd mp4_tag &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D9</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">security_scanning — 보안 취약점을 점검하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-scanning-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd security_scanning &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D10</code> <span class="pill fail">실패</span>
+          <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>weather-alarm-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill fail">실패</span>
+          </div>
+          <p class="desc">[현재 실패] 총 55개 테스트 중 25개는 통과, 30개는 실패했습니다. 실패 원인은 이 프로그램이 필요로 하는 구성요소(loguru, discord 등)가 지금 검사 환경에 설치되어 있지 않기 때문입니다 — 프로그램 로직 자체의 결함인지는 추가 확인이 필요합니다.</p>
+          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D11</code> <span class="pill fail">실패</span>
+          <span class="desc-inline">windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>windows-port-monitor-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill fail">실패</span>
+          </div>
+          <p class="desc">[현재 실패] 이 프로그램의 테스트를 실행하는 데 필요한 구성요소(psutil)가 지금 검사 환경에 설치되어 있지 않아 테스트를 시작조차 못했습니다. 프로그램 자체의 결함인지, 검사 환경 설정 문제인지는 추가 확인이 필요합니다.</p>
+          <p class="check">실행 명령: <code>cd windows-port-monitor &amp;&amp; pytest tests/ -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project pass" >
+      <summary>
+        <span>ai_test1</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 2개 · 검사항목 11개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">안내 문서(README 등)에 적힌 &#x27;테스트 몇 개 통과&#x27;라는 숫자가, 실제 테스트 개수와 항상 일치해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">문서-실제 개수 일치 검사 — 각 프로그램의 실제 테스트 개수를 세어 문서에 적힌 숫자와 비교, 설치 스크립트 문법과 문서 링크도 함께 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>repo-consistency-check</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">안내 문서에 적힌 테스트 개수가 실제와 다르지 않은지, 설치 스크립트에 문법 오류가 없는지, 문서 안 링크가 깨지지 않았는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python -m pytest test_repository_consistency.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_Scenario — 드라마 시나리오를 생성하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-scenario-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_Scenario &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_story — 소설 스토리를 생성하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-story-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_story &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">aim_music_app — 음악과 캐릭터 이미지·영상을 함께 만드는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>aim-music-app-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd aim_music_app &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">aim_music_character_app — 음악 캐릭터 관련 프로그램 (aim_music_app과 유사하지만 별도 구성)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>aim-music-character-app-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd aim_music_character_app &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D5</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_beats — 인스트루멘탈(가사 없는) 비트를 만들어 판매용으로 준비하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-beats-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_beats &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D6</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_codes — 음악 작곡 패턴(코드 진행)을 모아놓은 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-codes-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_codes &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D7</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_lyric — 노래 가사를 생성하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-lyric-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_lyric &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D8</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_skills — 음악 제작에 쓰이는 여러 기법을 모아놓은 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_skills &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D9</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_skills_trot — 트로트 장르 전용 음악 제작 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-trot-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_skills_trot &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D10</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_skills_unpredictable — 실험적/예측불가 스타일 음악 제작 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-skills-unpredictable-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_skills_unpredictable &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project pass" >
+      <summary>
+        <span>ai_test2</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 6개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_anime — 애니메이션 관련 이미지/영상 생성 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-anime-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_anime &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_img_video_aiBoygirl — 캐릭터(남녀) 이미지·영상을 생성하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-img-video-aiboygirl-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_img_video_aiBoygirl &amp;&amp; python -m pytest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_img_video_prompt_capcut — 이미지·영상 생성용 문구(프롬프트)를 캡컷 편집 형식으로 만드는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-img-video-prompt-capcut-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_img_video_prompt_capcut &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ai-multi-agent-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_multi_agent &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D5</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">youtube_research — 유튜브 콘텐츠를 조사·분석하는 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>youtube-research-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd youtube_research &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D6</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_insight_studio — 음악 데이터를 분석하는 프로그램 (다른 프로그램들과 달리 자체 실행 환경이 별도로 필요함)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-insight-studio-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_insight_studio &amp;&amp; .venv\Scripts\python.exe -m unittest discover -s tests</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project fail" open>
+      <summary>
+        <span>ai_test3</span>
+        <span class="pill fail">실패</span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 4개 · 실패 1건 · <a href="projects/ai_test3/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement fail" open>
+      <summary>
+        <code>R1</code> <span class="pill fail">실패</span>
+        <span class="desc-inline">CareerDiff(채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스)가 코드 오류·품질 문제 없이 정상적으로 빌드되어야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">코드 타입 오류 검사 — 프로그램 안에서 값의 종류(숫자/글자 등)를 잘못 다루는 곳이 없는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>careerdiff-typecheck</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">코드 안에서 값의 종류를 잘못 사용한 곳이 없는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run typecheck</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item fail" open>
+        <summary>
+          <code>R1-D2</code> <span class="pill fail">실패</span>
+          <span class="desc-inline">코드 품질 검사(린트) — 알려진 나쁜 코드 패턴이 없는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item fail">
+          <div class="row">
+            <code>careerdiff-lint</code>
+            <span class="category">기본검사</span>
+            <span class="pill fail">실패</span>
+          </div>
+          <p class="desc">[현재 실패] 화면 두 곳(page.tsx, CandidateProfileInputPanel.tsx)에서 화면이 불필요하게 여러 번 다시 그려질 수 있는 코드 패턴이 실제로 발견됐습니다 — 성능에 영향을 줄 수 있는 실제 코드 품질 문제입니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run lint</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">기능별 자체 테스트 — 분석 기능, 이력서 불러오기 기능 등 핵심 기능들이 의도대로 동작하는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>careerdiff-unit-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">적합도 분석, 이력서 불러오기 등 핵심 기능이 예상대로 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm test</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">실서비스용 빌드 — 실제 사용자에게 배포할 수 있는 형태로 프로그램이 문제없이 만들어지는지 확인</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>careerdiff-build</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">실제 서비스에 배포 가능한 형태로 프로그램이 오류 없이 만들어지는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run build</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project pass" >
+      <summary>
+        <span>hermes-agents</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 7개 · 검사항목 8개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 .claude/settings.json 권한 항목은 안전한 범위여야 한다 (과도하게 넓은 패턴이나 손상된 항목이 섞이면 안 됨)</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">settings.json 권한 항목 형식 검증 로직</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>claude-settings-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">AI가 사람 승인 없이 자동으로 실행할 수 있는 명령어 허용 목록에 손상되거나 위험할 수 있는 항목이 섞여 있지 않은지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_claude_settings.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">changelog 동기화 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>agents-md-changelog-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">작업 규칙 문서(AGENTS.md)가 수정되면, 그 변경 내용이 이력 문서(README.md)에 날짜와 함께 기록되어 있는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_agents_md_changelog.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>no-example-secrets-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다(예시용 파일 포함).</p>
+          <p class="check">실행 명령: <code>python scripts/check_no_example_secrets.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">Telegram 봇의 의존성 메타데이터가 실제 import와 일치해야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">요구사항 파일이 bot.py의 import를 실제로 커버하는지 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>telegram-requirements-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">텔레그램 봇이 실제로 사용하는 프로그램 구성요소 목록이 설치 안내 문서와 빠짐없이 일치하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_telegram_requirements.py</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">패키지명 파싱이 버전 지정자/extras 구문을 정확히 처리 (회귀: 과거 openai&gt;=1 을 openai&gt; 로 잘못 파싱한 결함)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>telegram-requirements-parsing-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">구성요소 목록에서 버전 표기(예: 1.0 이상)를 정확히 읽어내는지 확인합니다 — 과거 이 부분이 잘못 처리된 적이 있어 같은 문제가 재발하지 않도록 추가한 검사입니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_telegram_requirements_test.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R5</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">Telegram 봇은 사용자 메시지 본문을 애플리케이션 로그에 남기면 안 된다 (개인정보 보호)</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R5-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">메시지 본문 변수가 로깅 호출에 전달되지 않는지 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>bot-privacy-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">텔레그램 봇이 사용자가 보낸 메시지 내용을 기록 파일(로그)에 남기지 않는지 확인합니다 (개인정보 보호).</p>
+          <p class="check">실행 명령: <code>python scripts/check_bot_privacy.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R6</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 배치 파일(.bat/.cmd)이 Windows cmd.exe에서 개행 문제로 조용히 실패하면 안 된다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R6-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">개행 문자(CRLF) 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>batch-line-endings-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">윈도우용 실행파일(.bat)이 줄바꿈 방식 문제로 실행 중 조용히 멈추지 않는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_batch_line_endings.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R7</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R7-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">통합 게이트 스크립트 실행</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>verify-repo-full</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">위의 모든 검사를 한꺼번에 실행해도 문제없이 통과하고, 검사 과정 자체가 실수로 다른 파일을 바꾸지 않는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
+    <details class="project pass" >
+      <summary>
+        <span>skills</span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 3개 · 검사항목 3개 · 실패 0건 · <a href="projects/skills/dashboard.html">전체 페이지 열기 →</a></span>
+      </summary>
+      
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">스킬(도구 설명서) 저장소 전체가 정해진 규칙을 지키고 있어야 한다 — 이름/설명이 빠짐없고, 목록 파일과 실제 폴더가 일치하며, 안내 문서의 경로 연결이 끊어지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">전체 규칙 준수 검사 — 모든 스킬 문서와 안내 문서를 오늘 날짜 기준으로 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-workspace-guard</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">각 스킬 설명서의 이름이 폴더명과 일치하는지, 공통 규칙 문서를 따른다고 명시했는지, 목록 파일(marketplace.json)이 실제 폴더 구성과 정확히 일치하는지, 문서 안 날짜가 미래로 잘못 적히지 않았는지 등을 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -Command &quot;$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,&#x27;Korea Standard Time&#x27;).Date; &amp; ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate&quot;</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">문서 안의 내부 링크가 깨지지 않아야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">문서 내부 링크 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-links-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다</span>
+      </summary>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">제외 목록 처리 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validators-ignore-scan-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">전체 규칙 검사와 링크 검사가, 별도로 관리되는 하위 폴더를 검사 대상에서 올바르게 제외하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    </details>
 </body>
 </html>

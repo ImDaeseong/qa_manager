@@ -18,37 +18,41 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "CareerDiff 웹앱이 타입 체크·린트·유닛테스트·빌드를 통과해야 한다"
+    description: "CareerDiff(채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스)가 코드 오류·품질 문제 없이 정상적으로 빌드되어야 한다"
     dev_items:
       - id: R1-D1
-        description: "타입 체크 (tsc --noEmit)"
+        description: "코드 타입 오류 검사 — 프로그램 안에서 값의 종류(숫자/글자 등)를 잘못 다루는 곳이 없는지 확인"
         test_items:
           - id: careerdiff-typecheck
             category: basic
+            description: "코드 안에서 값의 종류를 잘못 사용한 곳이 없는지 확인합니다."
             check: "cd CareerDiff\\app && npm run typecheck"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D2
-        description: "린트 (eslint) — live run: 2 errors (react-hooks/set-state-in-effect) in src/app/page.tsx:35 and src/features/candidate-profile-input/CandidateProfileInputPanel.tsx:31, both a useEffect calling setState synchronously"
+        description: "코드 품질 검사(린트) — 알려진 나쁜 코드 패턴이 없는지 확인"
         test_items:
           - id: careerdiff-lint
             category: basic
+            description: "[현재 실패] 화면 두 곳(page.tsx, CandidateProfileInputPanel.tsx)에서 화면이 불필요하게 여러 번 다시 그려질 수 있는 코드 패턴이 실제로 발견됐습니다 — 성능에 영향을 줄 수 있는 실제 코드 품질 문제입니다."
             check: "cd CareerDiff\\app && npm run lint"
             status: fail
             last_verified: 2026-08-05
       - id: R1-D3
-        description: "유닛/컴포넌트 테스트 (vitest) — AnalysisOrchestrator/LocalAnalysisProvider/jobKoreaImporter 등"
+        description: "기능별 자체 테스트 — 분석 기능, 이력서 불러오기 기능 등 핵심 기능들이 의도대로 동작하는지 확인"
         test_items:
           - id: careerdiff-unit-tests
             category: basic
+            description: "적합도 분석, 이력서 불러오기 등 핵심 기능이 예상대로 동작하는지 확인합니다."
             check: "cd CareerDiff\\app && npm test"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D4
-        description: "프로덕션 빌드 (next build)"
+        description: "실서비스용 빌드 — 실제 사용자에게 배포할 수 있는 형태로 프로그램이 문제없이 만들어지는지 확인"
         test_items:
           - id: careerdiff-build
             category: full
+            description: "실제 서비스에 배포 가능한 형태로 프로그램이 오류 없이 만들어지는지 확인합니다."
             check: "cd CareerDiff\\app && npm run build"
             status: pass
             last_verified: 2026-08-05

@@ -41,7 +41,7 @@ requirements:
         test_items:
           - id: claude-settings-guard
             category: basic
-            description: ".claude/settings.json permission entries are well-formed (no unbalanced parens/quotes, no trailing dangling command)"
+            description: "AI가 사람 승인 없이 자동으로 실행할 수 있는 명령어 허용 목록에 손상되거나 위험할 수 있는 항목이 섞여 있지 않은지 확인합니다."
             check: "python scripts/check_claude_settings.py"
             status: pass
             last_verified: 2026-08-05
@@ -54,7 +54,7 @@ requirements:
         test_items:
           - id: agents-md-changelog-guard
             category: basic
-            description: "a staged AGENTS.md change has a matching dated entry in README.md's changelog"
+            description: "작업 규칙 문서(AGENTS.md)가 수정되면, 그 변경 내용이 이력 문서(README.md)에 날짜와 함께 기록되어 있는지 확인합니다."
             check: "python scripts/check_agents_md_changelog.py"
             status: pass
             last_verified: 2026-08-05
@@ -67,7 +67,7 @@ requirements:
         test_items:
           - id: no-example-secrets-guard
             category: basic
-            description: "no real-looking secrets (API keys, tokens) introduced into tracked files, including .env.example-style files"
+            description: "저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다(예시용 파일 포함)."
             check: "python scripts/check_no_example_secrets.py"
             status: pass
             last_verified: 2026-08-05
@@ -80,7 +80,7 @@ requirements:
         test_items:
           - id: telegram-requirements-guard
             category: basic
-            description: "the dependency file used by SETUP.md exists and covers the packages imported by bots/telegram/bot.py"
+            description: "텔레그램 봇이 실제로 사용하는 프로그램 구성요소 목록이 설치 안내 문서와 빠짐없이 일치하는지 확인합니다."
             check: "python scripts/check_telegram_requirements.py"
             status: pass
             last_verified: 2026-08-05
@@ -89,7 +89,7 @@ requirements:
         test_items:
           - id: telegram-requirements-parsing-regression
             category: regression
-            description: "package-name parsing handles version specifiers and extras correctly (openai>=1, python-telegram-bot[all]>=20, etc.)"
+            description: "구성요소 목록에서 버전 표기(예: 1.0 이상)를 정확히 읽어내는지 확인합니다 — 과거 이 부분이 잘못 처리된 적이 있어 같은 문제가 재발하지 않도록 추가한 검사입니다."
             check: "python scripts/check_telegram_requirements_test.py"
             status: pass
             last_verified: 2026-08-05
@@ -102,7 +102,7 @@ requirements:
         test_items:
           - id: bot-privacy-guard
             category: basic
-            description: "Telegram message body content is never passed to application logging"
+            description: "텔레그램 봇이 사용자가 보낸 메시지 내용을 기록 파일(로그)에 남기지 않는지 확인합니다 (개인정보 보호)."
             check: "python scripts/check_bot_privacy.py"
             status: pass
             last_verified: 2026-08-05
@@ -115,7 +115,7 @@ requirements:
         test_items:
           - id: batch-line-endings-guard
             category: basic
-            description: "tracked .bat/.cmd files use CRLF line endings (bare LF can fail silently under cmd.exe)"
+            description: "윈도우용 실행파일(.bat)이 줄바꿈 방식 문제로 실행 중 조용히 멈추지 않는지 확인합니다."
             check: "python scripts/check_batch_line_endings.py"
             status: pass
             last_verified: 2026-08-05
@@ -128,7 +128,7 @@ requirements:
         test_items:
           - id: verify-repo-full
             category: full
-            description: "all guards above pass together, and running verification itself causes no Git-visible working-tree side effects"
+            description: "위의 모든 검사를 한꺼번에 실행해도 문제없이 통과하고, 검사 과정 자체가 실수로 다른 파일을 바꾸지 않는지 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
             status: pass
             last_verified: 2026-08-05

@@ -4,125 +4,194 @@
 <meta charset="utf-8">
 <title>검수 시스템 · ai_test3</title>
 <style>
-  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-  h1 { font-size: 1.4rem; }
-  a.back { font-size: .85rem; }
-  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
-  .stat .n { font-size: 1.6rem; font-weight: 700; }
-  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
-  .badge.pass { background: #d4edda; color: #1e7e34; }
-  .badge.fail { background: #f8d7da; color: #a71d2a; }
-  .badge.pending { background: #e2e3e5; color: #555; }
-  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
-  details.requirement { background: #fafafa; }
-  details.dev-item { background: #fff; margin-top: .5rem; }
-  summary { cursor: pointer; font-weight: 600; }
-  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
-  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
-  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
-  li.test-item.pass { border-left-color: #1e7e34; }
-  li.test-item.fail { border-left-color: #a71d2a; }
-  .row { display: flex; align-items: center; gap: .5rem; }
-  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
-  p.desc { margin: .3rem 0 0; font-size: .9rem; }
-  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a1a; color: #eee; }
-    .stat { border-color: #444; }
-    details { border-color: #444; }
-    details.requirement { background: #222; }
-    details.dev-item { background: #1a1a1a; }
-    li.test-item { background: #222; }
-    p.check { color: #aaa; }
-    .meta { color: #aaa; }
-    .desc-inline { color: #ccc; }
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
 </style>
 </head>
 <body>
-<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_test3</h1>
 <p class="meta">projects/ai_test3/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test3), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
-<div class="summary">
-  <div class="stat"><div class="n">1</div>요구사항</div>
-  <div class="stat"><div class="n">4</div>검사항목</div>
-  <div class="stat"><div class="n">0</div>통과한 요구사항</div>
-  <div class="stat"><div class="n">1</div>실패한 요구사항</div>
+<div class="stat-grid">
+  <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">4</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">0</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">1</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement fail" open>
       <summary>
-        <code>R1</code> <span class="badge fail">FAIL</span>
-        <span class="desc-inline">CareerDiff 웹앱이 타입 체크·린트·유닛테스트·빌드를 통과해야 한다</span>
+        <code>R1</code> <span class="pill fail">실패</span>
+        <span class="desc-inline">CareerDiff(채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스)가 코드 오류·품질 문제 없이 정상적으로 빌드되어야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">타입 체크 (tsc --noEmit)</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">코드 타입 오류 검사 — 프로그램 안에서 값의 종류(숫자/글자 등)를 잘못 다루는 곳이 없는지 확인</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>careerdiff-typecheck</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd CareerDiff\app &amp;&amp; npm run typecheck</code></p>
+          <p class="desc">코드 안에서 값의 종류를 잘못 사용한 곳이 없는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run typecheck</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item fail" open>
         <summary>
-          <code>R1-D2</code> <span class="badge fail">FAIL</span>
-          <span class="desc-inline">린트 (eslint) — live run: 2 errors (react-hooks/set-state-in-effect) in src/app/page.tsx:35 and src/features/candidate-profile-input/CandidateProfileInputPanel.tsx:31, both a useEffect calling setState synchronously</span>
+          <code>R1-D2</code> <span class="pill fail">실패</span>
+          <span class="desc-inline">코드 품질 검사(린트) — 알려진 나쁜 코드 패턴이 없는지 확인</span>
         </summary>
         <ul class="test-items">
         <li class="test-item fail">
           <div class="row">
             <code>careerdiff-lint</code>
-            <span class="category">basic</span>
-            <span class="badge fail">FAIL</span>
+            <span class="category">기본검사</span>
+            <span class="pill fail">실패</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd CareerDiff\app &amp;&amp; npm run lint</code></p>
+          <p class="desc">[현재 실패] 화면 두 곳(page.tsx, CandidateProfileInputPanel.tsx)에서 화면이 불필요하게 여러 번 다시 그려질 수 있는 코드 패턴이 실제로 발견됐습니다 — 성능에 영향을 줄 수 있는 실제 코드 품질 문제입니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run lint</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D3</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">유닛/컴포넌트 테스트 (vitest) — AnalysisOrchestrator/LocalAnalysisProvider/jobKoreaImporter 등</span>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">기능별 자체 테스트 — 분석 기능, 이력서 불러오기 기능 등 핵심 기능들이 의도대로 동작하는지 확인</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>careerdiff-unit-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd CareerDiff\app &amp;&amp; npm test</code></p>
+          <p class="desc">적합도 분석, 이력서 불러오기 등 핵심 기능이 예상대로 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm test</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D4</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">프로덕션 빌드 (next build)</span>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">실서비스용 빌드 — 실제 사용자에게 배포할 수 있는 형태로 프로그램이 문제없이 만들어지는지 확인</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>careerdiff-build</code>
-            <span class="category">full</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd CareerDiff\app &amp;&amp; npm run build</code></p>
+          <p class="desc">실제 서비스에 배포 가능한 형태로 프로그램이 오류 없이 만들어지는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd CareerDiff\app &amp;&amp; npm run build</code></p>
         </li>
         </ul>
       </details>

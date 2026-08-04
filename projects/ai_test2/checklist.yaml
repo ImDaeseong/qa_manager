@@ -15,53 +15,59 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "저장소 전체를 묶는 실행기가 없으므로, VERIFICATION.md에 문서화된 각 서브프로젝트의 테스트를 개별적으로 통과해야 한다"
+    description: "이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)"
     dev_items:
       - id: R1-D1
-        description: "ai_anime"
+        description: "ai_anime — 애니메이션 관련 이미지/영상 생성 프로그램"
         test_items:
           - id: ai-anime-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_anime && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D2
-        description: "ai_img_video_aiBoygirl"
+        description: "ai_img_video_aiBoygirl — 캐릭터(남녀) 이미지·영상을 생성하는 프로그램"
         test_items:
           - id: ai-img-video-aiboygirl-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_img_video_aiBoygirl && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D3
-        description: "ai_img_video_prompt_capcut"
+        description: "ai_img_video_prompt_capcut — 이미지·영상 생성용 문구(프롬프트)를 캡컷 편집 형식으로 만드는 프로그램"
         test_items:
           - id: ai-img-video-prompt-capcut-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_img_video_prompt_capcut && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D4
-        description: "ai_multi_agent"
+        description: "ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)"
         test_items:
           - id: ai-multi-agent-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_multi_agent && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D5
-        description: "youtube_research"
+        description: "youtube_research — 유튜브 콘텐츠를 조사·분석하는 프로그램"
         test_items:
           - id: youtube-research-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd youtube_research && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D6
-        description: "music_insight_studio (unittest 기반, conftest.py 없음, 자체 .venv 필요 — 다른 서브프로젝트와 다른 구조)"
+        description: "music_insight_studio — 음악 데이터를 분석하는 프로그램 (다른 프로그램들과 달리 자체 실행 환경이 별도로 필요함)"
         test_items:
           - id: music-insight-studio-tests
             category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd music_insight_studio && .venv\\Scripts\\python.exe -m unittest discover -s tests"
             status: pass
             last_verified: 2026-08-05

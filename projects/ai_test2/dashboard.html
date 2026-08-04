@@ -4,159 +4,228 @@
 <meta charset="utf-8">
 <title>검수 시스템 · ai_test2</title>
 <style>
-  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-  h1 { font-size: 1.4rem; }
-  a.back { font-size: .85rem; }
-  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
-  .stat .n { font-size: 1.6rem; font-weight: 700; }
-  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
-  .badge.pass { background: #d4edda; color: #1e7e34; }
-  .badge.fail { background: #f8d7da; color: #a71d2a; }
-  .badge.pending { background: #e2e3e5; color: #555; }
-  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
-  details.requirement { background: #fafafa; }
-  details.dev-item { background: #fff; margin-top: .5rem; }
-  summary { cursor: pointer; font-weight: 600; }
-  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
-  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
-  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
-  li.test-item.pass { border-left-color: #1e7e34; }
-  li.test-item.fail { border-left-color: #a71d2a; }
-  .row { display: flex; align-items: center; gap: .5rem; }
-  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
-  p.desc { margin: .3rem 0 0; font-size: .9rem; }
-  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a1a; color: #eee; }
-    .stat { border-color: #444; }
-    details { border-color: #444; }
-    details.requirement { background: #222; }
-    details.dev-item { background: #1a1a1a; }
-    li.test-item { background: #222; }
-    p.check { color: #aaa; }
-    .meta { color: #aaa; }
-    .desc-inline { color: #ccc; }
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
 </style>
 </head>
 <body>
-<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_test2</h1>
 <p class="meta">projects/ai_test2/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test2), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
-<div class="summary">
-  <div class="stat"><div class="n">1</div>요구사항</div>
-  <div class="stat"><div class="n">6</div>검사항목</div>
-  <div class="stat"><div class="n">1</div>통과한 요구사항</div>
-  <div class="stat"><div class="n">0</div>실패한 요구사항</div>
+<div class="stat-grid">
+  <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">6</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="badge pass">PASS</span>
-        <span class="desc-inline">저장소 전체를 묶는 실행기가 없으므로, VERIFICATION.md에 문서화된 각 서브프로젝트의 테스트를 개별적으로 통과해야 한다</span>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">ai_anime</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_anime — 애니메이션 관련 이미지/영상 생성 프로그램</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>ai-anime-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd ai_anime &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_anime &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D2</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">ai_img_video_aiBoygirl</span>
+          <code>R1-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_img_video_aiBoygirl — 캐릭터(남녀) 이미지·영상을 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>ai-img-video-aiboygirl-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd ai_img_video_aiBoygirl &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_img_video_aiBoygirl &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D3</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">ai_img_video_prompt_capcut</span>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_img_video_prompt_capcut — 이미지·영상 생성용 문구(프롬프트)를 캡컷 편집 형식으로 만드는 프로그램</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>ai-img-video-prompt-capcut-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd ai_img_video_prompt_capcut &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_img_video_prompt_capcut &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D4</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">ai_multi_agent</span>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>ai-multi-agent-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd ai_multi_agent &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd ai_multi_agent &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D5</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">youtube_research</span>
+          <code>R1-D5</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">youtube_research — 유튜브 콘텐츠를 조사·분석하는 프로그램</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>youtube-research-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd youtube_research &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd youtube_research &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D6</code> <span class="badge pass">PASS</span>
-          <span class="desc-inline">music_insight_studio (unittest 기반, conftest.py 없음, 자체 .venv 필요 — 다른 서브프로젝트와 다른 구조)</span>
+          <code>R1-D6</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_insight_studio — 음악 데이터를 분석하는 프로그램 (다른 프로그램들과 달리 자체 실행 환경이 별도로 필요함)</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>music-insight-studio-tests</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc"></p>
-          <p class="check"><code>cd music_insight_studio &amp;&amp; .venv\Scripts\python.exe -m unittest discover -s tests</code></p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_insight_studio &amp;&amp; .venv\Scripts\python.exe -m unittest discover -s tests</code></p>
         </li>
         </ul>
       </details>

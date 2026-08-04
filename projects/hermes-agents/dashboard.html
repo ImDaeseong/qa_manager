@@ -4,74 +4,143 @@
 <meta charset="utf-8">
 <title>검수 시스템 · hermes-agents</title>
 <style>
-  body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-  h1 { font-size: 1.4rem; }
-  a.back { font-size: .85rem; }
-  .meta { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-  .summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .stat { border: 1px solid #ddd; border-radius: 8px; padding: .75rem 1rem; }
-  .stat .n { font-size: 1.6rem; font-weight: 700; }
-  .badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 4px; margin-left: .3rem; }
-  .badge.pass { background: #d4edda; color: #1e7e34; }
-  .badge.fail { background: #f8d7da; color: #a71d2a; }
-  .badge.pending { background: #e2e3e5; color: #555; }
-  details { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: .6rem; padding: .5rem .8rem; }
-  details.requirement { background: #fafafa; }
-  details.dev-item { background: #fff; margin-top: .5rem; }
-  summary { cursor: pointer; font-weight: 600; }
-  .desc-inline { font-weight: 400; color: #444; margin-left: .4rem; }
-  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
-  li.test-item { border-left: 3px solid #ccc; padding: .4rem .6rem; margin-bottom: .4rem; background: #fcfcfc; }
-  li.test-item.pass { border-left-color: #1e7e34; }
-  li.test-item.fail { border-left-color: #a71d2a; }
-  .row { display: flex; align-items: center; gap: .5rem; }
-  .category { font-size: .7rem; color: #888; border: 1px solid #ddd; border-radius: 4px; padding: 0 .3rem; }
-  p.desc { margin: .3rem 0 0; font-size: .9rem; }
-  p.check { margin: .2rem 0 0; font-size: .8rem; color: #555; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1a1a1a; color: #eee; }
-    .stat { border-color: #444; }
-    details { border-color: #444; }
-    details.requirement { background: #222; }
-    details.dev-item { background: #1a1a1a; }
-    li.test-item { background: #222; }
-    p.check { color: #aaa; }
-    .meta { color: #aaa; }
-    .desc-inline { color: #ccc; }
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
 </style>
 </head>
 <body>
-<p><a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a></p>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>hermes-agents</h1>
 <p class="meta">projects/hermes-agents/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\hermes-agents), 생성시각 2026-08-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
-<div class="summary">
-  <div class="stat"><div class="n">7</div>요구사항</div>
-  <div class="stat"><div class="n">8</div>검사항목</div>
-  <div class="stat"><div class="n">7</div>통과한 요구사항</div>
-  <div class="stat"><div class="n">0</div>실패한 요구사항</div>
+<div class="stat-grid">
+  <div class="stat"><div class="n">7</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">8</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">7</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="badge pass">PASS</span>
+        <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">커밋되는 .claude/settings.json 권한 항목은 안전한 범위여야 한다 (과도하게 넓은 패턴이나 손상된 항목이 섞이면 안 됨)</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="badge pass">PASS</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">settings.json 권한 항목 형식 검증 로직</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>claude-settings-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">.claude/settings.json permission entries are well-formed (no unbalanced parens/quotes, no trailing dangling command)</p>
-          <p class="check"><code>python scripts/check_claude_settings.py</code></p>
+          <p class="desc">AI가 사람 승인 없이 자동으로 실행할 수 있는 명령어 허용 목록에 손상되거나 위험할 수 있는 항목이 섞여 있지 않은지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_claude_settings.py</code></p>
         </li>
         </ul>
       </details>
@@ -79,24 +148,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R2</code> <span class="badge pass">PASS</span>
+        <code>R2</code> <span class="pill pass">통과</span>
         <span class="desc-inline">AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R2-D1</code> <span class="badge pass">PASS</span>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">changelog 동기화 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>agents-md-changelog-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">a staged AGENTS.md change has a matching dated entry in README.md&#x27;s changelog</p>
-          <p class="check"><code>python scripts/check_agents_md_changelog.py</code></p>
+          <p class="desc">작업 규칙 문서(AGENTS.md)가 수정되면, 그 변경 내용이 이력 문서(README.md)에 날짜와 함께 기록되어 있는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_agents_md_changelog.py</code></p>
         </li>
         </ul>
       </details>
@@ -104,24 +173,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R3</code> <span class="badge pass">PASS</span>
+        <code>R3</code> <span class="pill pass">통과</span>
         <span class="desc-inline">커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R3-D1</code> <span class="badge pass">PASS</span>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>no-example-secrets-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">no real-looking secrets (API keys, tokens) introduced into tracked files, including .env.example-style files</p>
-          <p class="check"><code>python scripts/check_no_example_secrets.py</code></p>
+          <p class="desc">저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다(예시용 파일 포함).</p>
+          <p class="check">실행 명령: <code>python scripts/check_no_example_secrets.py</code></p>
         </li>
         </ul>
       </details>
@@ -129,41 +198,41 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R4</code> <span class="badge pass">PASS</span>
+        <code>R4</code> <span class="pill pass">통과</span>
         <span class="desc-inline">Telegram 봇의 의존성 메타데이터가 실제 import와 일치해야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R4-D1</code> <span class="badge pass">PASS</span>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">요구사항 파일이 bot.py의 import를 실제로 커버하는지 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>telegram-requirements-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">the dependency file used by SETUP.md exists and covers the packages imported by bots/telegram/bot.py</p>
-          <p class="check"><code>python scripts/check_telegram_requirements.py</code></p>
+          <p class="desc">텔레그램 봇이 실제로 사용하는 프로그램 구성요소 목록이 설치 안내 문서와 빠짐없이 일치하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_telegram_requirements.py</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R4-D2</code> <span class="badge pass">PASS</span>
+          <code>R4-D2</code> <span class="pill pass">통과</span>
           <span class="desc-inline">패키지명 파싱이 버전 지정자/extras 구문을 정확히 처리 (회귀: 과거 openai&gt;=1 을 openai&gt; 로 잘못 파싱한 결함)</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>telegram-requirements-parsing-regression</code>
-            <span class="category">regression</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">package-name parsing handles version specifiers and extras correctly (openai&gt;=1, python-telegram-bot[all]&gt;=20, etc.)</p>
-          <p class="check"><code>python scripts/check_telegram_requirements_test.py</code></p>
+          <p class="desc">구성요소 목록에서 버전 표기(예: 1.0 이상)를 정확히 읽어내는지 확인합니다 — 과거 이 부분이 잘못 처리된 적이 있어 같은 문제가 재발하지 않도록 추가한 검사입니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_telegram_requirements_test.py</code></p>
         </li>
         </ul>
       </details>
@@ -171,24 +240,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R5</code> <span class="badge pass">PASS</span>
+        <code>R5</code> <span class="pill pass">통과</span>
         <span class="desc-inline">Telegram 봇은 사용자 메시지 본문을 애플리케이션 로그에 남기면 안 된다 (개인정보 보호)</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R5-D1</code> <span class="badge pass">PASS</span>
+          <code>R5-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">메시지 본문 변수가 로깅 호출에 전달되지 않는지 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>bot-privacy-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">Telegram message body content is never passed to application logging</p>
-          <p class="check"><code>python scripts/check_bot_privacy.py</code></p>
+          <p class="desc">텔레그램 봇이 사용자가 보낸 메시지 내용을 기록 파일(로그)에 남기지 않는지 확인합니다 (개인정보 보호).</p>
+          <p class="check">실행 명령: <code>python scripts/check_bot_privacy.py</code></p>
         </li>
         </ul>
       </details>
@@ -196,24 +265,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R6</code> <span class="badge pass">PASS</span>
+        <code>R6</code> <span class="pill pass">통과</span>
         <span class="desc-inline">커밋되는 배치 파일(.bat/.cmd)이 Windows cmd.exe에서 개행 문제로 조용히 실패하면 안 된다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R6-D1</code> <span class="badge pass">PASS</span>
+          <code>R6-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">개행 문자(CRLF) 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>batch-line-endings-guard</code>
-            <span class="category">basic</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">tracked .bat/.cmd files use CRLF line endings (bare LF can fail silently under cmd.exe)</p>
-          <p class="check"><code>python scripts/check_batch_line_endings.py</code></p>
+          <p class="desc">윈도우용 실행파일(.bat)이 줄바꿈 방식 문제로 실행 중 조용히 멈추지 않는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_batch_line_endings.py</code></p>
         </li>
         </ul>
       </details>
@@ -221,24 +290,24 @@
     </details>
     <details class="requirement pass" open>
       <summary>
-        <code>R7</code> <span class="badge pass">PASS</span>
+        <code>R7</code> <span class="pill pass">통과</span>
         <span class="desc-inline">위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다</span>
       </summary>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R7-D1</code> <span class="badge pass">PASS</span>
+          <code>R7-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">통합 게이트 스크립트 실행</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
             <code>verify-repo-full</code>
-            <span class="category">full</span>
-            <span class="badge pass">PASS</span>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
           </div>
-          <p class="desc">all guards above pass together, and running verification itself causes no Git-visible working-tree side effects</p>
-          <p class="check"><code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
+          <p class="desc">위의 모든 검사를 한꺼번에 실행해도 문제없이 통과하고, 검사 과정 자체가 실수로 다른 파일을 바꾸지 않는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
         </li>
         </ul>
       </details>

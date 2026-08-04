@@ -12,66 +12,66 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
-    description: "HANDOFF.md가 Progress Gates 증거 없이 100%로 건너뛰거나, 요약 없이 전체 이력으로 비대해지면 안 된다"
+    description: "작업 인계 문서(HANDOFF.md)가 근거 없이 '완료(100%)'로 표시되거나, 요약 없이 지나치게 길어지면 안 된다"
     dev_items:
       - id: R1-D1
-        description: "check_handoff_hygiene.py --both (staged + working-tree HANDOFF.md 검사)"
+        description: "작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인"
         test_items:
           - id: handoff-hygiene-guard
             category: basic
-            description: "HANDOFF.md's newest dated entry doesn't collapse straight to 100% without 20/40/60/80/90 gate evidence, and the file stays current-state (not a full transcript)"
+            description: "가장 최근에 기록된 작업 항목이 단계별 근거 없이 곧바로 '완료'로 표시되지 않았는지, 그리고 문서가 전체 이력을 나열하는 대신 현재 상태 위주로 유지되는지 확인합니다."
             check: "python scripts/check_handoff_hygiene.py --both"
             status: pass
             last_verified: 2026-08-05
 
   - id: R2
-    description: "마크다운 문서 내부 링크가 깨지지 않아야 한다"
+    description: "문서 안의 내부 링크가 깨지지 않아야 한다"
     dev_items:
       - id: R2-D1
-        description: "validate_links.ps1"
+        description: "문서 내부 링크 검사"
         test_items:
           - id: validate-links-guard
             category: basic
-            description: "local markdown links resolve to existing files repo-wide"
+            description: "문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R3
-    description: "HANDOFF hygiene 검사기 자체의 로직에 회귀가 없어야 한다"
+    description: "작업 인계 문서를 점검하는 도구 자체에 오류가 재발하면 안 된다"
     dev_items:
       - id: R3-D1
-        description: "test_check_handoff_hygiene.py"
+        description: "점검 도구 자체 검사"
         test_items:
           - id: handoff-hygiene-unit-tests
             category: regression
-            description: "unit tests for check_handoff_hygiene.py's own detection logic"
+            description: "작업 인계 문서를 점검하는 도구가 스스로 올바르게 판단하는지 확인하는 자체 테스트입니다."
             check: "python scripts/test_check_handoff_hygiene.py"
             status: pass
             last_verified: 2026-08-05
 
   - id: R4
-    description: "위 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 부작용을 남기지 않아야 한다"
+    description: "전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다"
     dev_items:
       - id: R4-D1
-        description: "verify_repo.ps1 오케스트레이터 (하위 가드 체인 + 실행 전후 git status 동일성 검사)"
+        description: "통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인"
         test_items:
           - id: verify-repo-full
             category: full
-            description: "verify_repo.ps1 runs check_handoff_hygiene.py + validate_links.ps1 in order and asserts `git status --porcelain` is unchanged before/after (run without -BaseRef, so the base-ref diff hygiene check is skipped)"
+            description: "작업 인계 문서 점검과 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
             status: pass
             last_verified: 2026-08-05
 
   - id: R5
-    description: "CI 부작용 감지 메커니즘(실행 전후 git status 비교) 자체가 실제로 동작해야 한다"
+    description: "검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다"
     dev_items:
       - id: R5-D1
-        description: "verify_repo.ps1 -SideEffectSelfTest — 임시 저장소에서 의도적으로 파일을 만들어 감지되는지 자가검사"
+        description: "안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인"
         test_items:
           - id: verify-repo-side-effect-selftest
             category: regression
-            description: "the before/after git-status diffing mechanism inside verify_repo.ps1 actually detects a newly created untracked file"
+            description: "검사 전후 파일 변경을 감지하는 안전장치가, 실제로 새 파일이 생기면 그걸 놓치지 않고 잡아내는지 자체 점검합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest"
             status: pass
             last_verified: 2026-08-05
