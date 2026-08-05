@@ -24,6 +24,13 @@ QA_ROOT = Path(__file__).resolve().parent.parent
 DESKTOP_ROOT = QA_ROOT.parent
 DEFAULT_CHECKLIST = QA_ROOT / "projects" / "hermes-agents" / "checklist.yaml"
 
+# No `check` command observed across any registered project takes more than a
+# couple of minutes (the slowest today is CareerDiff's `npm run build`). This
+# is a safety net against a hung command (waiting on stdin, a server that
+# never exits, a bug in the target project itself) blocking the whole run
+# forever with no way out short of killing the process by hand.
+CHECK_TIMEOUT_SECONDS = 300
+
 
 def load(path: Path = DEFAULT_CHECKLIST) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -40,16 +47,38 @@ def project_root(data: dict) -> Path:
 
 
 def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
-    """Run one test_item's `check` command now, inside `cwd`. Returns (live_status, output)."""
+    """Run one test_item's `check` command now, inside `cwd`. Returns (live_status, output).
+
+    Uses Popen (not subprocess.run) because on Windows, `shell=True` runs the
+    command through a cmd.exe wrapper: subprocess.run's own timeout only
+    kills that wrapper, not the real child process it launched (e.g. a
+    long-running python/node process) — the child keeps running and holding
+    the stdout/stderr pipes open, so `communicate()` still blocks until the
+    child finishes on its own. Reproduced directly: a 10s sleep with a 2s
+    timeout still took the full 10s. `taskkill /T` below kills the whole
+    process tree (wrapper + child), which actually unblocks the pipes.
+    """
     check_cmd = item.get("check")
     if not check_cmd:
         return "pending", ""
-    result = subprocess.run(
-        check_cmd, shell=True, cwd=cwd, capture_output=True, text=True,
-        encoding="utf-8", errors="replace",
+    proc = subprocess.Popen(
+        check_cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True, encoding="utf-8", errors="replace",
     )
-    live_status = "pass" if result.returncode == 0 else "fail"
-    return live_status, result.stdout + result.stderr
+    try:
+        output, _ = proc.communicate(timeout=CHECK_TIMEOUT_SECONDS)
+    except subprocess.TimeoutExpired:
+        subprocess.run(
+            ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+            capture_output=True, timeout=15,
+        )
+        partial, _ = proc.communicate()
+        return "fail", (
+            f"TIMEOUT: check did not finish within {CHECK_TIMEOUT_SECONDS}s, "
+            f"process tree killed.\n{partial}"
+        )
+    live_status = "pass" if proc.returncode == 0 else "fail"
+    return live_status, output
 
 
 def iter_test_items(data: dict):
