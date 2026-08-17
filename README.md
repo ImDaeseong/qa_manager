@@ -52,3 +52,11 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 
 hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2,
 ai_test3 — 총 8개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+
+## 검증됨 (2026-08-17)
+
+위 "작동 흐름"의 주장을 코드와 실제 실행으로 대조 확인했습니다.
+
+- `_checklist_lib.py`의 `run_test_item()`을 직접 읽어 확인: `check` 명령을 매번 `Popen`으로 실행하고, `checklist.yaml`의 `status`/`last_verified`를 읽어 스킵하는 경로는 없음 — "항상 실행 결과" 주장과 일치.
+- 개별 check당 300초 타임아웃 + `taskkill /F /T`로 프로세스 트리 강제 종료(Windows에서 `subprocess.run(timeout=)`이 cmd.exe 래퍼만 죽이고 실제 자식 프로세스는 안 죽는 문제를 우회) — 행(hang) 방지 주장과 일치.
+- `python scripts\generate_system_index.py` 전체 재실행: 8개 프로젝트 전량 `OK`, 0 failing.
