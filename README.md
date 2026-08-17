@@ -22,38 +22,13 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
       dashboard.html               생성됨 (직접 수정하지 않음)
 ```
 
-**계층 구조**: requirement 아래에 dev_item, 그 아래에 실제 실행 가능한
-test_item이 있습니다. test_item 하나가 `check` 명령을 갖고, 그 명령이
-PASS해야 dev_item이 PASS, dev_item이 전부 PASS해야 requirement가 PASS로
-집계됩니다. 화면에 보이는 설명 문구는 개발자가 아닌 운영 담당자도 읽고
-이해할 수 있도록 평범한 한글로 작성하되, 파일명·명령어 같은 기술 용어는
-번역하지 않고 원문 그대로 둡니다.
+**계층 구조**: requirement 아래에 dev_item, 그 아래에 실제 실행 가능한 test_item이 있습니다. test_item 하나가 `check` 명령을 갖고, 그 명령이 PASS해야 dev_item이 PASS, dev_item이 전부 PASS해야 requirement가 PASS로 집계됩니다. 화면 설명 문구는 운영 담당자도 읽을 수 있게 평범한 한글로 쓰되, 파일명·명령어 같은 기술 용어는 원문 그대로 둡니다.
 
-**핵심 원칙 — 항상 실행 결과, 기록값 아님**: `checklist.yaml`의
-`status`/`last_verified`는 마지막 실행 기록일 뿐입니다. `run_checklist.py`나
-`generate_checklist_dashboard.py`를 실행하면 매번 `check` 명령을 그 자리에서
-다시 실행해 결과를 보여줍니다 — 화면의 PASS/FAIL은 항상 방금 실행한 결과입니다.
+**핵심 원칙 — 항상 실행 결과, 기록값 아님**: `checklist.yaml`의 `status`/`last_verified`는 마지막 실행 기록일 뿐입니다. `run_checklist.py`나 `generate_checklist_dashboard.py`를 실행하면 매번 `check` 명령을 그 자리에서 다시 실행합니다 — 화면의 PASS/FAIL은 항상 방금 실행한 결과입니다.
 
-## 검수 진행 방법 (작동 흐름)
+## 작동 흐름
 
-`open_qa_system.bat`을 실행하면 실제로 이런 순서로 진행됩니다:
-
-1. `scripts/generate_system_index.py`가 `projects/*/checklist.yaml` 8개
-   파일을 전부 찾습니다.
-2. 파일마다 `scripts/generate_checklist_dashboard.py`가 checklist.yaml의
-   `repo_root`를 실제 폴더 경로로 바꿉니다 (예: `ai_test1` → `C:\Users\cs930\Desktop\ai_test1`).
-3. requirement → dev_item → test_item 순서로 내려가며, **test_item의
-   `check` 명령을 그 프로젝트 폴더 안에서 지금 이 순간 직접 실행**합니다
-   (`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 — 프로젝트에
-   실제로 있는 명령).
-4. 결과를 아래에서 위로 집계합니다: test_item 전부 PASS → dev_item PASS,
-   dev_item 전부 PASS → requirement PASS.
-5. 프로젝트별 `dashboard.html`과, 8개 전체를 모은 `index.html`을 씁니다.
-
-즉 "어디서부터 검사하냐"의 답은: **각 프로젝트의 checklist.yaml에 적힌
-repo_root 폴더 안에서, 그 프로젝트에 실제로 존재하는 검증 수단을 그대로
-실행**하는 것입니다. 화면에 보이는 PASS/FAIL은 과거 기록이 아니라 이
-실행에서 나온 결과입니다(위 "핵심 원칙" 참고).
+`open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `C:\Users\cs930\Desktop\ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 지금 이 순간 직접 실행(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령) → 아래에서 위로 집계(test_item 전부 PASS → dev_item PASS → requirement PASS) → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.
 
 ## 실행 방법
 
