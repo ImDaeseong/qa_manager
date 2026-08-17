@@ -22,13 +22,11 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
       dashboard.html               생성됨 (직접 수정하지 않음)
 ```
 
-**계층 구조**: requirement 아래에 dev_item, 그 아래에 실제 실행 가능한 test_item이 있습니다. test_item 하나가 `check` 명령을 갖고, 그 명령이 PASS해야 dev_item이 PASS, dev_item이 전부 PASS해야 requirement가 PASS로 집계됩니다. 화면 설명 문구는 운영 담당자도 읽을 수 있게 평범한 한글로 쓰되, 파일명·명령어 같은 기술 용어는 원문 그대로 둡니다.
-
-**핵심 원칙 — 항상 실행 결과, 기록값 아님**: `checklist.yaml`의 `status`/`last_verified`는 마지막 실행 기록일 뿐입니다. `run_checklist.py`나 `generate_checklist_dashboard.py`를 실행하면 매번 `check` 명령을 그 자리에서 다시 실행합니다 — 화면의 PASS/FAIL은 항상 방금 실행한 결과입니다.
+**계층**: requirement → dev_item → test_item. test_item의 `check` 명령이 PASS해야 dev_item이 PASS, dev_item이 전부 PASS해야 requirement가 PASS입니다. 화면 문구는 운영 담당자도 읽을 수 있는 평범한 한글로 쓰되, 파일명·명령어는 원문 그대로 둡니다.
 
 ## 작동 흐름
 
-`open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `C:\Users\cs930\Desktop\ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 지금 이 순간 직접 실행(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령) → 아래에서 위로 집계(test_item 전부 PASS → dev_item PASS → requirement PASS) → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.
+`open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `C:\Users\cs930\Desktop\ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 **지금 이 순간 직접 실행**(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령 — `checklist.yaml`의 `status`/`last_verified`는 참고용 마지막 기록일 뿐, 매번 다시 실행함) → 아래에서 위로 집계 → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.
 
 ## 실행 방법
 
