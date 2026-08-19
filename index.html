@@ -114,11 +114,11 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-17 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-20 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">8</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">53</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">54</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">8</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
 </div>
@@ -607,7 +607,7 @@
       <summary>
         <span>ai_test1</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 2개 · 검사항목 11개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 2개 · 검사항목 12개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -641,7 +641,7 @@
         <code>R2</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 10개 · 검사항목 10개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -810,6 +810,23 @@
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd music_skills_unpredictable &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D11</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">music_story_skills — 스토리 기반 가사·음악 프롬프트 엔진 (outline→bank→structure→lyrics→music→review)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>music-story-skills-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd music_story_skills &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
