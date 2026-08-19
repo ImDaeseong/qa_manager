@@ -125,3 +125,12 @@ requirements:
             check: "cd music_skills_unpredictable && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
+      - id: R2-D11
+        description: "music_story_skills — 스토리 기반 가사·음악 프롬프트 엔진 (outline→bank→structure→lyrics→music→review)"
+        test_items:
+          - id: music-story-skills-tests
+            category: basic
+            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd music_story_skills && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-08-20
