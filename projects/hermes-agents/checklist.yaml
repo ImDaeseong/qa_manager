@@ -130,9 +130,22 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R7
-    description: "위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다"
+    description: ".codex/ 미러가 .mcp.json·committee agents 원본과 이름 집합이 어긋나면 안 된다"
     dev_items:
       - id: R7-D1
+        description: "Codex 미러 동기화 검사"
+        test_items:
+          - id: codex-mirror-sync-guard
+            category: basic
+            description: ".codex/config.toml·agents/*.toml이 .mcp.json·.claude/agents/*.md와 이름 집합이 일치하는지 확인합니다."
+            check: "python scripts/check_codex_mirror_sync.py"
+            status: pass
+            last_verified: 2026-08-30
+
+  - id: R8
+    description: "위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다"
+    dev_items:
+      - id: R8-D1
         description: "통합 게이트 스크립트 실행"
         test_items:
           - id: verify-repo-full
@@ -140,4 +153,4 @@ requirements:
             description: "위의 모든 검사를 한꺼번에 실행해도 문제없이 통과하고, 검사 과정 자체가 실수로 다른 파일을 바꾸지 않는지 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
             status: pass
-            last_verified: 2026-08-05
+            last_verified: 2026-08-30

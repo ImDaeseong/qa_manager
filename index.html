@@ -114,11 +114,11 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-20 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-08-31 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">8</div><div class="label">프로젝트</div></div>
-  <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">54</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">26</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">55</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">8</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
 </div>
@@ -578,7 +578,7 @@
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트 55개가 모두 정상적으로 통과하는지 확인합니다.</p>
+          <p class="desc">이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
@@ -1041,7 +1041,7 @@
       <summary>
         <span>hermes-agents</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 7개 · 검사항목 8개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 8개 · 검사항목 9개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -1220,13 +1220,39 @@
     <details class="requirement pass" open>
       <summary>
         <code>R7</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다</span>
+        <span class="desc-inline">.codex/ 미러가 .mcp.json·committee agents 원본과 이름 집합이 어긋나면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
           <code>R7-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">Codex 미러 동기화 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>codex-mirror-sync-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">.codex/config.toml·agents/*.toml이 .mcp.json·.claude/agents/*.md와 이름 집합이 일치하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_codex_mirror_sync.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R8</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">위 개별 가드들이 통합 실행 시에도 함께 통과하고, 검증 과정 자체가 저장소 상태에 부작용을 남기지 않아야 한다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R8-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">통합 게이트 스크립트 실행</span>
         </summary>
         <ul class="test-items">

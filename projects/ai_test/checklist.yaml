@@ -106,7 +106,7 @@ requirements:
         test_items:
           - id: weather-alarm-tests
             category: basic
-            description: "이 프로그램에 포함된 자체 테스트 55개가 모두 정상적으로 통과하는지 확인합니다."
+            description: "이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다."
             check: "cd weather_alarm && python -m pytest -q"
             status: pass
             last_verified: 2026-08-05
