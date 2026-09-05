@@ -115,117 +115,117 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_test2</h1>
-<p class="meta">projects/ai_test2/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test2), 생성시각 2026-08-31 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<p class="meta">projects/ai_test2/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test2), 생성시각 2026-09-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">6</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">0</div><div class="label">통과한 요구사항</div></div>
-  <div class="stat fail"><div class="n">1</div><div class="label">실패한 요구사항</div></div>
+  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
-    <details class="requirement fail" open>
+    <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="pill fail">실패</span>
+        <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 6개 · 검사항목 6개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="pill fail">실패</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">ai_anime — 애니메이션 관련 이미지/영상 생성 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>ai-anime-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd ai_anime &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D2</code> <span class="pill fail">실패</span>
+          <code>R1-D2</code> <span class="pill pass">통과</span>
           <span class="desc-inline">ai_img_video_aiBoygirl — 캐릭터(남녀) 이미지·영상을 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>ai-img-video-aiboygirl-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd ai_img_video_aiBoygirl &amp;&amp; python -m pytest -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D3</code> <span class="pill fail">실패</span>
+          <code>R1-D3</code> <span class="pill pass">통과</span>
           <span class="desc-inline">ai_img_video_prompt_capcut — 이미지·영상 생성용 문구(프롬프트)를 캡컷 편집 형식으로 만드는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>ai-img-video-prompt-capcut-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd ai_img_video_prompt_capcut &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D4</code> <span class="pill fail">실패</span>
+          <code>R1-D4</code> <span class="pill pass">통과</span>
           <span class="desc-inline">ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>ai-multi-agent-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd ai_multi_agent &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D5</code> <span class="pill fail">실패</span>
+          <code>R1-D5</code> <span class="pill pass">통과</span>
           <span class="desc-inline">youtube_research — 유튜브 콘텐츠를 조사·분석하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>youtube-research-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd youtube_research &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D6</code> <span class="pill fail">실패</span>
+          <code>R1-D6</code> <span class="pill pass">통과</span>
           <span class="desc-inline">music_insight_studio — 음악 데이터를 분석하는 프로그램 (다른 프로그램들과 달리 자체 실행 환경이 별도로 필요함)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>music-insight-studio-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd music_insight_studio &amp;&amp; .venv\Scripts\python.exe -m unittest discover -s tests</code></p>
