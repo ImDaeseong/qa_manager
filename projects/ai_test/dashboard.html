@@ -115,17 +115,17 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_test</h1>
-<p class="meta">projects/ai_test/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test), 생성시각 2026-09-05 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<p class="meta">projects/ai_test/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test), 생성시각 2026-09-07 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
-  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
+  <div class="stat"><div class="n">0</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">1</div><div class="label">실패한 요구사항</div></div>
 </div>
 
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R1</code> <span class="pill pass">통과</span>
+        <code>R1</code> <span class="pill fail">실패</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
@@ -283,17 +283,17 @@
         </li>
         </ul>
       </details>
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R1-D10</code> <span class="pill pass">통과</span>
+          <code>R1-D10</code> <span class="pill fail">실패</span>
           <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item fail">
           <div class="row">
             <code>weather-alarm-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q</code></p>

@@ -13,7 +13,7 @@
 
 project: skills
 repo_root: skills
-updated: 2026-08-05
+updated: 2026-09-06
 
 requirements:
   - id: R1
@@ -27,7 +27,7 @@ requirements:
             description: "각 스킬 설명서의 이름이 폴더명과 일치하는지, 공통 규칙 문서를 따른다고 명시했는지, 목록 파일(marketplace.json)이 실제 폴더 구성과 정확히 일치하는지, 문서 안 날짜가 미래로 잘못 적히지 않았는지 등을 확인합니다."
             check: "powershell.exe -NoProfile -Command \"$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,'Korea Standard Time').Date; & ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate\""
             status: pass
-            last_verified: 2026-08-05
+            last_verified: 2026-09-06
 
   - id: R2
     description: "문서 안의 내부 링크가 깨지지 않아야 한다"
@@ -40,7 +40,7 @@ requirements:
             description: "문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다."
             check: "powershell.exe -NoProfile -File scripts/validate_links.ps1"
             status: pass
-            last_verified: 2026-08-05
+            last_verified: 2026-09-06
 
   - id: R3
     description: "검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다"
@@ -50,7 +50,7 @@ requirements:
         test_items:
           - id: validators-ignore-scan-regression
             category: regression
-            description: "전체 규칙 검사와 링크 검사가, 별도로 관리되는 하위 폴더를 검사 대상에서 올바르게 제외하는지 확인합니다."
+            description: "임시 복사본에서 접근 불가 런타임·캐시 제외, 코드형 제목 링크, 신규 스킬 반영·경로 초기화·보안 지침을 정상/결함 주입 19개 사례로 검사합니다."
             check: "powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1"
             status: pass
-            last_verified: 2026-08-05
+            last_verified: 2026-09-06

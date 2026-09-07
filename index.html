@@ -114,13 +114,13 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-05 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-07 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">8</div><div class="label">프로젝트</div></div>
-  <div class="stat"><div class="n">26</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">7</div><div class="label">프로젝트</div></div>
+  <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">55</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">8</div><div class="label">통과한 프로젝트</div></div>
-  <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">6</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">1</div><div class="label">실패한 프로젝트</div></div>
 </div>
 
     <details class="project pass" >
@@ -399,16 +399,16 @@
       </div>
     </details>
     </details>
-    <details class="project pass" >
+    <details class="project fail" open>
       <summary>
         <span>ai_test</span>
-        <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 1개 · 검사항목 11개 · 실패 0건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="pill fail">실패</span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 11개 · 실패 1건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R1</code> <span class="pill pass">통과</span>
+        <code>R1</code> <span class="pill fail">실패</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
@@ -566,17 +566,17 @@
         </li>
         </ul>
       </details>
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R1-D10</code> <span class="pill pass">통과</span>
+          <code>R1-D10</code> <span class="pill fail">실패</span>
           <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item fail">
           <div class="row">
             <code>weather-alarm-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q</code></p>
@@ -837,7 +837,7 @@
       <summary>
         <span>ai_test2</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 1개 · 검사항목 6개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 10개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -845,7 +845,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 6개 · 검사항목 6개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 10개 · 검사항목 10개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -949,27 +949,10 @@
         </li>
         </ul>
       </details>
-      </div>
-    </details>
-    </details>
-    <details class="project pass" >
-      <summary>
-        <span>ai_test3</span>
-        <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 1개 · 검사항목 4개 · 실패 0건 · <a href="projects/ai_test3/dashboard.html">전체 페이지 열기 →</a></span>
-      </summary>
-      
-    <details class="requirement pass" open>
-      <summary>
-        <code>R1</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">CareerDiff(채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스)가 코드 오류·품질 문제 없이 정상적으로 빌드되어야 한다</span>
-      </summary>
-      <p class="coverage covered">커버리지: 개발항목 4개 · 검사항목 4개 연결됨</p>
-      <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">코드 타입 오류 검사 — 프로그램 안에서 값의 종류(숫자/글자 등)를 잘못 다루는 곳이 없는지 확인</span>
+          <code>R1-D7</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">CareerDiff — 채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스, 코드 타입 오류 검사</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
@@ -985,8 +968,8 @@
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D2</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">코드 품질 검사(린트) — 알려진 나쁜 코드 패턴이 없는지 확인</span>
+          <code>R1-D8</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">CareerDiff — 코드 품질 검사(린트)</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
@@ -1002,8 +985,8 @@
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D3</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">기능별 자체 테스트 — 분석 기능, 이력서 불러오기 기능 등 핵심 기능들이 의도대로 동작하는지 확인</span>
+          <code>R1-D9</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">CareerDiff — 기능별 자체 테스트(적합도 분석, 이력서 불러오기 등 핵심 기능)</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
@@ -1019,8 +1002,8 @@
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D4</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">실서비스용 빌드 — 실제 사용자에게 배포할 수 있는 형태로 프로그램이 문제없이 만들어지는지 확인</span>
+          <code>R1-D10</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">CareerDiff — 실서비스용 빌드</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
@@ -1348,7 +1331,7 @@
             <span class="category">재발방지검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">전체 규칙 검사와 링크 검사가, 별도로 관리되는 하위 폴더를 검사 대상에서 올바르게 제외하는지 확인합니다.</p>
+          <p class="desc">임시 복사본에서 접근 불가 런타임·캐시 제외, 코드형 제목 링크, 신규 스킬 반영·경로 초기화·보안 지침을 정상/결함 주입 19개 사례로 검사합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1</code></p>
         </li>
         </ul>
