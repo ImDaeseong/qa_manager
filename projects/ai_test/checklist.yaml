@@ -104,17 +104,16 @@ requirements:
       - id: R1-D10
         description: "weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램"
         test_items:
-          # 2026-09-07: 55 passed, 1 error -- 코드 결함이 아니라 이 PC의
-          # %LOCALAPPDATA%\Temp\pytest-of-sDev 폴더 ACL이 잠겨(소유자 본인의
-          # Get-Acl/icacls 조회조차 거부됨) pytest의 tmp_path fixture가 설정
-          # 단계에서 PermissionError로 실패함. 관리자 권한으로 해당 폴더의
-          # ACL을 리셋(또는 삭제)하면 재실행 시 정상 복귀 예상 -- 코드 변경
-          # 불필요.
+          # 2026-09-07: 검증 계정(샌드박스)의 ACL이 일반 사용자 계정과 달라
+          # OS 기본 temp(%LOCALAPPDATA%\Temp\pytest-of-*)에 계정별로 접근이
+          # 막힐 수 있음이 재확인됨 -- 특정 계정의 ACL을 개별적으로 고치는
+          # 대신, 검증 명령 자체가 프로젝트 로컬 temp를 쓰도록 고정해 어떤
+          # 계정에서 실행되든 OS temp ACL에 의존하지 않게 함(코드 결함 아님).
           - id: weather-alarm-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다."
-            check: "cd weather_alarm && python -m pytest -q"
-            status: fail
+            check: "cd weather_alarm && python -m pytest -q --basetemp .pytest_tmp"
+            status: pass
             last_verified: 2026-09-07
       - id: R1-D11
         description: "windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램"

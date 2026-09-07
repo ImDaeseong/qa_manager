@@ -119,8 +119,8 @@
   <div class="stat"><div class="n">7</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">55</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">6</div><div class="label">통과한 프로젝트</div></div>
-  <div class="stat fail"><div class="n">1</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">7</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
 </div>
 
     <details class="project pass" >
@@ -399,16 +399,16 @@
       </div>
     </details>
     </details>
-    <details class="project fail" open>
+    <details class="project pass" >
       <summary>
         <span>ai_test</span>
-        <span class="pill fail">실패</span>
-        <span class="counts-inline">요구사항 1개 · 검사항목 11개 · 실패 1건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 1개 · 검사항목 11개 · 실패 0건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
-    <details class="requirement fail" open>
+    <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="pill fail">실패</span>
+        <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
@@ -566,20 +566,20 @@
         </li>
         </ul>
       </details>
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D10</code> <span class="pill fail">실패</span>
+          <code>R1-D10</code> <span class="pill pass">통과</span>
           <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>weather-alarm-tests</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q</code></p>
+          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q --basetemp .pytest_tmp</code></p>
         </li>
         </ul>
       </details>
