@@ -55,18 +55,14 @@ requirements:
             status: pass
             last_verified: 2026-08-05
 
-  - id: R2
-    description: "AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다"
-    dev_items:
-      - id: R2-D1
-        description: "changelog 동기화 검사"
-        test_items:
-          - id: agents-md-changelog-guard
-            category: basic
-            description: "작업 규칙 문서(AGENTS.md)가 수정되면, 그 변경 내용이 이력 문서(README.md)에 날짜와 함께 기록되어 있는지 확인합니다."
-            check: "python scripts/check_agents_md_changelog.py"
-            status: pass
-            last_verified: 2026-08-05
+  # R2 ("AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다") removed
+  # 2026-09-09: the underlying policy was retired by the user on 2026-09-08
+  # (README.md's "## 최근 업데이트" changelog section was deleted 2026-09-07,
+  # commit 8fe1088; scripts/check_agents_md_changelog.py was then deleted and
+  # unwired from install-git-hooks.ps1/verify_repo.ps1 -- see hermes-agents
+  # CLAUDE.md "AGENTS.md changelog guard (retired)"). This item was
+  # firing FAIL for a script and README section that no longer exist by
+  # design, not for a real regression.
 
   - id: R3
     description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"

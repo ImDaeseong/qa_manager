@@ -114,11 +114,11 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-07 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-09 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">7</div><div class="label">프로젝트</div></div>
-  <div class="stat"><div class="n">25</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">55</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">24</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">54</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">7</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
 </div>
@@ -1024,7 +1024,7 @@
       <summary>
         <span>hermes-agents</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 8개 · 검사항목 9개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 7개 · 검사항목 8개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -1048,32 +1048,6 @@
           </div>
           <p class="desc">AI가 사람 승인 없이 자동으로 실행할 수 있는 명령어 허용 목록에 손상되거나 위험할 수 있는 항목이 섞여 있지 않은지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_claude_settings.py</code></p>
-        </li>
-        </ul>
-      </details>
-      </div>
-    </details>
-    <details class="requirement pass" open>
-      <summary>
-        <code>R2</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">AGENTS.md가 바뀌면 변경 이력이 README.md에 기록되어야 한다</span>
-      </summary>
-      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
-      <div class="dev-items">
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R2-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">changelog 동기화 검사</span>
-        </summary>
-        <ul class="test-items">
-        <li class="test-item pass">
-          <div class="row">
-            <code>agents-md-changelog-guard</code>
-            <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">작업 규칙 문서(AGENTS.md)가 수정되면, 그 변경 내용이 이력 문서(README.md)에 날짜와 함께 기록되어 있는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>python scripts/check_agents_md_changelog.py</code></p>
         </li>
         </ul>
       </details>
