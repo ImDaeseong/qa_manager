@@ -1,6 +1,6 @@
 # qa_manager — 검수 시스템
 
-> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → Pages 설정 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
+> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
 
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서
 보여주고 관리하는 시스템입니다. 특정 프로젝트에 속한 대시보드가 아니라,
@@ -50,10 +50,6 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 이 저장소를 로컬 폴더에서 열어 `index.html` 파일을 직접 더블클릭합니다. (주의: GitHub.com
 저장소 화면에서 `index.html` 파일명을 클릭하면 렌더링된 페이지가 아니라 원문 코드
 화면(blob)이 열립니다 — 렌더링된 페이지를 보려면 반드시 위 Pages 링크를 사용합니다.)
-
-## Pages 설정
-
-Settings → Pages → Source: `Deploy from a branch` → Branch: `main` / `/(root)`
 
 ## 프로젝트 추가 방법
 
