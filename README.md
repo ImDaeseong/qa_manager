@@ -46,8 +46,10 @@ python scripts\generate_checklist_dashboard.py [checklist.yaml]  # 프로젝트 
 python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고
 ```
 
-재검사 없이 마지막 생성 결과만 보려면 로컬 파일 [index.html](index.html)을 바로 열거나,
-위 "바로가기" 링크로 마지막에 푸시된 결과를 봅니다.
+재검사 없이 마지막 생성 결과만 보려면 위 "바로가기" 링크(GitHub Pages)로 보거나,
+이 저장소를 로컬 폴더에서 열어 `index.html` 파일을 직접 더블클릭합니다. (주의: GitHub.com
+저장소 화면에서 `index.html` 파일명을 클릭하면 렌더링된 페이지가 아니라 원문 코드
+화면(blob)이 열립니다 — 렌더링된 페이지를 보려면 반드시 위 Pages 링크를 사용합니다.)
 
 ## Pages 설정
 
