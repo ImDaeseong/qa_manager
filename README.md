@@ -39,6 +39,8 @@ python scripts\generate_checklist_dashboard.py [checklist.yaml]  # 프로젝트 
 python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고
 ```
 
+재검사 없이 마지막 생성 결과만 보려면 [index.html](index.html)을 바로 엽니다.
+
 ## 프로젝트 추가 방법
 
 1. `projects/<프로젝트명>/checklist.yaml`을 새로 만듭니다. 스키마는
