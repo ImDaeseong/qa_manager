@@ -1,10 +1,17 @@
 # qa_manager — 검수 시스템
 
-> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
+> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → Pages 설정 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
 
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서
 보여주고 관리하는 시스템입니다. 특정 프로젝트에 속한 대시보드가 아니라,
 그 자체로 독립된 검수 시스템입니다.
+
+**바로가기 →** [imdaeseong.github.io/qa_manager](https://imdaeseong.github.io/qa_manager/)
+
+`index.html`과 각 프로젝트의 `dashboard.html`은 마지막으로 로컬에서 재검사를 실행하고
+커밋·푸시한 시점의 결과입니다(실시간 재실행 아님) — 최신 상태를 보려면
+`open_qa_system.bat`을 실행한 뒤 커밋·푸시합니다. 경로에 로컬 사용자 폴더명이
+그대로 노출되므로 민감한 내부 정보를 다루는 프로젝트는 등록하지 않습니다.
 
 ## 시스템 구조
 
@@ -39,7 +46,12 @@ python scripts\generate_checklist_dashboard.py [checklist.yaml]  # 프로젝트 
 python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고
 ```
 
-재검사 없이 마지막 생성 결과만 보려면 [index.html](index.html)을 바로 엽니다.
+재검사 없이 마지막 생성 결과만 보려면 로컬 파일 [index.html](index.html)을 바로 열거나,
+위 "바로가기" 링크로 마지막에 푸시된 결과를 봅니다.
+
+## Pages 설정
+
+Settings → Pages → Source: `Deploy from a branch` → Branch: `main` / `/(root)`
 
 ## 프로젝트 추가 방법
 
