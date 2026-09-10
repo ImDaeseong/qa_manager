@@ -1,0 +1,143 @@
+# Verification checklist for ai_agent (independent repo, C:\Users\cs930\Desktop\ai_agent).
+# See ../hermes-agents/checklist.yaml's header comment for the full schema
+# explanation.
+#
+# ai_agent is in Phase 0 (design stage per README.md/ROADMAP.md): no src/
+# agent, model adapter, or write/transmit tool exists yet. The only runnable
+# artifacts at registration time (2026-09-10) are the api/ public-data
+# client library (unittest-based, mocked network calls) and the docs +
+# eval-schema validation scripts. No lint/type-check config exists.
+
+project: ai_agent
+repo_root: ai_agent
+updated: 2026-09-10
+
+requirements:
+  - id: R1
+    description: "문서 링크와 첫 프로젝트 계약(SPEC/plan/todo)이 서로 일관되어야 한다 — 깨진 링크나 삭제된 ResearchAgent 전용 문구가 남아있으면 안 된다"
+    dev_items:
+      - id: R1-D1
+        description: "scripts/validate_docs.ps1 — 마크다운 링크 검사 + 문서 계약 검증"
+        test_items:
+          - id: validate-docs
+            category: full
+            description: "저장소 전체 .md 링크와 SPEC/plan/todo/ARCHITECTURE/ROADMAP/SECURITY_BOUNDARY의 프로젝트-중립 계약을 검증합니다."
+            check: "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/validate_docs.ps1"
+            status: pass
+            last_verified: 2026-09-10
+
+  - id: R2
+    description: "evals/ 부트스트랩 평가 스위트가 스키마(case.schema.json)를 통과해야 한다"
+    dev_items:
+      - id: R2-D1
+        description: "scripts/validate_evals.py — JSON Schema 검증 로직과 그 자체 테스트"
+        test_items:
+          - id: validate-evals-tests
+            category: basic
+            description: "validate_suite()의 정상/스키마위반/교차필드제약 케이스를 검증합니다."
+            check: "python -m pytest tests/test_validate_evals.py -q"
+            status: pass
+            last_verified: 2026-09-10
+
+  - id: R3
+    description: "api/ 공공데이터 클라이언트 라이브러리(기상청·국토교통부·우정사업본부·서울교통공사·카카오·텔레그램·왓츠앱)의 각 모듈이 자체 테스트를 통과해야 한다 — 외부 호출은 모킹되어 인증키 불필요"
+    dev_items:
+      - id: R3-D1
+        description: "kma_asos_hourly — 종관기상관측 시간자료 클라이언트"
+        test_items:
+          - id: asos-client-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_asos_client -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D2
+        description: "molit_bus_stop — 국토교통부 버스정류소 클라이언트"
+        test_items:
+          - id: bus-stop-client-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_bus_stop_client -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D3
+        description: "kma_mid_forecast/kma_vilage_forecast 등 기상청 클라이언트 공통 베이스"
+        test_items:
+          - id: kma-base-client-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_client -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D4
+        description: "epost_address — 우정사업본부 주소 클라이언트"
+        test_items:
+          - id: epost-address-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_epost_address -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D5
+        description: "kakao_message — 카카오톡 메시지 클라이언트"
+        test_items:
+          - id: kakao-message-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_kakao_message -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D6
+        description: "seoul_bus_arrival — 서울 버스 도착정보 클라이언트"
+        test_items:
+          - id: seoul-bus-arrival-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_seoul_bus_arrival -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D7
+        description: "seoul_bus_route — 서울 버스 노선정보 클라이언트"
+        test_items:
+          - id: seoul-bus-route-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_seoul_bus_route -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D8
+        description: "seoul_train_schedule — 서울교통공사 열차시각 클라이언트"
+        test_items:
+          - id: seoul-train-schedule-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_seoul_train_schedule -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D9
+        description: "telegram_bot — 텔레그램 봇 클라이언트"
+        test_items:
+          - id: telegram-bot-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_telegram_bot -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D10
+        description: "whatsapp_message — WhatsApp Cloud API 클라이언트"
+        test_items:
+          - id: whatsapp-message-tests
+            category: basic
+            description: "이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
+            check: "cd api && python -m unittest tests.test_whatsapp_message -q"
+            status: pass
+            last_verified: 2026-09-10
+      - id: R3-D11
+        description: "api/ 전체 테스트 스위트 — 개별 모듈 테스트 사이의 상호작용까지 포함해 한 번에 확인"
+        test_items:
+          - id: api-full-suite
+            category: full
+            description: "api/README.md에 문서화된 전체 실행 명령으로 65개 테스트를 모두 실행합니다."
+            check: "cd api && python -m unittest discover -s tests -q"
+            status: pass
+            last_verified: 2026-09-10

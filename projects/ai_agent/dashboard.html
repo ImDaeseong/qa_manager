@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>검수 시스템 · ai_test</title>
+<title>검수 시스템 · ai_agent</title>
 <style>
   :root {
     --bg: #f6f4fb;
@@ -114,206 +114,258 @@
 </head>
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
-<h1>ai_test</h1>
-<p class="meta">projects/ai_test/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_test), 생성시각 2026-09-10 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<h1>ai_agent</h1>
+<p class="meta">projects/ai_agent/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\ai_agent), 생성시각 2026-09-10 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">13</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement pass" open>
       <summary>
         <code>R1</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
+        <span class="desc-inline">문서 링크와 첫 프로젝트 계약(SPEC/plan/todo)이 서로 일관되어야 한다 — 깨진 링크나 삭제된 ResearchAgent 전용 문구가 남아있으면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">scripts/validate_docs.ps1 — 마크다운 링크 검사 + 문서 계약 검증</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-docs</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">저장소 전체 .md 링크와 SPEC/plan/todo/ARCHITECTURE/ROADMAP/SECURITY_BOUNDARY의 프로젝트-중립 계약을 검증합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/validate_docs.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">evals/ 부트스트랩 평가 스위트가 스키마(case.schema.json)를 통과해야 한다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">scripts/validate_evals.py — JSON Schema 검증 로직과 그 자체 테스트</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>validate-evals-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">validate_suite()의 정상/스키마위반/교차필드제약 케이스를 검증합니다.</p>
+          <p class="check">실행 명령: <code>python -m pytest tests/test_validate_evals.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">api/ 공공데이터 클라이언트 라이브러리(기상청·국토교통부·우정사업본부·서울교통공사·카카오·텔레그램·왓츠앱)의 각 모듈이 자체 테스트를 통과해야 한다 — 외부 호출은 모킹되어 인증키 불필요</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">Analysis_music — 음악 데이터를 분석하는 프로그램</span>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">kma_asos_hourly — 종관기상관측 시간자료 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>analysis-music-tests</code>
+            <code>asos-client-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd Analysis_music &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_asos_client -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D2</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">Pexels — 무료 이미지/영상 소스(Pexels)에서 소재를 가져오는 프로그램</span>
+          <code>R3-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">molit_bus_stop — 국토교통부 버스정류소 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>pexels-tests</code>
+            <code>bus-stop-client-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd Pexels &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_bus_stop_client -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D3</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">ai-webtoon — 웹툰 관련 자동화 프로그램</span>
+          <code>R3-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">kma_mid_forecast/kma_vilage_forecast 등 기상청 클라이언트 공통 베이스</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>ai-webtoon-tests</code>
+            <code>kma-base-client-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd ai-webtoon &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_client -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D4</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">ai-webtoon_capcut — 웹툰 영상을 캡컷(CapCut) 편집 형식으로 변환하는 프로그램</span>
+          <code>R3-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">epost_address — 우정사업본부 주소 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>ai-webtoon-capcut-tests</code>
+            <code>epost-address-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd ai-webtoon_capcut &amp;&amp; powershell.exe -NoProfile -File scripts\test.ps1</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_epost_address -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D5</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">findstring_foldfiles — 파일에서 문자열을 찾고 폴더를 정리하는 프로그램</span>
+          <code>R3-D5</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">kakao_message — 카카오톡 메시지 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>findstring-foldfiles-tests</code>
+            <code>kakao-message-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd findstring_foldfiles &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_kakao_message -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D6</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">lyrics_tag — 음원 파일에 가사 정보를 입력하는 프로그램</span>
+          <code>R3-D6</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">seoul_bus_arrival — 서울 버스 도착정보 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>lyrics-tag-tests</code>
+            <code>seoul-bus-arrival-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd lyrics_tag &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_seoul_bus_arrival -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D7</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">master_tag — 음원 마스터링 파일에 태그 정보를 입력하는 프로그램</span>
+          <code>R3-D7</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">seoul_bus_route — 서울 버스 노선정보 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>master-tag-tests</code>
+            <code>seoul-bus-route-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd master_tag &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_seoul_bus_route -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D8</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">mp4_tag — mp4 영상 파일에 태그 정보를 입력하는 프로그램</span>
+          <code>R3-D8</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">seoul_train_schedule — 서울교통공사 열차시각 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>mp4-tag-tests</code>
+            <code>seoul-train-schedule-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd mp4_tag &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_seoul_train_schedule -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D9</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">security_scanning — 보안 취약점을 점검하는 프로그램</span>
+          <code>R3-D9</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">telegram_bot — 텔레그램 봇 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>security-scanning-tests</code>
+            <code>telegram-bot-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd security_scanning &amp;&amp; python -m pytest -q</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_telegram_bot -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D10</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
+          <code>R3-D10</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">whatsapp_message — WhatsApp Cloud API 클라이언트</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>weather-alarm-tests</code>
+            <code>whatsapp-message-tests</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 모두 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd weather_alarm &amp;&amp; python -m pytest -q --basetemp .pytest_tmp</code></p>
+          <p class="desc">이 모듈에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest tests.test_whatsapp_message -q</code></p>
         </li>
         </ul>
       </details>
       <details class="dev-item pass" open>
         <summary>
-          <code>R1-D11</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램</span>
+          <code>R3-D11</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">api/ 전체 테스트 스위트 — 개별 모듈 테스트 사이의 상호작용까지 포함해 한 번에 확인</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>windows-port-monitor-tests</code>
-            <span class="category">기본검사</span>
+            <code>api-full-suite</code>
+            <span class="category">통합검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd windows-port-monitor &amp;&amp; python -m pytest tests/ -q</code></p>
+          <p class="desc">api/README.md에 문서화된 전체 실행 명령으로 65개 테스트를 모두 실행합니다.</p>
+          <p class="check">실행 명령: <code>cd api &amp;&amp; python -m unittest discover -s tests -q</code></p>
         </li>
         </ul>
       </details>

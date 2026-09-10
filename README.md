@@ -52,8 +52,13 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 
 ## 현재 등록된 프로젝트
 
-hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2
-— 총 7개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent
+— 총 8개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+
+`ai_agent`는 2026-09-10에 등록했습니다. 아직 Phase 0(설계 단계)라 src/ 에이전트나
+실제 모델·전송 어댑터가 없어, 등록 시점 검사항목은 문서/링크 검증
+(`scripts/validate_docs.ps1`), eval 스키마 검증기 자체 테스트, `api/` 공공데이터
+클라이언트 라이브러리(모듈별 + 전체 스위트)로 한정했습니다.
 
 `ai_test3`는 2026-09-06 CareerDiff가 `ai_test2`로 이동하면서 등록 프로젝트가
 0개가 돼 2026-09-07에 이 목록에서 제외했습니다(테스트 항목은 `ai_test2`
