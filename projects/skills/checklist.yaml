@@ -54,3 +54,29 @@ requirements:
             check: "powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1"
             status: pass
             last_verified: 2026-09-06
+
+  # Added 2026-09-14 as part of raising this project toward AGENTS.md's
+  # Commercial-Grade Baseline rule (OWASP ASVS Level 1: no secrets in
+  # tracked files). This is a public GitHub mirror (ImDaeseong/skills), so
+  # exposure risk here is higher than a private repo's.
+  - id: R4
+    description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"
+    dev_items:
+      - id: R4-D1
+        description: "비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식"
+        test_items:
+          - id: no-example-secrets-guard
+            category: basic
+            description: "저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다."
+            check: "powershell.exe -NoProfile -File scripts/check_no_example_secrets.ps1"
+            status: pass
+            last_verified: 2026-09-14
+      - id: R4-D2
+        description: "패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사"
+        test_items:
+          - id: no-example-secrets-guard-regression
+            category: regression
+            description: "비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다."
+            check: "powershell.exe -NoProfile -File scripts/test_check_no_example_secrets.ps1"
+            status: pass
+            last_verified: 2026-09-14
