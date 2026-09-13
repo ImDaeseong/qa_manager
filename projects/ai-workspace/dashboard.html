@@ -117,9 +117,9 @@
 <h1>ai-workspace</h1>
 <p class="meta">projects/ai-workspace/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\hermes-agents\ai-workspace), 생성시각 2026-09-14 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">5</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">5</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">5</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">6</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">7</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">6</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
@@ -248,6 +248,49 @@
           </div>
           <p class="desc">검사 전후 파일 변경을 감지하는 안전장치가, 실제로 새 파일이 생기면 그걸 놓치지 않고 잡아내는지 자체 점검합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1 -SideEffectSelfTest</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R6</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 2개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R6-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>no-example-secrets-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_no_example_secrets.py</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R6-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>no-example-secrets-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/test_check_no_example_secrets.py</code></p>
         </li>
         </ul>
       </details>
