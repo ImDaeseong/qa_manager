@@ -70,7 +70,7 @@ RULES = [
     Rule(
         "CWE-95", "외부 입력에 eval/exec 사용",
         "eval/exec 대신 명시적 파서나 허용 목록 기반 분기로 바꾸세요.",
-        r"\b(?:eval|exec)\s*\(",
+        r"(?<!\.)\b(?:eval|exec)\s*\(",
     ),
     Rule(
         "CWE-502", "안전하지 않은 역직렬화",
@@ -85,8 +85,10 @@ RULES = [
     ),
     Rule(
         "CWE-319", "평문 http로 외부 엔드포인트 호출",
-        "https://로 바꾸세요. localhost/127.0.0.1 대상은 위험이 아니므로 이 규칙에서 제외됩니다.",
-        r"['\"]http://(?!localhost|127\.0\.0\.1|0\.0\.0\.0)[A-Za-z0-9.-]+",
+        "https://로 바꾸세요. localhost/127.0.0.1/0.0.0.0/example.com/example.org/example.net"
+        "(RFC 2606 문서·테스트 예약 도메인)과 www.w3.org(XML 네임스페이스, 네트워크 호출 아님)는 제외됩니다.",
+        r"['\"]http://(?!localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(?:com|org|net)|www\.w3\.org)"
+        r"[A-Za-z0-9.-]+",
     ),
     Rule(
         "CWE-942", "CORS 전체 허용",

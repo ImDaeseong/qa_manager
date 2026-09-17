@@ -108,6 +108,44 @@ class SecurityHotspotScannerTests(unittest.TestCase):
         )
         self.assertEqual(findings, [])
 
+    def test_example_domain_not_flagged(self) -> None:
+        # Regression: RFC 2606 reserved domains are the standard test/doc
+        # fixture -- found live flagging test files in ai_test that use
+        # "http://example.com" as their fixture URL.
+        for domain in ("example.com", "example.org", "example.net"):
+            with self.subTest(domain=domain):
+                findings = self._scan_one(
+                    Path(self._make_tmp_dir()), "client.py", f'URL = "http://{domain}/path"\n',
+                )
+                self.assertEqual(findings, [])
+
+    def test_w3_xml_namespace_not_flagged(self) -> None:
+        # Regression: "http://www.w3.org/..." is an XML/SVG namespace
+        # identifier, never a network fetch -- found live in an SVG string
+        # in a browser extension's content script (ai_test).
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "view.js",
+            '`<svg xmlns="http://www.w3.org/2000/svg">`;\n',
+        )
+        self.assertEqual(findings, [])
+
+    def test_javascript_regexp_exec_not_flagged(self) -> None:
+        # Regression: `.exec(` is RegExp.prototype.exec() in JS/TS, not the
+        # dangerous exec() builtin -- \b(?:eval|exec)\s*\( matched it because
+        # \b only checks the char before "exec", not the preceding ".". Found
+        # live flagging ai_test's lyricvideo/src/parsers.ts.
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "parsers.ts",
+            "const match = /^\\d+$/.exec(stamp);\n",
+        )
+        self.assertEqual(findings, [])
+
+    def test_bare_eval_still_flagged(self) -> None:
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "app.js", "eval(userInput);\n",
+        )
+        self.assertTrue(any("CWE-95" in f for f in findings))
+
     def test_scanner_self_excludes_own_rule_definitions(self) -> None:
         # Regression: the scanner's own filename must be excluded, or its rule
         # titles/patterns (which literally contain "shell=True" etc.) flag
