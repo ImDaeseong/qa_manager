@@ -85,4 +85,9 @@ checklist.yaml의 R1-D7~D10으로 이관).
 
 - `_checklist_lib.py`의 `run_test_item()`을 직접 읽어 확인: `check` 명령을 매번 `Popen`으로 실행하고, `checklist.yaml`의 `status`/`last_verified`를 읽어 스킵하는 경로는 없음 — "항상 실행 결과" 주장과 일치.
 - 개별 check당 300초 타임아웃 + `taskkill /F /T`로 프로세스 트리 강제 종료(Windows에서 `subprocess.run(timeout=)`이 cmd.exe 래퍼만 죽이고 실제 자식 프로세스는 안 죽는 문제를 우회) — 행(hang) 방지 주장과 일치.
+
+qa_manager 자신의 회귀 테스트·필수 문서 검사·보안 허점 자기검사는 2026-09-18부터
+`.github/workflows/validate.yml`로 매 push마다 자동 실행됩니다(다른 8개 형제
+프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
+`open_qa_system.bat`을 실행합니다).
 - `python scripts\generate_system_index.py` 전체 재실행: 8개 프로젝트 전량 `OK`, 0 failing.

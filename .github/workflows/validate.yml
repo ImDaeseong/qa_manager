@@ -1,0 +1,25 @@
+name: Validate qa_manager
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run qa_manager's own regression test suite
+        run: python -m unittest discover -s tests -q
+      - name: Verify required architecture/LLM-QA documents exist
+        run: python scripts/check_required_docs.py
+      - name: Self-scan for security/network hotspots
+        run: python scripts/check_security_hotspots.py .
