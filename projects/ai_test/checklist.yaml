@@ -124,3 +124,22 @@ requirements:
             check: "cd windows-port-monitor && python -m pytest tests/ -q"
             status: pass
             last_verified: 2026-08-05
+
+  - id: R2
+    description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
+    dev_items:
+      - id: R2-D1
+        description: "정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 저장소 전체(195개 소스파일) 대상"
+        test_items:
+          - id: security-hotspots-guard
+            category: basic
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. weather_alarm의 data.go.kr http 엔드포인트는 https 지원 확인 후 코드로 수정, 나머지 4건(테스트 픽스처·서술형 문자열·PRAGMA)은 qa:allow 처리했습니다."
+            check: "python scripts/check_security_hotspots.py"
+            status: pass
+            last_verified: 2026-09-18
+          - id: security-hotspots-guard-regression
+            category: regression
+            description: "규칙별 실탐/오탐(JS .exec(), example.com/w3.org 제외 포함) 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다."
+            check: "python -m pytest tests/test_security_hotspots.py -q"
+            status: pass
+            last_verified: 2026-09-18

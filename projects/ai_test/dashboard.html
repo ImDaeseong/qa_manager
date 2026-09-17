@@ -117,9 +117,9 @@
 <h1>ai_test</h1>
 <p class="meta">projects/ai_test/checklist.yaml 기반 (검사 프로젝트: ai_test), 생성시각 2026-09-18 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">2</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">13</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">2</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
@@ -314,6 +314,41 @@
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd windows-port-monitor &amp;&amp; python -m pytest tests/ -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 저장소 전체(195개 소스파일) 대상</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. weather_alarm의 data.go.kr http 엔드포인트는 https 지원 확인 후 코드로 수정, 나머지 4건(테스트 픽스처·서술형 문자열·PRAGMA)은 qa:allow 처리했습니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">규칙별 실탐/오탐(JS .exec(), example.com/w3.org 제외 포함) 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python -m pytest tests/test_security_hotspots.py -q</code></p>
         </li>
         </ul>
       </details>
