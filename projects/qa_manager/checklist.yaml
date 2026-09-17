@@ -1,0 +1,41 @@
+project: qa_manager
+repo_root: qa_manager
+requirements:
+  - id: R1
+    description: 검수 실행기는 프로젝트 경계와 비밀정보를 보호한다.
+    dev_items:
+      - id: R1-D1
+        description: 경로·환경·출력·명령 입력 보안 경계
+        test_items:
+          - id: R1-D1-T1
+            category: regression
+            description: 경로 탈출, 비밀 환경변수, 출력 마스킹, 다중 행 명령을 자동 검증한다.
+            check: "python -m unittest discover -s tests -q"
+            status: pass
+  - id: R2
+    description: LLM 검수 기준과 프로젝트 구조 문서가 실행 코드와 함께 유지된다.
+    dev_items:
+      - id: R2-D1
+        description: 근거 기반 LLM 위험 기준 및 구조 문서
+        test_items:
+          - id: R2-D1-T1
+            category: basic
+            description: 필수 문서와 핵심 검수 용어가 존재하는지 확인한다.
+            check: "python scripts/check_required_docs.py"
+            status: pass
+  - id: R3
+    description: 등록 프로젝트의 보안·해킹·네트워크 허점을 근거 기반 기준으로 탐지한다.
+    dev_items:
+      - id: R3-D1
+        description: OWASP/CWE/NIST 근거 기반 정적 패턴 스캐너
+        test_items:
+          - id: R3-D1-T1
+            category: regression
+            description: 하드코딩된 자격증명, 명령/SQL 삽입, TLS 검증 비활성화, 평문 http, CORS 전체허용 패턴을 자동 검증한다.
+            check: "python -m unittest discover -s tests -q"
+            status: pass
+          - id: R3-D1-T2
+            category: basic
+            description: qa_manager 자체 코드에 미검토(qa:allow 미표기) 보안/네트워크 허점이 없는지 확인한다.
+            check: "python scripts/check_security_hotspots.py ."
+            status: pass

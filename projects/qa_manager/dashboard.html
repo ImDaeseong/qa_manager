@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>검수 시스템 · skills</title>
+<title>검수 시스템 · qa_manager</title>
 <style>
   :root {
     --bg: #f6f4fb;
@@ -114,36 +114,36 @@
 </head>
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
-<h1>skills</h1>
-<p class="meta">projects/skills/checklist.yaml 기반 (검사 프로젝트: skills), 생성시각 2026-09-18 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<h1>qa_manager</h1>
+<p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-09-18 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">4</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">5</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">4</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">4</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">3</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <details class="requirement pass" open>
       <summary>
         <code>R1</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">스킬(도구 설명서) 저장소 전체가 정해진 규칙을 지키고 있어야 한다 — 이름/설명이 빠짐없고, 목록 파일과 실제 폴더가 일치하며, 안내 문서의 경로 연결이 끊어지지 않아야 한다</span>
+        <span class="desc-inline">검수 실행기는 프로젝트 경계와 비밀정보를 보호한다.</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
           <code>R1-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">전체 규칙 준수 검사 — 모든 스킬 문서와 안내 문서를 오늘 날짜 기준으로 검사</span>
+          <span class="desc-inline">경로·환경·출력·명령 입력 보안 경계</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>validate-workspace-guard</code>
-            <span class="category">통합검사</span>
+            <code>R1-D1-T1</code>
+            <span class="category">재발방지검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">각 스킬 설명서의 이름이 폴더명과 일치하는지, 공통 규칙 문서를 따른다고 명시했는지, 목록 파일(marketplace.json)이 실제 폴더 구성과 정확히 일치하는지, 문서 안 날짜가 미래로 잘못 적히지 않았는지 등을 확인합니다.</p>
-          <p class="check">실행 명령: <code>powershell.exe -NoProfile -Command &quot;$asOfDate=[TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,&#x27;Korea Standard Time&#x27;).Date; &amp; ./scripts/validate_workspace.ps1 -AsOfDate $asOfDate&quot;</code></p>
+          <p class="desc">경로 탈출, 비밀 환경변수, 출력 마스킹, 다중 행 명령을 자동 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest discover -s tests -q</code></p>
         </li>
         </ul>
       </details>
@@ -152,24 +152,24 @@
     <details class="requirement pass" open>
       <summary>
         <code>R2</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">문서 안의 내부 링크가 깨지지 않아야 한다</span>
+        <span class="desc-inline">LLM 검수 기준과 프로젝트 구조 문서가 실행 코드와 함께 유지된다.</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
           <code>R2-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">문서 내부 링크 검사</span>
+          <span class="desc-inline">근거 기반 LLM 위험 기준 및 구조 문서</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>validate-links-guard</code>
+            <code>R2-D1-T1</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">문서 안에 있는 다른 문서로의 링크가 실제로 존재하는 파일을 가리키는지 저장소 전체에서 확인합니다.</p>
-          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/validate_links.ps1</code></p>
+          <p class="desc">필수 문서와 핵심 검수 용어가 존재하는지 확인한다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_required_docs.py</code></p>
         </li>
         </ul>
       </details>
@@ -178,67 +178,33 @@
     <details class="requirement pass" open>
       <summary>
         <code>R3</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다</span>
+        <span class="desc-inline">등록 프로젝트의 보안·해킹·네트워크 허점을 근거 기반 기준으로 탐지한다.</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
           <code>R3-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">제외 목록 처리 검사</span>
+          <span class="desc-inline">OWASP/CWE/NIST 근거 기반 정적 패턴 스캐너</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>validators-ignore-scan-regression</code>
+            <code>R3-D1-T1</code>
             <span class="category">재발방지검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">임시 복사본에서 접근 불가 런타임·캐시 제외, 코드형 제목 링크, 신규 스킬 반영·경로 초기화·보안 지침을 정상/결함 주입 19개 사례로 검사합니다.</p>
-          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_validators_ignore_scan.ps1</code></p>
+          <p class="desc">하드코딩된 자격증명, 명령/SQL 삽입, TLS 검증 비활성화, 평문 http, CORS 전체허용 패턴을 자동 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest discover -s tests -q</code></p>
         </li>
-        </ul>
-      </details>
-      </div>
-    </details>
-    <details class="requirement pass" open>
-      <summary>
-        <code>R4</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</span>
-      </summary>
-      <p class="coverage covered">커버리지: 개발항목 2개 · 검사항목 2개 연결됨</p>
-      <div class="dev-items">
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R4-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식</span>
-        </summary>
-        <ul class="test-items">
         <li class="test-item pass">
           <div class="row">
-            <code>no-example-secrets-guard</code>
+            <code>R3-D1-T2</code>
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">저장소에 올라가는 파일에 실제로 사용 가능한 비밀번호나 인증키가 실수로 포함되지 않았는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/check_no_example_secrets.ps1</code></p>
-        </li>
-        </ul>
-      </details>
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R4-D2</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사</span>
-        </summary>
-        <ul class="test-items">
-        <li class="test-item pass">
-          <div class="row">
-            <code>no-example-secrets-guard-regression</code>
-            <span class="category">재발방지검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_check_no_example_secrets.ps1</code></p>
+          <p class="desc">qa_manager 자체 코드에 미검토(qa:allow 미표기) 보안/네트워크 허점이 없는지 확인한다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py .</code></p>
         </li>
         </ul>
       </details>

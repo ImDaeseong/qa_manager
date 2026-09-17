@@ -115,32 +115,32 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai-workspace</h1>
-<p class="meta">projects/ai-workspace/checklist.yaml 기반 (실행 위치: C:\Users\cs930\Desktop\hermes-agents\ai-workspace), 생성시각 2026-09-14 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<p class="meta">projects/ai-workspace/checklist.yaml 기반 (검사 프로젝트: hermes-agents/ai-workspace), 생성시각 2026-09-18 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">6</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">7</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">6</div><div class="label">통과한 요구사항</div></div>
-  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
+  <div class="stat"><div class="n">4</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">2</div><div class="label">실패한 요구사항</div></div>
 </div>
 
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R1</code> <span class="pill pass">통과</span>
+        <code>R1</code> <span class="pill fail">실패</span>
         <span class="desc-inline">작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <code>R1-D1</code> <span class="pill fail">실패</span>
           <span class="desc-inline">작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item fail">
           <div class="row">
             <code>handoff-hygiene-guard</code>
             <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">가장 최근에 기록된 작업 항목이 단계별 근거 없이 곧바로 &#x27;완료&#x27;로 표시되지 않았는지, 그리고 문서가 전체 이력을 나열하는 대신 현재 상태 위주로 유지되는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_handoff_hygiene.py --both</code></p>
@@ -201,24 +201,24 @@
       </details>
       </div>
     </details>
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R4</code> <span class="pill pass">통과</span>
+        <code>R4</code> <span class="pill fail">실패</span>
         <span class="desc-inline">전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <code>R4-D1</code> <span class="pill fail">실패</span>
           <span class="desc-inline">통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item fail">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">작업 인계 문서 점검과 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>

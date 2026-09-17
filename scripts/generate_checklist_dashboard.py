@@ -132,7 +132,7 @@ def render_project(checklist_path: Path) -> dict:
         "project": project,
         "checklist_path": checklist_path,
         "checklist_rel": checklist_rel,
-        "cwd": cwd,
+        "repo_root": data.get("repo_root", ""),
         "req_html": req_html,
         "requirements": len(req_statuses),
         "test_items": total_test_items,
@@ -156,7 +156,7 @@ def generate(checklist_path: Path) -> dict:
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>{escape(result['project'])}</h1>
-<p class="meta">{escape(result['checklist_rel'])} 기반 (실행 위치: {escape(str(result['cwd']))}), 생성시각 {date.today().isoformat()} — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님).</p>
+<p class="meta">{escape(result['checklist_rel'])} 기반 (검사 프로젝트: {escape(result['repo_root'])}), 생성시각 {date.today().isoformat()} — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">{result['requirements']}</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">{result['test_items']}</div><div class="label">검사항목</div></div>

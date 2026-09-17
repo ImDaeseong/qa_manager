@@ -4,12 +4,17 @@
 
 > 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
 
+**구조 문서 →** [qa-manager-architecture.html](qa-manager-architecture.html)  
+**LLM 검수 기준 →** [LLM_QA_STANDARD.md](LLM_QA_STANDARD.md)  
+**보안·해킹·네트워크 허점 검수 기준 →** [SECURITY_NETWORK_QA_STANDARD.md](SECURITY_NETWORK_QA_STANDARD.md)
+
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서 보여주는
 독립 검수 시스템입니다(특정 프로젝트 소속 대시보드가 아님).
 
 위 링크는 마지막으로 로컬에서 재검사 후 커밋·푸시한 결과이며 실시간이 아닙니다
-(최신화하려면 `open_qa_system.bat` 실행 후 커밋·푸시). 경로에 로컬 사용자 폴더명이
-그대로 노출되므로 민감한 내부 정보를 다루는 프로젝트는 등록하지 않습니다.
+(최신화하려면 `open_qa_system.bat` 실행 후 커밋·푸시). 생성 HTML에는 로컬 절대경로와
+검사 출력의 비밀값을 남기지 않지만, 민감한 내부 프로젝트의 이름·검사 명령 자체도
+공개 정보가 될 수 있으므로 등록 전에 사람이 검토합니다.
 
 ## 시스템 구조
 
@@ -62,8 +67,8 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 
 ## 현재 등록된 프로젝트
 
-hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent
-— 총 8개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent,
+qa_manager — 총 9개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
 
 `ai_agent`는 2026-09-10에 등록했습니다. 아직 Phase 0(설계 단계)라 src/ 에이전트나
 실제 모델·전송 어댑터가 없어, 등록 시점 검사항목은 문서/링크 검증
