@@ -27,6 +27,8 @@
 
 - `python scripts/check_security_hotspots.py <repo 상대경로>` 실행 결과가 PASS일 것(신규 미검토 발견 0건)
 - 의도적으로 감수하는 항목은 해당 줄에 `# qa:allow <CWE-ID> - <사유>` 주석으로 근거를 남길 것
+- `python scripts/check_qa_allow_audit.py`로 모든 `qa:allow` 주석이 CWE 번호와 10자 이상의 실제 사유를 갖추고 있는지 주기적으로 감사할 것(근거 없는 억제가 조용히 쌓이지 않도록)
+- `python scripts/check_security_standard_freshness.py`로 이 문서의 CWE/OWASP 근거가 1년 넘게 방치되지 않았는지 확인할 것
 - 이 검사는 정적 패턴 매칭이므로, 결과가 PASS라도 사람이 설계한 보안 경계(권한 분리, 인증 흐름)를 대체하지 않는다는 점을 문서에 명시할 것
 
 ## 근거

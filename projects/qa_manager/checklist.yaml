@@ -45,3 +45,9 @@ requirements:
             check: "python scripts/check_security_standard_freshness.py"
             status: pass
             last_verified: 2026-09-18
+          - id: R3-D1-T4
+            category: regression
+            description: 모든 qa:allow 억제 주석이 CWE 번호와 실제 사유를 갖추고 있는지 감사한다(무근거 억제 방지).
+            check: "python scripts/check_qa_allow_audit.py"
+            status: pass
+            last_verified: 2026-09-18
