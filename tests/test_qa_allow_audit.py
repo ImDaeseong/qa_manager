@@ -52,6 +52,18 @@ class QaAllowAuditTests(unittest.TestCase):
         self.assertEqual(valid, [])
         self.assertEqual(malformed, [])
 
+    def test_own_test_fixture_file_self_excluded(self) -> None:
+        # Regression: the audit script's own test file embeds malformed
+        # qa:allow strings as CASES data, not real suppressions -- forgetting
+        # to add "test_qa_allow_audit.py" to SELF_EXCLUDE made this guard
+        # fail on itself the moment it was committed (found live 2026-09-18,
+        # the same defect class as check_security_hotspots.py's self-scan bug).
+        valid, malformed = self._audit_one(
+            "test_qa_allow_audit.py", "x = 1  # qa:allow\n",
+        )
+        self.assertEqual(valid, [])
+        self.assertEqual(malformed, [])
+
     def test_non_source_extension_ignored(self) -> None:
         valid, malformed = self._audit_one("NOTES.md", "# qa:allow bad no reason\n")
         self.assertEqual(valid, [])

@@ -30,6 +30,7 @@ MIN_REASON_LENGTH = 10
 
 SELF_EXCLUDE = {
     "check_qa_allow_audit.py",
+    "test_qa_allow_audit.py",
     "check_security_hotspots.py",
     "check_security_hotspots_test.py",
     "test_security_hotspots.py",

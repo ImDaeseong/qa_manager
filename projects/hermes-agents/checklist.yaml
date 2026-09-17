@@ -169,3 +169,15 @@ requirements:
             check: "python scripts/check_security_hotspots_test.py"
             status: pass
             last_verified: 2026-09-18
+          - id: qa-allow-audit-guard
+            category: basic
+            description: "모든 qa:allow 억제 주석이 CWE 번호와 실제 사유를 갖추고 있는지 감사합니다(무근거 억제 방지)."
+            check: "python scripts/check_qa_allow_audit.py"
+            status: pass
+            last_verified: 2026-09-18
+          - id: qa-allow-audit-guard-regression
+            category: regression
+            description: "주석 형식 검증(사유 누락, CWE번호 누락, 너무 짧은 사유, 산문 언급 무시)이 의도대로 동작하는지 확인합니다."
+            check: "python scripts/check_qa_allow_audit_test.py"
+            status: pass
+            last_verified: 2026-09-18
