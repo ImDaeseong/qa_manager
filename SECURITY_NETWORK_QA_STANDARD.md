@@ -14,6 +14,7 @@
 | 해킹 위험 | `shell=True`/`os.system`과 함께 쓰이는, 외부 입력을 그대로 이어붙인 명령 문자열 | CWE-78 | 명령어 삽입으로 임의 코드 실행 가능 |
 | 해킹 위험 | 문자열 포맷팅으로 조립된 SQL을 그대로 실행 | CWE-89 | SQL 삽입으로 데이터 유출·변조 가능 |
 | 해킹 위험 | 외부 입력에 대한 `eval`/`exec` 호출 | CWE-94 / CWE-95 | 임의 코드 실행 |
+| 해킹 위험 | `pickle.loads`, `Loader` 미지정/안전하지 않은 `yaml.load` | CWE-502 | 역직렬화 과정에서 임의 코드 실행 가능 |
 | 네트워크 문제 | TLS 인증서 검증 비활성화(`verify=False`, `_create_unverified_context`, `NODE_TLS_REJECT_UNAUTHORIZED=0`) | CWE-295 | 중간자 공격에 노출 |
 | 네트워크 문제 | 평문 `http://`로 외부(비-localhost) 엔드포인트 호출 | CWE-319 | 전송 구간 도청·변조 가능 |
 | 네트워크 문제 | CORS를 `*`로 전체 허용 | CWE-942 | 신뢰 경계 없는 브라우저發 요청 허용 |
@@ -33,6 +34,6 @@
 - OWASP, *OWASP Top 10:2025*, 2025 — A01(Broken Access Control, SSRF 포함), A02(Security Misconfiguration), A03(Software Supply Chain Failures) 등 웹 애플리케이션 보안 위험의 표준 순위. https://owasp.org/Top10/2025/
 - CISA/MITRE, *2025 CWE Top 25 Most Dangerous Software Weaknesses*, 2025-12(공개일 기준 CISA 발표) — 2024-06-01~2025-06-01 사이 보고된 39,080건의 CVE를 분석한 순위. Cross-site Scripting, SQL Injection, CSRF, Missing Authorization이 상위권. https://www.cisa.gov/news-events/alerts/2025/12/11/2025-cwe-top-25-most-dangerous-software-weaknesses
 - NIST, *SP 800-53 Rev. 5 (Update 1), Security and Privacy Controls for Information Systems and Organizations* — System and Communications Protection(SC) 계열이 암호화·전송구간 보호를 요구하는 근거. https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final (원본 Rev. 5 단독 페이지는 이 update 1로 대체되어 더 이상 최신판이 아님 — 인용 시 upd1 링크를 사용한다)
-- MITRE, *CWE-798: Use of Hard-coded Credentials*, *CWE-78: OS Command Injection*, *CWE-89: SQL Injection*, *CWE-295: Improper Certificate Validation*, *CWE-319: Cleartext Transmission of Sensitive Information*, *CWE-942: Permissive Cross-domain Policy with Untrusted Domains* — 위 표의 개별 CWE 정의 원문. https://cwe.mitre.org/
+- MITRE, *CWE-798: Use of Hard-coded Credentials*, *CWE-78: OS Command Injection*, *CWE-89: SQL Injection*, *CWE-502: Deserialization of Untrusted Data*, *CWE-295: Improper Certificate Validation*, *CWE-319: Cleartext Transmission of Sensitive Information*, *CWE-942: Permissive Cross-domain Policy with Untrusted Domains* — 위 표의 개별 CWE 정의 원문. https://cwe.mitre.org/
 
 조회일: 2026-09-18. 이 표는 정적 패턴 목록이며, 새로운 CWE Top 25가 매년 갱신되므로 최소 연 1회 이 문서의 표를 최신 순위와 대조한다(AGENTS.md Currency Rule).

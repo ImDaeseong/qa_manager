@@ -38,6 +38,34 @@ class SecurityHotspotScannerTests(unittest.TestCase):
         )
         self.assertTrue(any("CWE-78" in f for f in findings))
 
+    def test_detects_pickle_deserialization(self) -> None:
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "cache.py",
+            "obj = pickle.loads(payload)\n",
+        )
+        self.assertTrue(any("CWE-502" in f for f in findings))
+
+    def test_detects_unsafe_yaml_load(self) -> None:
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "config.py",
+            "data = yaml.load(stream)\n",
+        )
+        self.assertTrue(any("CWE-502" in f for f in findings))
+
+    def test_yaml_safe_load_not_flagged(self) -> None:
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "config.py",
+            "data = yaml.safe_load(stream)\n",
+        )
+        self.assertEqual(findings, [])
+
+    def test_yaml_load_with_safeloader_not_flagged(self) -> None:
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "config.py",
+            "data = yaml.load(stream, Loader=yaml.SafeLoader)\n",
+        )
+        self.assertEqual(findings, [])
+
     def test_backtick_reference_in_prose_not_flagged(self) -> None:
         findings = self._scan_one(
             Path(self._make_tmp_dir()), "notes.py",

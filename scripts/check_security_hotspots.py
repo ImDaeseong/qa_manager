@@ -73,6 +73,12 @@ RULES = [
         r"\b(?:eval|exec)\s*\(",
     ),
     Rule(
+        "CWE-502", "안전하지 않은 역직렬화",
+        "pickle 대신 json을 쓰거나 신뢰된 데이터만 역직렬화하세요. "
+        "yaml.load는 Loader=yaml.SafeLoader를 지정하거나 yaml.safe_load를 쓰세요.",
+        r"pickle\.loads?\s*\(|yaml\.load\s*\((?!.*SafeLoader)",
+    ),
+    Rule(
         "CWE-295", "TLS 인증서 검증 비활성화",
         "verify=True(기본값)를 유지하거나, 사설 CA는 인증서 번들을 지정하세요.",
         r"verify\s*=\s*False|_create_unverified_context|NODE_TLS_REJECT_UNAUTHORIZED\s*=\s*['\"]?0",
