@@ -150,3 +150,22 @@ requirements:
             check: "powershell.exe -NoProfile -File scripts/verify_repo.ps1"
             status: pass
             last_verified: 2026-08-30
+
+  - id: R9
+    description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점(하드코딩 자격증명, 명령/SQL 삽입, TLS 검증 비활성화, 평문 http, CORS 전체허용)이 미검토 상태로 남으면 안 된다"
+    dev_items:
+      - id: R9-D1
+        description: "정적 패턴 스캐너 및 qa:allow 억제 규칙 회귀"
+        test_items:
+          - id: security-hotspots-guard
+            category: basic
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다."
+            check: "python scripts/check_security_hotspots.py"
+            status: pass
+            last_verified: 2026-09-18
+          - id: security-hotspots-guard-regression
+            category: regression
+            description: "규칙별 실탐/오탐(placeholder, localhost, qa:allow, 스캐너 자기자신 제외)이 의도대로 동작하는지 확인합니다."
+            check: "python scripts/check_security_hotspots_test.py"
+            status: pass
+            last_verified: 2026-09-18

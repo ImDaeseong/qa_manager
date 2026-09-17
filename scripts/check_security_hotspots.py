@@ -30,6 +30,15 @@ SOURCE_EXTENSIONS = {
 
 ALLOW_MARKER = "qa:allow"
 
+# This scanner's own rule definitions/pinned test fixtures necessarily contain
+# the literal trigger substrings they detect (e.g. the CWE-78 rule's title
+# literally says "shell=True"; the CWE-295 rule's pattern literally contains
+# "_create_unverified_context") -- a self-scan would always flag its own
+# source as a false positive. Excluded by filename, not by qa:allow, so the
+# exclusion is visible in one place instead of scattered across every
+# self-matching line.
+SELF_EXCLUDE = {"check_security_hotspots.py", "test_security_hotspots.py"}
+
 
 class Rule:
     def __init__(self, cwe: str, title: str, suggestion: str, pattern: str) -> None:
@@ -99,6 +108,8 @@ def tracked_files(root: Path) -> list[Path]:
 def scan(root: Path) -> list[str]:
     findings: list[str] = []
     for path in tracked_files(root):
+        if path.name in SELF_EXCLUDE:
+            continue
         if path.suffix.lower() not in SOURCE_EXTENSIONS or not path.is_file():
             continue
         try:

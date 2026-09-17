@@ -80,6 +80,17 @@ class SecurityHotspotScannerTests(unittest.TestCase):
         )
         self.assertEqual(findings, [])
 
+    def test_scanner_self_excludes_own_rule_definitions(self) -> None:
+        # Regression: the scanner's own filename must be excluded, or its rule
+        # titles/patterns (which literally contain "shell=True" etc.) flag
+        # themselves as soon as the file is git-tracked -- found live in
+        # qa_manager's own committed copy on 2026-09-18.
+        findings = self._scan_one(
+            Path(self._make_tmp_dir()), "check_security_hotspots.py",
+            "subprocess.Popen(user_input, shell=True)\n",
+        )
+        self.assertEqual(findings, [])
+
     _tmp_dirs: list[str] = []
 
     def _make_tmp_dir(self) -> str:
