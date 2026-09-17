@@ -39,3 +39,9 @@ requirements:
             description: qa_manager 자체 코드에 미검토(qa:allow 미표기) 보안/네트워크 허점이 없는지 확인한다.
             check: "python scripts/check_security_hotspots.py ."
             status: pass
+          - id: R3-D1-T3
+            category: regression
+            description: SECURITY_NETWORK_QA_STANDARD.md의 CWE/OWASP 근거가 1년 넘게 재검토 없이 방치되지 않았는지 확인한다.
+            check: "python scripts/check_security_standard_freshness.py"
+            status: pass
+            last_verified: 2026-09-18

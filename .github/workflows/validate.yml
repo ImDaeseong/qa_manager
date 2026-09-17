@@ -23,3 +23,5 @@ jobs:
         run: python scripts/check_required_docs.py
       - name: Self-scan for security/network hotspots
         run: python scripts/check_security_hotspots.py .
+      - name: Check CWE/OWASP citation freshness
+        run: python scripts/check_security_standard_freshness.py
