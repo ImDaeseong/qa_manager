@@ -11,7 +11,7 @@
 
 project: ai_test2
 repo_root: ai_test2
-updated: 2026-08-05
+updated: 2026-09-18
 
 requirements:
   - id: R1
@@ -42,15 +42,6 @@ requirements:
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
             check: "cd ai_img_video_prompt_capcut && python -m pytest tests_unit.py -q"
-            status: pass
-            last_verified: 2026-08-05
-      - id: R1-D4
-        description: "ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)"
-        test_items:
-          - id: ai-multi-agent-tests
-            category: basic
-            description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd ai_multi_agent && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-05
       - id: R1-D5
@@ -124,7 +115,7 @@ requirements:
         test_items:
           - id: security-hotspots-guard
             category: basic
-            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. CareerDiff의 non-https 거부 검증용 테스트 입력 2건과 ai_multi_agent의 테스트 전용 기본 api_key 1건은 qa:allow로 처리했습니다."
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. CareerDiff의 non-https 거부 검증용 테스트 입력 2건은 qa:allow로 처리했습니다."
             check: "python scripts/check_security_hotspots.py"
             status: pass
             last_verified: 2026-09-18

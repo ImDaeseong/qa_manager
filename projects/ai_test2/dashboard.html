@@ -118,7 +118,7 @@
 <p class="meta">projects/ai_test2/checklist.yaml 기반 (검사 프로젝트: ai_test2), 생성시각 2026-09-18 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">2</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">12</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">2</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
@@ -128,7 +128,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 10개 · 검사항목 10개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 9개 · 검사항목 9개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -178,23 +178,6 @@
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd ai_img_video_prompt_capcut &amp;&amp; python -m pytest tests_unit.py -q</code></p>
-        </li>
-        </ul>
-      </details>
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R1-D4</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">ai_multi_agent — 여러 개의 AI가 함께 동작하는 자동화 프로그램(디스코드/텔레그램 봇 포함)</span>
-        </summary>
-        <ul class="test-items">
-        <li class="test-item pass">
-          <div class="row">
-            <code>ai-multi-agent-tests</code>
-            <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd ai_multi_agent &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
@@ -321,7 +304,7 @@
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. CareerDiff의 non-https 거부 검증용 테스트 입력 2건과 ai_multi_agent의 테스트 전용 기본 api_key 1건은 qa:allow로 처리했습니다.</p>
+          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. CareerDiff의 non-https 거부 검증용 테스트 입력 2건은 qa:allow로 처리했습니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
         <li class="test-item pass">
