@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>qa_manager — 쉬운 설명</title>
+<style>
+  :root{
+    --bg:#f6faf8; --card:#ffffff; --ink:#131e19; --sub:#5c6e66;
+    --accent:#1fa374; --accent-soft:#daf3e8; --line:#e2eee8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1712; --card:#18211b; --ink:#e8f5ee; --sub:#9db3a6;
+      --accent:#4fd19c; --accent-soft:#1c3529; --line:#26362e; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Pretendard,sans-serif;
+    padding:32px 20px 56px}
+  .wrap{max-width:640px;margin:0 auto}
+  .hero{text-align:center;padding:36px 16px}
+  .emoji{font-size:88px;line-height:1}
+  h1{font-size:26px;margin:14px 0 6px}
+  .tag{color:var(--sub);font-size:15px}
+  .analogy{background:var(--accent-soft);border-radius:20px;padding:24px 22px;
+    margin:24px 0;font-size:17px;line-height:1.65}
+  .analogy b{color:var(--accent)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+  @media (max-width:480px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px}
+  .card .ic{font-size:28px}
+  .card h3{font-size:14px;margin:8px 0 4px}
+  .card p{font-size:13px;color:var(--sub);margin:0;line-height:1.5}
+  .run{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;margin-top:24px}
+  .run h3{font-size:14px;margin:0 0 10px}
+  code{display:block;background:var(--accent-soft);color:var(--ink);
+    padding:12px 14px;border-radius:10px;font-size:13px;overflow-x:auto;
+    white-space:pre}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="emoji">📊🏫</div>
+    <h1>qa_manager</h1>
+    <div class="tag">9개 프로젝트의 실시간 성적표</div>
+  </div>
+
+  <div class="analogy">
+    학교에 여러 반이 있고, 반마다 시험 과목이 다릅니다. 이 저장소는
+    전교생의 시험을 <b>한꺼번에 다시 치르게</b> 하고, 결과를 성적표 한 장에
+    모아 보여주는 교무실 시스템입니다. "예전 점수"가 아니라 버튼을 누를
+    때마다 <b>지금 다시 시험 본</b> 진짜 결과를 보여줍니다.
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="ic">📋</div><h3>checklist.yaml</h3>
+      <p>그 프로젝트에 실제로 존재하는 검사 목록</p></div>
+    <div class="card"><div class="ic">🖥️</div><h3>index.html</h3>
+      <p>9개 프로젝트 전체 요약 (성적표 표지)</p></div>
+    <div class="card"><div class="ic">📄</div><h3>dashboard.html</h3>
+      <p>프로젝트 1개의 상세 결과</p></div>
+    <div class="card"><div class="ic">🔁</div><h3>매번 재실행</h3>
+      <p>과거 기록이 아니라 지금 실행한 진짜 결과</p></div>
+  </div>
+
+  <div class="run">
+    <h3>🔍 확인해보려면</h3>
+    <code>open_qa_system.bat</code>
+  </div>
+</div>
+</body>
+</html>
