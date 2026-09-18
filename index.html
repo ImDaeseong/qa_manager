@@ -117,37 +117,37 @@
 <p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-18 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">9</div><div class="label">프로젝트</div></div>
-  <div class="stat"><div class="n">36</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">87</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">8</div><div class="label">통과한 프로젝트</div></div>
-  <div class="stat fail"><div class="n">1</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">39</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">93</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">9</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
 </div>
 
-    <details class="project fail" open>
+    <details class="project pass" >
       <summary>
         <span>ai-workspace</span>
-        <span class="pill fail">실패</span>
-        <span class="counts-inline">요구사항 6개 · 검사항목 7개 · 실패 2건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="pill pass">통과</span>
+        <span class="counts-inline">요구사항 7개 · 검사항목 9개 · 실패 0건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
-    <details class="requirement fail" open>
+    <details class="requirement pass" open>
       <summary>
-        <code>R1</code> <span class="pill fail">실패</span>
+        <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R1-D1</code> <span class="pill fail">실패</span>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>handoff-hygiene-guard</code>
             <span class="category">기본검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">가장 최근에 기록된 작업 항목이 단계별 근거 없이 곧바로 &#x27;완료&#x27;로 표시되지 않았는지, 그리고 문서가 전체 이력을 나열하는 대신 현재 상태 위주로 유지되는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_handoff_hygiene.py --both</code></p>
@@ -208,24 +208,24 @@
       </details>
       </div>
     </details>
-    <details class="requirement fail" open>
+    <details class="requirement pass" open>
       <summary>
-        <code>R4</code> <span class="pill fail">실패</span>
+        <code>R4</code> <span class="pill pass">통과</span>
         <span class="desc-inline">전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item fail" open>
+      <details class="dev-item pass" open>
         <summary>
-          <code>R4-D1</code> <span class="pill fail">실패</span>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
           <span class="desc-inline">통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item fail">
+        <li class="test-item pass">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
-            <span class="pill fail">실패</span>
+            <span class="pill pass">통과</span>
           </div>
           <p class="desc">작업 인계 문서 점검과 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
@@ -298,6 +298,41 @@
           </div>
           <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/test_check_no_example_secrets.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R7</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R7-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 이 저장소는 Python 가드가 이미 있어 8개 규칙 전체 이식</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 직접 실행 기준(verify_repo.ps1 전체 체인이 아님 — 그 체인은 R1/R4의 기존 HANDOFF.md 위생 이슈로 이 항목 이전에 이미 실패함).</p>
+          <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/test_security_hotspots.py</code></p>
         </li>
         </ul>
       </details>
@@ -599,7 +634,7 @@
       <summary>
         <span>ai_prompt</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 6개 · 검사항목 7개 · 실패 0건 · <a href="projects/ai_prompt/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 7개 · 검사항목 9개 · 실패 0건 · <a href="projects/ai_prompt/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -768,8 +803,43 @@
             <span class="category">재발방지검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다.</p>
+          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다. 2026-09-18: 단일행 파일을 건너뛰던 실제 결함(Get-Content가 1줄 파일에서 배열 대신 문자열을 반환)을 발견·수정, 회귀 케이스 추가.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_check_no_example_secrets.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R7</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R7-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">정적 패턴 스캐너(PowerShell 이식, qa_manager SECURITY_NETWORK_QA_STANDARD.md 기준) — 이 저장소에 해당 없는 SQL/pickle/eval 규칙은 제외</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴(하드코딩 자격증명, Invoke-Expression, TLS검증비활성화, 평문http, CORS전체허용)이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/check_security_hotspots.ps1</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다. 작성 중 실제 결함(단일행 파일 스캔 누락, R6-D2와 동일 원인) 발견·수정.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_check_security_hotspots.ps1</code></p>
         </li>
         </ul>
       </details>
@@ -1809,7 +1879,7 @@
       <summary>
         <span>skills</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 4개 · 검사항목 5개 · 실패 0건 · <a href="projects/skills/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 5개 · 검사항목 7개 · 실패 0건 · <a href="projects/skills/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <details class="requirement pass" open>
@@ -1926,8 +1996,43 @@
             <span class="category">재발방지검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다.</p>
+          <p class="desc">비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다. 2026-09-18: 단일행 파일을 건너뛰던 실제 결함(ai_prompt의 동일 가드에서 발견)을 이 저장소에서도 확인·수정, 회귀 케이스 추가.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_check_no_example_secrets.ps1</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R5</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R5-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">정적 패턴 스캐너(PowerShell 이식, ai_prompt와 동일) — 이 저장소에 해당 없는 SQL/pickle/eval 규칙은 제외</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/check_security_hotspots.ps1</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>security-hotspots-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/test_check_security_hotspots.ps1</code></p>
         </li>
         </ul>
       </details>

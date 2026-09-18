@@ -76,7 +76,26 @@ requirements:
         test_items:
           - id: no-example-secrets-guard-regression
             category: regression
-            description: "비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다."
+            description: "비밀정보 탐지 패턴이 실제 가짜 비밀키 형태를 놓치지 않고, 평범한 텍스트를 오탐하지 않는지 확인합니다. 2026-09-18: 단일행 파일을 건너뛰던 실제 결함(ai_prompt의 동일 가드에서 발견)을 이 저장소에서도 확인·수정, 회귀 케이스 추가."
             check: "powershell.exe -NoProfile -File scripts/test_check_no_example_secrets.ps1"
             status: pass
-            last_verified: 2026-09-14
+            last_verified: 2026-09-18
+
+  - id: R5
+    description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
+    dev_items:
+      - id: R5-D1
+        description: "정적 패턴 스캐너(PowerShell 이식, ai_prompt와 동일) — 이 저장소에 해당 없는 SQL/pickle/eval 규칙은 제외"
+        test_items:
+          - id: security-hotspots-guard
+            category: basic
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다."
+            check: "powershell.exe -NoProfile -File scripts/check_security_hotspots.ps1"
+            status: pass
+            last_verified: 2026-09-18
+          - id: security-hotspots-guard-regression
+            category: regression
+            description: "규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다."
+            check: "powershell.exe -NoProfile -File scripts/test_check_security_hotspots.ps1"
+            status: pass
+            last_verified: 2026-09-18

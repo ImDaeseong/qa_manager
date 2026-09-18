@@ -101,3 +101,22 @@ requirements:
             check: "python scripts/test_check_no_example_secrets.py"
             status: pass
             last_verified: 2026-09-14
+
+  - id: R7
+    description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
+    dev_items:
+      - id: R7-D1
+        description: "정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 이 저장소는 Python 가드가 이미 있어 8개 규칙 전체 이식"
+        test_items:
+          - id: security-hotspots-guard
+            category: basic
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 직접 실행 기준(verify_repo.ps1 전체 체인이 아님 — 그 체인은 R1/R4의 기존 HANDOFF.md 위생 이슈로 이 항목 이전에 이미 실패함)."
+            check: "python scripts/check_security_hotspots.py"
+            status: pass
+            last_verified: 2026-09-18
+          - id: security-hotspots-guard-regression
+            category: regression
+            description: "규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다."
+            check: "python scripts/test_security_hotspots.py"
+            status: pass
+            last_verified: 2026-09-18
