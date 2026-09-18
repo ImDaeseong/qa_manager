@@ -1,6 +1,6 @@
 # qa_manager — 검수 시스템
 
-**🤔 [쉬운 설명 보기](ELI5.html)** — 비개발자를 위한 한 페이지 요약
+**🤔 [쉬운 설명 보기](https://imdaeseong.github.io/qa_manager/ELI5.html)** — 비개발자를 위한 한 페이지 요약
 
 **바로가기 →** [imdaeseong.github.io/qa_manager](https://imdaeseong.github.io/qa_manager/)
 
