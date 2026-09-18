@@ -1,5 +1,7 @@
 # qa_manager — 검수 시스템
 
+**🤔 [쉬운 설명 보기](ELI5.html)** — 비개발자를 위한 한 페이지 요약
+
 **바로가기 →** [imdaeseong.github.io/qa_manager](https://imdaeseong.github.io/qa_manager/)
 
 > 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
