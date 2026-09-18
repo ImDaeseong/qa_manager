@@ -90,4 +90,4 @@ qa_manager 자신의 회귀 테스트·필수 문서 검사·보안 허점 자�
 `.github/workflows/validate.yml`로 매 push마다 자동 실행됩니다(다른 8개 형제
 프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
 `open_qa_system.bat`을 실행합니다).
-- `python scripts\generate_system_index.py` 전체 재실행: 8개 프로젝트 전량 `OK`, 0 failing.
+- `python scripts\generate_system_index.py` 전체 재실행(2026-09-18): 9개 프로젝트 전량 `OK`, 0 failing.
