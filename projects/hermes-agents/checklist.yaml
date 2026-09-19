@@ -28,16 +28,10 @@
 #   regression - added after a specific defect was found, to catch that defect class again
 # status values: pass | fail | pending
 #
-# `quality_dimension` (requirement only, optional): tags a requirement as covering one of the
-# five commercial-release gates from hermes-agents AGENTS.md's "Commercial-Grade Baseline"
-# section (ISO/IEC 25010 translated for a solo maintainer) --
-# functional_suitability | security | reliability | maintainability | portability.
-# scripts/_checklist_lib.commercial_readiness() rolls these up per project: a dimension with no
-# requirement tagged for it is a real, named gap ("missing"), not a passing check that was never
-# asked for. A project is "commercial-ready" only when every one of the five dimensions has at
-# least one tagged requirement and all of them currently pass. Untagged requirements (the
-# default before this was added) simply don't count toward any dimension -- adding the tag is
-# optional and additive, never required for a checklist to keep working.
+# `quality_dimension` (requirement only, optional): links an automated check to one
+# area in qa_manager/RELEASE_READINESS_STANDARD.md. It is partial technical evidence,
+# not proof that the area or the project is ready for commercial release. A release
+# review must cover every area and record scope, evidence, and human approval.
 #
 # This schema follows the Requirements Traceability Matrix (RTM) concept
 # (ISTQB Glossary: "Traceability Matrix") — requirement -> linked test(s) ->

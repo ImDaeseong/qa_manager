@@ -59,8 +59,8 @@ requirements:
             last_verified: 2026-09-06
 
   # Added 2026-09-14 as part of raising this project toward AGENTS.md's
-  # Commercial-Grade Baseline rule (OWASP ASVS Level 1: no secrets in
-  # tracked files). This is a public GitHub mirror (ImDaeseong/skills), so
+  # Commercial-Grade Baseline rule (secret scanning is partial security evidence;
+  # it finds potential secrets in tracked files). This is a public GitHub mirror (ImDaeseong/skills), so
   # exposure risk here is higher than a private repo's.
   - id: R4
     quality_dimension: security

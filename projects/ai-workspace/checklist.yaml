@@ -82,8 +82,8 @@ requirements:
             last_verified: 2026-08-05
 
   # Added 2026-09-14 as part of raising this project toward AGENTS.md's
-  # Commercial-Grade Baseline rule (OWASP ASVS Level 1: no secrets in
-  # tracked files). This repo stores business strategy/personal-goal
+  # Commercial-Grade Baseline rule (secret scanning is partial security evidence;
+  # it finds potential secrets in tracked files). This repo stores business strategy/personal-goal
   # content, so exposure risk is at least as high as hermes-agents itself.
   - id: R6
     quality_dimension: security

@@ -82,8 +82,8 @@ requirements:
             last_verified: 2026-08-05
 
   # Added 2026-09-14 as part of raising this project toward AGENTS.md's
-  # Commercial-Grade Baseline rule (OWASP ASVS Level 1: no secrets in
-  # tracked files). hermes-agents already has this guard; ai_prompt did not.
+  # Commercial-Grade Baseline rule (secret scanning is partial security evidence;
+  # it finds potential secrets in tracked files). hermes-agents already has this guard; ai_prompt did not.
   - id: R6
     quality_dimension: security
     description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"

@@ -7,6 +7,7 @@ required = {
     "qa-manager-architecture.html": ("보안 게이트", "LLM 신뢰성", "checklist.yaml"),
     "LLM_QA_STANDARD.md": ("원자 주장", "프롬프트 주입", "citation_correctness"),
     "SECURITY_NETWORK_QA_STANDARD.md": ("CWE-798", "CWE-78", "qa:allow"),
+    "RELEASE_READINESS_STANDARD.md": ("ISO/IEC 25010:2023", "출시 검토", "법률·규제"),
 }
 
 missing: list[str] = []

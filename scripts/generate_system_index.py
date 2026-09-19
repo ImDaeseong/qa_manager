@@ -56,7 +56,7 @@ def main() -> int:
         if readiness["ready"]:
             ready_projects += 1
         readiness_pill = dash.badge("pass" if readiness["ready"] else "fail")
-        readiness_label = "상용 배포 가능" if readiness["ready"] else f"보완 필요({len(readiness['gaps'])}개 항목)"
+        readiness_label = "출시 검토 근거 완료" if readiness["ready"] else f"출시 검토 보류({len(readiness['gaps'])}개 영역)"
         rel_link = f"projects/{checklist_path.parent.name}/dashboard.html"
 
         rows.append(f"""
@@ -73,7 +73,7 @@ def main() -> int:
         print(
             f"{'OK  ' if overall == 'pass' else 'FAIL'} {result['project']}: "
             f"{result['requirements']} requirements, {result['fail']} failing, "
-            f"{'commercial-ready' if readiness['ready'] else 'gaps: ' + ','.join(readiness['gaps'])}"
+            f"{'release-review-complete' if readiness['ready'] else 'gaps: ' + ','.join(readiness['gaps'])}"
         )
 
     fail_projects = sum(1 for row in rows if 'class="project fail"' in row)
@@ -95,7 +95,7 @@ def main() -> int:
   <div class="stat"><div class="n">{total_test_items}</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">{pass_projects}</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">{fail_projects}</div><div class="label">실패한 프로젝트</div></div>
-  <div class="stat"><div class="n">{ready_projects}</div><div class="label">상용 배포 가능 프로젝트</div></div>
+  <div class="stat"><div class="n">{ready_projects}</div><div class="label">출시 검토 근거 완료 프로젝트</div></div>
 </div>
 {''.join(rows)}
 </body>

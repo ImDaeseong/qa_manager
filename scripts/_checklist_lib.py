@@ -161,27 +161,34 @@ def iter_test_items(data: dict):
                 yield req, dev_item, test_item
 
 
-# Commercial-release readiness (hermes-agents AGENTS.md "Commercial-Grade Baseline" section,
-# ISO/IEC 25010 translated into gates a solo maintainer can actually run). A requirement opts
-# into one of these by setting `quality_dimension: <key>` in checklist.yaml — optional metadata,
-# so existing checklists without it keep working exactly as before (the dimension just reads as
-# "missing" until something is tagged).
+# Release-review areas from RELEASE_READINESS_STANDARD.md. A requirement may link a live
+# check to one area via `quality_dimension`; a check passing is only partial evidence.
 COMMERCIAL_DIMENSIONS: dict[str, str] = {
-    "functional_suitability": "기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가",
-    "security": "보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증)",
-    "reliability": "신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가",
-    "maintainability": "유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가",
-    "portability": "이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가",
+    "functional_suitability": "기능 적합성 — 주요 사용자 작업과 정확성",
+    "performance_efficiency": "성능 효율성 — 응답 시간·자원·용량",
+    "compatibility": "호환성 — 지원 환경과 연동",
+    "interaction_capability": "상호작용 능력 — 사용성·포용성·접근성",
+    "reliability": "신뢰성 — 장애 처리·복구·가용성",
+    "security": "보안 — 위협·권한·입력·비밀정보 검증",
+    "maintainability": "유지보수성 — 변경·진단·검증 가능성",
+    "portability": "유연성·이식성 — 설치·환경 적응·확장",
+    "safety": "안전성 — 위해·오용 위험과 실패 시 안전",
+    "quality_in_use": "실사용 품질 — 실제 사용자·맥락에서의 결과",
+    "privacy": "개인정보·데이터 거버넌스 — 수집·보관·삭제·권리",
+    "supply_chain": "공급망·라이선스 — 구성요소·취약점·배포 권리",
+    "operations": "배포·운영 — 재현 빌드·관측·백업·롤백·지원",
+    "legal": "법률·규제 — 판매 지역·산업별 의무와 계약",
+    "commercial": "사업 운영 — 가격·결제·환불·고객 지원",
 }
+NOT_APPLICABLE_AREAS = {"privacy"}  # No personal-data processing may be evidenced.
 
 
 def commercial_readiness(data: dict, req_statuses: dict[str, str]) -> dict:
-    """Roll live requirement statuses up into a per-dimension commercial-readiness verdict.
+    """Combine live checks and human evidence into a release-review status.
 
-    `req_statuses` must already be computed (each requirement's live pass/fail/pending from this
-    same run) — this function doesn't re-run anything, only aggregates. A dimension with zero
-    requirements tagged for it is "missing" (a real gap, not a failing check — nothing was ever
-    asked). A dimension is "covered" only when every requirement tagged for it passed.
+    Live checks are useful evidence, but their tags alone cannot certify a whole quality area.
+    A release review must name the release scope, provide evidence for every area, and record a
+    human approval. Missing review evidence keeps the release decision on hold.
     """
     dimensions: dict[str, dict] = {
         key: {"label": label, "requirement_ids": [], "status": "missing"}
@@ -192,13 +199,28 @@ def commercial_readiness(data: dict, req_statuses: dict[str, str]) -> dict:
         if dim in dimensions:
             dimensions[dim]["requirement_ids"].append(req.get("id", ""))
 
-    for info in dimensions.values():
-        if not info["requirement_ids"]:
-            info["status"] = "missing"
-        elif all(req_statuses.get(rid) == "pass" for rid in info["requirement_ids"]):
-            info["status"] = "covered"
-        else:
+    review = data.get("release_review") or {}
+    areas = review.get("areas") or {}
+    for key, info in dimensions.items():
+        checks = [req_statuses.get(rid) for rid in info["requirement_ids"]]
+        decision = areas.get(key) or {}
+        if any(status == "fail" for status in checks):
             info["status"] = "failing"
+        elif not decision.get("evidence"):
+            info["status"] = "pending_review" if checks else "missing"
+        elif decision.get("decision") == "pass" and all(status == "pass" for status in checks):
+            info["status"] = "covered"
+        elif (key in NOT_APPLICABLE_AREAS and decision.get("decision") == "not_applicable"
+              and decision.get("reason") and not checks):
+            info["status"] = "not_applicable"
+        else:
+            info["status"] = "pending_review"
 
-    gaps = [key for key, info in dimensions.items() if info["status"] != "covered"]
-    return {"dimensions": dimensions, "ready": not gaps, "gaps": gaps}
+    gaps = [key for key, info in dimensions.items()
+            if info["status"] not in {"covered", "not_applicable"}]
+    approval = review.get("approval") or {}
+    approved = all(review.get(field) for field in ("release", "audience", "distribution", "jurisdictions")) and all(
+        approval.get(field) for field in ("reviewer", "date", "evidence")
+    )
+    return {"dimensions": dimensions, "ready": not gaps and approved,
+            "gaps": gaps, "approval_missing": not approved}

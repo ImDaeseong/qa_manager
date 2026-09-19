@@ -69,6 +69,7 @@ STYLE = """
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
   .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.pending_review, .pill.not_applicable { background: var(--pending-bg); color: var(--pending-text); }
   .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
 
   .readiness {
