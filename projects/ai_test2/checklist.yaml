@@ -15,6 +15,7 @@ updated: 2026-09-18
 
 requirements:
   - id: R1
+    quality_dimension: functional_suitability
     description: "이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)"
     dev_items:
       - id: R1-D1
@@ -108,6 +109,7 @@ requirements:
             last_verified: 2026-09-07
 
   - id: R2
+    quality_dimension: security
     description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
     dev_items:
       - id: R2-D1

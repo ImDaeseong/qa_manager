@@ -17,6 +17,7 @@ updated: 2026-09-06
 
 requirements:
   - id: R1
+    quality_dimension: functional_suitability
     description: "스킬(도구 설명서) 저장소 전체가 정해진 규칙을 지키고 있어야 한다 — 이름/설명이 빠짐없고, 목록 파일과 실제 폴더가 일치하며, 안내 문서의 경로 연결이 끊어지지 않아야 한다"
     dev_items:
       - id: R1-D1
@@ -30,6 +31,7 @@ requirements:
             last_verified: 2026-09-06
 
   - id: R2
+    quality_dimension: maintainability
     description: "문서 안의 내부 링크가 깨지지 않아야 한다"
     dev_items:
       - id: R2-D1
@@ -43,6 +45,7 @@ requirements:
             last_verified: 2026-09-06
 
   - id: R3
+    quality_dimension: reliability
     description: "검사 도구가 검사 대상에서 제외해야 할 폴더(별도 관리되는 하위 프로젝트 등)를 정확히 제외하고 있어야 한다"
     dev_items:
       - id: R3-D1
@@ -60,6 +63,7 @@ requirements:
   # tracked files). This is a public GitHub mirror (ImDaeseong/skills), so
   # exposure risk here is higher than a private repo's.
   - id: R4
+    quality_dimension: security
     description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"
     dev_items:
       - id: R4-D1
@@ -82,6 +86,7 @@ requirements:
             last_verified: 2026-09-18
 
   - id: R5
+    quality_dimension: security
     description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
     dev_items:
       - id: R5-D1

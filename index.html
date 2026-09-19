@@ -66,6 +66,19 @@
   .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
+
+  .readiness {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .readiness.ready { border-left: 4px solid var(--pass-text); }
+  .readiness.not-ready { border-left: 4px solid var(--fail-text); }
+  .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
+  ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
+  ul.dimensions li:first-child { border-top: none; }
 
   details {
     background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
@@ -117,18 +130,25 @@
 <p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-20 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">9</div><div class="label">프로젝트</div></div>
-  <div class="stat"><div class="n">41</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">96</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">42</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">97</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">9</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">1</div><div class="label">상용 배포 가능 프로젝트</div></div>
 </div>
 
     <details class="project pass" >
       <summary>
         <span>ai-workspace</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(1개 항목)</span>
         <span class="counts-inline">요구사항 7개 · 검사항목 9개 · 실패 0건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R4</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R6, R7</code></li><li><span class="pill covered">충족</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>R3, R5</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R1, R2</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -343,8 +363,14 @@
       <summary>
         <span>ai_agent</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(2개 항목)</span>
         <span class="counts-inline">요구사항 4개 · 검사항목 15개 · 실패 0건 · <a href="projects/ai_agent/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R2, R3</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R4</code></li><li><span class="pill missing">미검토</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R1</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -634,8 +660,14 @@
       <summary>
         <span>ai_prompt</span>
         <span class="pill pass">통과</span>
+        <span class="pill pass">통과</span> <span class="desc-inline">상용 배포 가능</span>
         <span class="counts-inline">요구사항 7개 · 검사항목 9개 · 실패 0건 · <a href="projects/ai_prompt/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness ready">
+      <h2>상용 판매·배포 가능</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R1</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R6, R7</code></li><li><span class="pill covered">충족</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>R5</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R2, R3</code></li><li><span class="pill covered">충족</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>R4</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -850,8 +882,14 @@
       <summary>
         <span>ai_test</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(3개 항목)</span>
         <span class="counts-inline">요구사항 2개 · 검사항목 13개 · 실패 0건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R1</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R2</code></li><li><span class="pill missing">미검토</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill missing">미검토</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -1089,8 +1127,14 @@
       <summary>
         <span>ai_test1</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(2개 항목)</span>
         <span class="counts-inline">요구사항 3개 · 검사항목 14개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R2</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R3</code></li><li><span class="pill missing">미검토</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R1</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -1354,8 +1398,14 @@
       <summary>
         <span>ai_test2</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(3개 항목)</span>
         <span class="counts-inline">요구사항 2개 · 검사항목 11개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R1</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R2</code></li><li><span class="pill missing">미검토</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill missing">미검토</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -1559,8 +1609,14 @@
       <summary>
         <span>hermes-agents</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(1개 항목)</span>
         <span class="counts-inline">요구사항 8개 · 검사항목 12개 · 실패 0건 · <a href="projects/hermes-agents/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R8</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R1, R3, R5, R9</code></li><li><span class="pill missing">미검토</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R4, R7</code></li><li><span class="pill covered">충족</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>R6</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -1819,8 +1875,14 @@
       <summary>
         <span>qa_manager</span>
         <span class="pill pass">통과</span>
-        <span class="counts-inline">요구사항 3개 · 검사항목 6개 · 실패 0건 · <a href="projects/qa_manager/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(2개 항목)</span>
+        <span class="counts-inline">요구사항 4개 · 검사항목 7개 · 실패 0건 · <a href="projects/qa_manager/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill missing">미검토</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>연결된 요구사항 없음</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R1, R3</code></li><li><span class="pill covered">충족</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>R4</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R2</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>
@@ -1927,13 +1989,45 @@
       </details>
       </div>
     </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">검사 명령이 멈춰도(hang) 전체 재검사가 무기한 블로킹되지 않고, 시간 초과로 실패 처리되며 프로세스 트리가 실제로 종료된다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">run_test_item()의 타임아웃+프로세스 트리 강제 종료 로직</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>R4-D1-T1</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">타임아웃보다 훨씬 오래 걸리는 명령을 실행시켜, 실제로 그 시간 안에 종료 처리되고 TIMEOUT으로 보고되는지 확인한다(강제 종료가 안 되면 자식 프로세스가 끝날 때까지 그대로 블로킹된다).</p>
+          <p class="check">실행 명령: <code>python -m pytest tests/test_reliability.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
     </details>
     <details class="project pass" >
       <summary>
         <span>skills</span>
         <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span> <span class="desc-inline">보완 필요(1개 항목)</span>
         <span class="counts-inline">요구사항 5개 · 검사항목 7개 · 실패 0건 · <a href="projects/skills/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
+      
+    <div class="readiness not-ready">
+      <h2>상용 판매·배포 불가 — 아래 항목 보완 필요</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R1</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R4, R5</code></li><li><span class="pill covered">충족</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>R3</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R2</code></li><li><span class="pill missing">미검토</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>연결된 요구사항 없음</code></li></ul>
+    </div>
       
     <details class="requirement pass" open>
       <summary>

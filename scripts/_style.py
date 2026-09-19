@@ -68,6 +68,19 @@ STYLE = """
   .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
+
+  .readiness {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .readiness.ready { border-left: 4px solid var(--pass-text); }
+  .readiness.not-ready { border-left: 4px solid var(--fail-text); }
+  .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
+  ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
+  ul.dimensions li:first-child { border-top: none; }
 
   details {
     background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;

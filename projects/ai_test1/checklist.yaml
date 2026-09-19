@@ -20,6 +20,7 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
+    quality_dimension: maintainability
     description: "안내 문서(README 등)에 적힌 '테스트 몇 개 통과'라는 숫자가, 실제 테스트 개수와 항상 일치해야 한다"
     dev_items:
       - id: R1-D1
@@ -33,6 +34,7 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R2
+    quality_dimension: functional_suitability
     description: "이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다"
     dev_items:
       - id: R2-D1
@@ -136,6 +138,7 @@ requirements:
             last_verified: 2026-08-20
 
   - id: R3
+    quality_dimension: security
     description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
     dev_items:
       - id: R3-D1

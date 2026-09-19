@@ -45,12 +45,18 @@ def main() -> int:
     total_fail = 0
     total_requirements = 0
     total_test_items = 0
+    ready_projects = 0
     for checklist_path in checklist_paths:
         result = dash.generate(checklist_path)  # writes that project's own dashboard.html too
         total_fail += result["fail"]
         total_requirements += result["requirements"]
         total_test_items += result["test_items"]
         overall = "pass" if result["fail"] == 0 else "fail"
+        readiness = result["readiness"]
+        if readiness["ready"]:
+            ready_projects += 1
+        readiness_pill = dash.badge("pass" if readiness["ready"] else "fail")
+        readiness_label = "상용 배포 가능" if readiness["ready"] else f"보완 필요({len(readiness['gaps'])}개 항목)"
         rel_link = f"projects/{checklist_path.parent.name}/dashboard.html"
 
         rows.append(f"""
@@ -58,13 +64,16 @@ def main() -> int:
       <summary>
         <span>{escape(result['project'])}</span>
         {dash.badge(overall)}
+        {readiness_pill} <span class="desc-inline">{escape(readiness_label)}</span>
         <span class="counts-inline">요구사항 {result['requirements']}개 · 검사항목 {result['test_items']}개 · 실패 {result['fail']}건 · <a href="{escape(rel_link)}">전체 페이지 열기 →</a></span>
       </summary>
+      {dash.render_readiness(readiness)}
       {''.join(result['req_html'])}
     </details>""")
         print(
             f"{'OK  ' if overall == 'pass' else 'FAIL'} {result['project']}: "
-            f"{result['requirements']} requirements, {result['fail']} failing"
+            f"{result['requirements']} requirements, {result['fail']} failing, "
+            f"{'commercial-ready' if readiness['ready'] else 'gaps: ' + ','.join(readiness['gaps'])}"
         )
 
     fail_projects = sum(1 for row in rows if 'class="project fail"' in row)
@@ -86,6 +95,7 @@ def main() -> int:
   <div class="stat"><div class="n">{total_test_items}</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">{pass_projects}</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">{fail_projects}</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">{ready_projects}</div><div class="label">상용 배포 가능 프로젝트</div></div>
 </div>
 {''.join(rows)}
 </body>

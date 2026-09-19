@@ -142,3 +142,46 @@ def iter_test_items(data: dict):
         for dev_item in req.get("dev_items", []):
             for test_item in dev_item.get("test_items", []):
                 yield req, dev_item, test_item
+
+
+# Commercial-release readiness (hermes-agents AGENTS.md "Commercial-Grade Baseline" section,
+# ISO/IEC 25010 translated into gates a solo maintainer can actually run). A requirement opts
+# into one of these by setting `quality_dimension: <key>` in checklist.yaml — optional metadata,
+# so existing checklists without it keep working exactly as before (the dimension just reads as
+# "missing" until something is tagged).
+COMMERCIAL_DIMENSIONS: dict[str, str] = {
+    "functional_suitability": "기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가",
+    "security": "보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증)",
+    "reliability": "신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가",
+    "maintainability": "유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가",
+    "portability": "이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가",
+}
+
+
+def commercial_readiness(data: dict, req_statuses: dict[str, str]) -> dict:
+    """Roll live requirement statuses up into a per-dimension commercial-readiness verdict.
+
+    `req_statuses` must already be computed (each requirement's live pass/fail/pending from this
+    same run) — this function doesn't re-run anything, only aggregates. A dimension with zero
+    requirements tagged for it is "missing" (a real gap, not a failing check — nothing was ever
+    asked). A dimension is "covered" only when every requirement tagged for it passed.
+    """
+    dimensions: dict[str, dict] = {
+        key: {"label": label, "requirement_ids": [], "status": "missing"}
+        for key, label in COMMERCIAL_DIMENSIONS.items()
+    }
+    for req in data.get("requirements", []):
+        dim = req.get("quality_dimension")
+        if dim in dimensions:
+            dimensions[dim]["requirement_ids"].append(req.get("id", ""))
+
+    for info in dimensions.values():
+        if not info["requirement_ids"]:
+            info["status"] = "missing"
+        elif all(req_statuses.get(rid) == "pass" for rid in info["requirement_ids"]):
+            info["status"] = "covered"
+        else:
+            info["status"] = "failing"
+
+    gaps = [key for key, info in dimensions.items() if info["status"] != "covered"]
+    return {"dimensions": dimensions, "ready": not gaps, "gaps": gaps}

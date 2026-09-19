@@ -3,6 +3,7 @@ repo_root: qa_manager
 requirements:
   - id: R1
     description: 검수 실행기는 프로젝트 경계와 비밀정보를 보호한다.
+    quality_dimension: security
     dev_items:
       - id: R1-D1
         description: 경로·환경·출력·명령 입력 보안 경계
@@ -14,6 +15,7 @@ requirements:
             status: pass
   - id: R2
     description: LLM 검수 기준과 프로젝트 구조 문서가 실행 코드와 함께 유지된다.
+    quality_dimension: maintainability
     dev_items:
       - id: R2-D1
         description: 근거 기반 LLM 위험 기준 및 구조 문서
@@ -25,6 +27,7 @@ requirements:
             status: pass
   - id: R3
     description: 등록 프로젝트의 보안·해킹·네트워크 허점을 근거 기반 기준으로 탐지한다.
+    quality_dimension: security
     dev_items:
       - id: R3-D1
         description: OWASP/CWE/NIST 근거 기반 정적 패턴 스캐너
@@ -51,3 +54,22 @@ requirements:
             check: "python scripts/check_qa_allow_audit.py"
             status: pass
             last_verified: 2026-09-18
+
+  # Added 2026-09-20 as part of applying the commercial-readiness rollup
+  # (see quality_dimension header comment in ../hermes-agents/checklist.yaml)
+  # to qa_manager itself: reliability was a real, previously-untested gap --
+  # run_test_item()'s Windows process-tree-kill fix (its own docstring
+  # documents the bug it works around) had no test proving it actually works.
+  - id: R4
+    description: 검사 명령이 멈춰도(hang) 전체 재검사가 무기한 블로킹되지 않고, 시간 초과로 실패 처리되며 프로세스 트리가 실제로 종료된다.
+    quality_dimension: reliability
+    dev_items:
+      - id: R4-D1
+        description: run_test_item()의 타임아웃+프로세스 트리 강제 종료 로직
+        test_items:
+          - id: R4-D1-T1
+            category: regression
+            description: 타임아웃보다 훨씬 오래 걸리는 명령을 실행시켜, 실제로 그 시간 안에 종료 처리되고 TIMEOUT으로 보고되는지 확인한다(강제 종료가 안 되면 자식 프로세스가 끝날 때까지 그대로 블로킹된다).
+            check: "python -m pytest tests/test_reliability.py -q"
+            status: pass
+            last_verified: 2026-09-20

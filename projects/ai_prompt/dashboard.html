@@ -66,6 +66,19 @@
   .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
+
+  .readiness {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .readiness.ready { border-left: 4px solid var(--pass-text); }
+  .readiness.not-ready { border-left: 4px solid var(--fail-text); }
+  .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
+  ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
+  ul.dimensions li:first-child { border-top: none; }
 
   details {
     background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
@@ -122,6 +135,11 @@
   <div class="stat"><div class="n">7</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
+
+    <div class="readiness ready">
+      <h2>상용 판매·배포 가능</h2>
+      <ul class="dimensions"><li><span class="pill covered">충족</span> 기능 적합성 — 배포되는 동작마다 자동화된 테스트가 있는가 — <code>R1</code></li><li><span class="pill covered">충족</span> 보안 — OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) — <code>R6, R7</code></li><li><span class="pill covered">충족</span> 신뢰성 — 외부 호출 실패가 원인과 함께 로그로 남는가 — <code>R5</code></li><li><span class="pill covered">충족</span> 유지보수성 — 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 — <code>R2, R3</code></li><li><span class="pill covered">충족</span> 이식성 — 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 — <code>R4</code></li></ul>
+    </div>
 
     <details class="requirement pass" open>
       <summary>

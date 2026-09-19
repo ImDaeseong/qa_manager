@@ -12,6 +12,7 @@ updated: 2026-08-05
 
 requirements:
   - id: R1
+    quality_dimension: functional_suitability
     description: "전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다"
     dev_items:
       - id: R1-D1
@@ -25,6 +26,7 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R2
+    quality_dimension: maintainability
     description: "스킬 설명 문서의 필수 정보와 문서 간 연결이 깨지지 않아야 한다"
     dev_items:
       - id: R2-D1
@@ -38,6 +40,7 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R3
+    quality_dimension: maintainability
     description: "문서 안의 내부 링크가 깨지지 않아야 한다"
     dev_items:
       - id: R3-D1
@@ -51,6 +54,7 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R4
+    quality_dimension: portability
     description: "저장소를 새로 내려받았을 때 자동 검사 도구를 설치하는 스크립트가 과거 발견된 3가지 문제(다른 도구의 설정 덮어쓰기, 특정 폴더 구조에서만 동작, 폴더가 없을 때 오류)를 다시 일으키면 안 된다"
     dev_items:
       - id: R4-D1
@@ -64,6 +68,7 @@ requirements:
             last_verified: 2026-08-05
 
   - id: R5
+    quality_dimension: reliability
     description: "검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다"
     dev_items:
       - id: R5-D1
@@ -80,6 +85,7 @@ requirements:
   # Commercial-Grade Baseline rule (OWASP ASVS Level 1: no secrets in
   # tracked files). hermes-agents already has this guard; ai_prompt did not.
   - id: R6
+    quality_dimension: security
     description: "커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다"
     dev_items:
       - id: R6-D1
@@ -102,6 +108,7 @@ requirements:
             last_verified: 2026-09-18
 
   - id: R7
+    quality_dimension: security
     description: "커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다"
     dev_items:
       - id: R7-D1

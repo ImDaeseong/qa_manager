@@ -4,7 +4,7 @@
 
 **바로가기 →** [imdaeseong.github.io/qa_manager](https://imdaeseong.github.io/qa_manager/)
 
-> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 현재 등록 현황 → 검증됨
+> 문서 구성: 목적 → 시스템 구조/계층 → 작동 흐름 → 실행 방법 → 프로젝트 추가 방법 → 상용 배포 준비도 → 현재 등록 현황 → 검증됨
 
 **구조 문서 →** [qa-manager-architecture.html](qa-manager-architecture.html)  
 **LLM 검수 기준 →** [LLM_QA_STANDARD.md](LLM_QA_STANDARD.md)  
@@ -66,6 +66,51 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
    lint 설정, CI workflow, 가드 스크립트 등) — 없는 검사를 지어내지 않습니다.
 4. `python scripts\generate_system_index.py`로 새 프로젝트가 index.html에
    나타나고 검사가 실제로 통과/실패하는지 확인합니다.
+
+## 상용 배포 준비도
+
+검수(요구사항 통과)가 끝났다고 곧 상용 판매·배포가 가능하다는 뜻은 아닙니다. hermes-agents
+AGENTS.md의 "Commercial-Grade Baseline" 절(ISO/IEC 25010을 1인 유지보수자가 실제로 돌릴 수 있는
+게이트로 번역한 것)을 기준으로, 각 프로젝트가 다섯 가지 축을 실제로 갖췄는지 매 실행마다 확인합니다.
+
+| 축 | 뜻 |
+|---|---|
+| 기능 적합성 | 배포되는 동작마다 자동화된 테스트가 있는가 |
+| 보안 | OWASP ASVS Level 1 기준(추적되는 파일에 비밀값 없음, 신뢰 경계마다 입력 검증) |
+| 신뢰성 | 외부 호출 실패가 원인과 함께 로그로 남는가 |
+| 유지보수성 | 목적을 설명하는 README와 실행 가능한 검증 명령이 있는가 |
+| 이식성 | 머신 특유의 설정 없이 클린 체크아웃에서 실행되는가 |
+
+`checklist.yaml`의 각 requirement에 `quality_dimension: <축 이름>`을 선택적으로 붙이면(스키마는
+`projects/hermes-agents/checklist.yaml` 상단 주석 참고), `scripts/_checklist_lib.commercial_readiness()`가
+그 축에 연결된 요구사항이 있는지·전부 통과했는지를 매 실행마다 집계합니다. 다섯 축 전부 요구사항이
+있고 전부 통과해야 "상용 판매·배포 가능"이며, 결과는 `index.html`과 각 프로젝트 `dashboard.html`
+상단 박스에 표시됩니다. **축에 연결된 요구사항이 하나도 없으면 "미검토"로 표시됩니다 — 통과한 검사가
+아니라 애초에 물어본 적이 없다는 뜻**이며, 이게 실제 부족한 부분입니다(없는 검사를 지어내 채우지
+않습니다).
+
+2026-09-20 최초 적용 기준, 9개 프로젝트 중 `ai_prompt` 1개만 다섯 축을 전부 충족했습니다. 나머지는
+아래처럼 미검토 축이 남아 있습니다(재검사 없이 기록만 한 값이니 최신 상태는 `index.html` 참고):
+
+| 프로젝트 | 미검토/미달 축 |
+|---|---|
+| ai_prompt | 없음 (상용 배포 가능) |
+| hermes-agents | 신뢰성 |
+| ai-workspace | 이식성 |
+| skills | 이식성 |
+| ai_agent | 신뢰성, 이식성 |
+| ai_test1 | 신뢰성, 이식성 |
+| ai_test | 신뢰성, 유지보수성, 이식성 |
+| ai_test2 | 신뢰성, 유지보수성, 이식성 |
+| qa_manager | 기능 적합성, 이식성 |
+
+"이식성"이 가장 많이 미검토로 남은 이유: 클린 체크아웃에서 실제로 실행되는지를 검증하려면 Docker 등
+격리된 재현 환경이 필요한데, 현재 등록된 어떤 프로젝트도 그런 검사를 갖추고 있지 않습니다(지어낼
+수 없어 기록만 함). "신뢰성"은 외부 API를 직접 호출하는 로직이 있는 프로젝트(`ai_prompt`,
+`ai-workspace`)에서만 실제로 검증됐고, 로컬 도구·정적 스캐너 위주인 나머지 프로젝트에는 아직 그런
+검사가 없습니다. `ai_test`/`ai_test2`의 "유지보수성" 미검토는 두 저장소 모두 저장소 전체를 아우르는
+README 기반 검증 명령이 없고(하위 프로그램별 개별 명령만 존재) 헤더 주석에 그렇게 명시돼 있어 실제
+현황과 일치합니다.
 
 ## 현재 등록된 프로젝트
 

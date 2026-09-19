@@ -33,10 +33,30 @@ from _style import STYLE  # noqa: E402
 
 STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기"}
 CATEGORY_LABEL = {"basic": "기본검사", "full": "통합검사", "regression": "재발방지검사"}
+DIMENSION_STATUS_LABEL = {"covered": "충족", "failing": "실패", "missing": "미검토"}
 
 
 def badge(status: str) -> str:
     return f'<span class="pill {status}">{STATUS_LABEL.get(status, status.upper())}</span>'
+
+
+def render_readiness(readiness: dict) -> str:
+    """One box summarizing whether this project meets the commercial-release bar
+    (AGENTS.md Commercial-Grade Baseline / ISO-IEC-25010-derived dimensions) — and if not,
+    exactly which dimension has no requirement tagged for it or is still failing."""
+    ready = readiness["ready"]
+    verdict_class = "ready" if ready else "not-ready"
+    verdict_text = "상용 판매·배포 가능" if ready else "상용 판매·배포 불가 — 아래 항목 보완 필요"
+    items = []
+    for key, info in readiness["dimensions"].items():
+        pill = f'<span class="pill {info["status"]}">{DIMENSION_STATUS_LABEL[info["status"]]}</span>'
+        req_ids = ", ".join(info["requirement_ids"]) if info["requirement_ids"] else "연결된 요구사항 없음"
+        items.append(f'<li>{pill} {escape(info["label"])} — <code>{escape(req_ids)}</code></li>')
+    return f"""
+    <div class="readiness {verdict_class}">
+      <h2>{escape(verdict_text)}</h2>
+      <ul class="dimensions">{''.join(items)}</ul>
+    </div>"""
 
 
 def render_test_item(test_item: dict, cwd: Path) -> tuple[str, str]:
@@ -118,15 +138,18 @@ def render_project(checklist_path: Path) -> dict:
 
     req_html = []
     req_statuses = []
+    req_status_by_id: dict[str, str] = {}
     total_test_items = sum(1 for _ in lib.iter_test_items(data))
 
     for req in data.get("requirements", []):
         html, status = render_requirement(req, cwd)
         req_html.append(html)
         req_statuses.append(status)
+        req_status_by_id[req.get("id", "")] = status
 
     pass_count = req_statuses.count("pass")
     fail_count = req_statuses.count("fail")
+    readiness = lib.commercial_readiness(data, req_status_by_id)
 
     return {
         "project": project,
@@ -138,6 +161,7 @@ def render_project(checklist_path: Path) -> dict:
         "test_items": total_test_items,
         "pass": pass_count,
         "fail": fail_count,
+        "readiness": readiness,
     }
 
 
@@ -163,6 +187,7 @@ def generate(checklist_path: Path) -> dict:
   <div class="stat"><div class="n">{result['pass']}</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">{result['fail']}</div><div class="label">실패한 요구사항</div></div>
 </div>
+{render_readiness(result['readiness'])}
 {''.join(result['req_html'])}
 </body>
 </html>
