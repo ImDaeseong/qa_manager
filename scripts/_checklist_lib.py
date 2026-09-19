@@ -16,6 +16,7 @@ ancestor all these sibling repos share on this machine).
 from __future__ import annotations
 
 import os
+import platform
 import re
 import subprocess
 from pathlib import Path
@@ -105,8 +106,13 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     long-running python/node process) — the child keeps running and holding
     the stdout/stderr pipes open, so `communicate()` still blocks until the
     child finishes on its own. Reproduced directly: a 10s sleep with a 2s
-    timeout still took the full 10s. `taskkill /T` below kills the whole
-    process tree (wrapper + child), which actually unblocks the pipes.
+    timeout still took the full 10s. `taskkill /T` on timeout kills the whole
+    process tree (wrapper + child), which actually unblocks the pipes. This
+    tool otherwise only runs for real on Windows (see open_qa_system.bat), but
+    this repo's own test suite runs in CI on Linux too (.github/workflows/
+    validate.yml) — a `proc.kill()` fallback there keeps a hung-command test
+    from crashing on a missing `taskkill` binary instead of degrading to an
+    ordinary timeout failure.
     """
     check_cmd = item.get("check")
     if not check_cmd:
@@ -123,10 +129,21 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     try:
         output, _ = proc.communicate(timeout=CHECK_TIMEOUT_SECONDS)
     except subprocess.TimeoutExpired:
-        subprocess.run(
-            ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
-            capture_output=True, timeout=15,
-        )
+        if platform.system() == "Windows":
+            # taskkill /T kills the whole process tree; see the docstring above for
+            # why the wrapper-only kill that proc.kill() would do isn't enough here.
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                capture_output=True, timeout=15,
+            )
+        else:
+            # No `shell=True` wrapper-vs-child split on POSIX the way there is on
+            # Windows, so killing the direct child is enough (this tool otherwise
+            # only ever runs for real on Windows -- see open_qa_system.bat -- this
+            # branch exists so a hang on another OS, e.g. this repo's Linux CI,
+            # degrades to a normal timeout failure instead of an unhandled
+            # FileNotFoundError from invoking the Windows-only `taskkill`).
+            proc.kill()
         partial, _ = proc.communicate()
         return "fail", sanitize_output(
             f"TIMEOUT: check did not finish within {CHECK_TIMEOUT_SECONDS}s, "
