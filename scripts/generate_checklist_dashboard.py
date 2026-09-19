@@ -135,6 +135,7 @@ def render_project(checklist_path: Path) -> dict:
     generate_system_index.py, to embed the same detail on the system index
     without running the checks a second time.
     """
+    checklist_path = checklist_path.resolve()
     data = lib.load(checklist_path)
     project = data.get("project", checklist_path.parent.name)
     cwd = lib.project_root(data)
@@ -196,7 +197,7 @@ def generate(checklist_path: Path) -> dict:
 </body>
 </html>
 """
-    output_path.write_text(html_doc, encoding="utf-8")
+    lib.write_public_report(output_path, html_doc)
     result["output_path"] = output_path
     return result
 

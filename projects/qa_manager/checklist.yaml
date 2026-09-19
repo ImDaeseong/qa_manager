@@ -91,3 +91,50 @@ requirements:
             check: "python -m pytest tests/test_reliability.py -q"
             status: pass
             last_verified: 2026-09-20
+      - id: R4-D2
+        description: 공개 결과 파일을 완성한 뒤 교체하고 실패 시 이전 결과를 보존한다.
+        test_items:
+          - id: R4-D2-T1
+            category: regression
+            description: 결과 교체 실패를 주입하여 기존 보고서 내용과 임시 파일 정리를 검증한다.
+            check: "python -m unittest tests.test_public_report.PublicReportTests.test_replace_failure_preserves_previous_report_and_removes_temp -q"
+            status: pending
+
+  - id: R5
+    description: 프로젝트 검사 결과가 개별 대시보드와 전체 색인에 같은 실시간 판정으로 반영된다.
+    quality_dimension: functional_suitability
+    dev_items:
+      - id: R5-D1
+        description: 등록부터 검사 실행과 두 HTML 결과 생성까지 종단 검증
+        test_items:
+          - id: R5-D1-T1
+            category: regression
+            description: 저장된 pass 표시와 달리 실제 검사 실패 시 두 화면이 실패로 바뀌는지 검증한다.
+            check: "python -m unittest tests.test_public_report.PublicReportTests.test_checklist_to_dashboard_and_index_uses_live_result -q"
+            status: pending
+
+  - id: R6
+    description: 공개 HTML에 계정 경로와 자격증명 형태의 내용이 포함되면 생성을 차단한다.
+    quality_dimension: privacy
+    dev_items:
+      - id: R6-D1
+        description: 보고서 공개 전 민감 정보 차단
+        test_items:
+          - id: R6-D1-T1
+            category: regression
+            description: 로컬 사용자 경로와 토큰 형태의 값을 거부하며 기존 파일을 보존하는지 검증한다.
+            check: "python -m unittest tests.test_public_report.PublicReportTests.test_private_content_is_rejected_without_replacing_existing_report -q"
+            status: pending
+
+  - id: R7
+    description: 문서에 나온 상대 경로 명령으로 프로젝트 대시보드를 생성할 수 있다.
+    quality_dimension: portability
+    dev_items:
+      - id: R7-D1
+        description: 현재 작업 디렉터리 기준 체크리스트 경로 처리
+        test_items:
+          - id: R7-D1-T1
+            category: regression
+            description: qa_manager 루트에서 상대 경로 체크리스트를 넘겨 HTML이 생성되는지 검증한다.
+            check: "python -m unittest tests.test_public_report.PublicReportTests.test_relative_checklist_path_from_readme_runs -q"
+            status: pending

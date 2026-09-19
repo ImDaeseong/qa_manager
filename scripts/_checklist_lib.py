@@ -19,6 +19,7 @@ import os
 import platform
 import re
 import subprocess
+import tempfile
 from pathlib import Path
 
 import yaml
@@ -45,6 +46,10 @@ _SECRET_PATTERNS = (
         r"(?i)\b([A-Z0-9_]*(?:API_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL)[A-Z0-9_]*)"
         r"\s*[:=]\s*([^\s,;]+)"
     ),
+)
+_PRIVATE_REPORT_PATTERNS = (
+    re.compile(r"(?i)\b[A-Z]:[\\/]Users[\\/][^\\/\s<]+"),
+    re.compile(r"/(?:Users|home)/[^/\s<]+"),
 )
 
 
@@ -86,6 +91,23 @@ def sanitize_output(output: str) -> str:
     if len(redacted) > MAX_OUTPUT_CHARS:
         return redacted[:MAX_OUTPUT_CHARS] + "\n[OUTPUT_TRUNCATED]"
     return redacted
+
+
+def write_public_report(path: Path, content: str) -> None:
+    """Reject obvious private data and replace a complete public report atomically."""
+    if any(pattern.search(content) for pattern in (*_PRIVATE_REPORT_PATTERNS, *_SECRET_PATTERNS)):
+        raise ValueError("PUBLIC_REPORT: private path or credential-shaped text detected")
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent,
+                                         prefix=f".{path.name}.", suffix=".tmp",
+                                         delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(content)
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def validate_check_command(check_cmd: object) -> str:

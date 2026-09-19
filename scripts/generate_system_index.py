@@ -101,7 +101,7 @@ def main() -> int:
 </body>
 </html>
 """
-    OUTPUT_PATH.write_text(html_doc, encoding="utf-8")
+    lib.write_public_report(OUTPUT_PATH, html_doc)
     print(f"Wrote {OUTPUT_PATH} ({len(checklist_paths)} project(s), {total_fail} total failing)")
     return 1 if total_fail else 0
 
