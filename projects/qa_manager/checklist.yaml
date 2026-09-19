@@ -1,5 +1,23 @@
 project: qa_manager
 repo_root: qa_manager
+release_review:
+  # 출시 버전, 고객, 배포 방식, 관할 지역은 책임자가 확정해야 한다.
+  areas:
+    functional_suitability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#기능-적합성"}
+    performance_efficiency: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#성능-효율성"}
+    compatibility: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#호환성"}
+    interaction_capability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#상호작용-능력"}
+    reliability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#신뢰성"}
+    security: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#보안"}
+    maintainability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#유지보수성"}
+    portability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#유연성-이식성"}
+    safety: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#안전성"}
+    quality_in_use: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#실사용-품질"}
+    privacy: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#개인정보-데이터-거버넌스"}
+    supply_chain: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#공급망-라이선스"}
+    operations: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#배포-운영"}
+    legal: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#법률-규제"}
+    commercial: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#사업-운영"}
 requirements:
   - id: R1
     description: 검수 실행기는 프로젝트 경계와 비밀정보를 보호한다.

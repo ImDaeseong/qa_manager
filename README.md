@@ -10,6 +10,7 @@
 **LLM 검수 기준 →** [LLM_QA_STANDARD.md](LLM_QA_STANDARD.md)  
 **보안·해킹·네트워크 허점 검수 기준 →** [SECURITY_NETWORK_QA_STANDARD.md](SECURITY_NETWORK_QA_STANDARD.md)
 **상용 출시 검토 기준 →** [RELEASE_READINESS_STANDARD.md](RELEASE_READINESS_STANDARD.md)
+**qa_manager 출시 검토 기록 →** [QA_MANAGER_RELEASE_REVIEW.md](QA_MANAGER_RELEASE_REVIEW.md)
 
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서 보여주는
 독립 검수 시스템입니다(특정 프로젝트 소속 대시보드가 아님).

@@ -52,7 +52,8 @@ def render_readiness(readiness: dict) -> str:
     for key, info in readiness["dimensions"].items():
         pill = f'<span class="pill {info["status"]}">{DIMENSION_STATUS_LABEL[info["status"]]}</span>'
         req_ids = ", ".join(info["requirement_ids"]) if info["requirement_ids"] else "연결된 요구사항 없음"
-        items.append(f'<li>{pill} {escape(info["label"])} — <code>{escape(req_ids)}</code></li>')
+        evidence = f' · 검토 기록: <code>{escape(info["evidence"])}</code>' if info.get("evidence") else ""
+        items.append(f'<li>{pill} {escape(info["label"])} — <code>{escape(req_ids)}</code>{evidence}</li>')
     approval = "최종 승인 기록 없음" if readiness["approval_missing"] else "최종 승인 기록 있음"
     return f"""
     <div class="readiness {verdict_class}">

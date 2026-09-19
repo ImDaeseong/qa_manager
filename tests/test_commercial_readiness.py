@@ -100,6 +100,33 @@ class CommercialReadinessTests(unittest.TestCase):
         self.assertEqual(result["dimensions"]["security"]["requirement_ids"], ["R1", "R2"])
         self.assertEqual(result["dimensions"]["security"]["status"], "pending_review")
 
+    def test_pending_review_retains_evidence_without_claiming_coverage(self):
+        data = _project([])
+        data["release_review"] = {"areas": {"safety": {
+            "decision": "pending", "evidence": "QA_MANAGER_RELEASE_REVIEW.md#안전성",
+        }}}
+        result = lib.commercial_readiness(data, {})
+        self.assertEqual(result["dimensions"]["safety"]["status"], "pending_review")
+        self.assertEqual(result["dimensions"]["safety"]["evidence"],
+                         "QA_MANAGER_RELEASE_REVIEW.md#안전성")
+        self.assertFalse(result["ready"])
+
+    def test_qa_manager_review_tracks_every_area_without_premature_approval(self):
+        root = Path(__file__).resolve().parent.parent
+        data = lib.load(root / "projects" / "qa_manager" / "checklist.yaml")
+        review = data["release_review"]
+        self.assertEqual(set(review["areas"]), set(lib.COMMERCIAL_DIMENSIONS))
+        self.assertNotIn("approval", review)
+        for area in review["areas"].values():
+            self.assertEqual(area["decision"], "pending")
+            evidence_file, anchor = area["evidence"].split("#", 1)
+            source = root / evidence_file
+            self.assertTrue(source.is_file(), evidence_file)
+            headings = [line[3:].strip().lower().replace(" ", "-")
+                        for line in source.read_text(encoding="utf-8").splitlines()
+                        if line.startswith("## ")]
+            self.assertIn(anchor, headings, area["evidence"])
+
 
 if __name__ == "__main__":
     unittest.main()

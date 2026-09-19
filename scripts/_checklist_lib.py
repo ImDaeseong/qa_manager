@@ -204,6 +204,7 @@ def commercial_readiness(data: dict, req_statuses: dict[str, str]) -> dict:
     for key, info in dimensions.items():
         checks = [req_statuses.get(rid) for rid in info["requirement_ids"]]
         decision = areas.get(key) or {}
+        info["evidence"] = decision.get("evidence", "")
         if any(status == "fail" for status in checks):
             info["status"] = "failing"
         elif not decision.get("evidence"):
