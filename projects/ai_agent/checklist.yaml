@@ -150,13 +150,13 @@ requirements:
         test_items:
           - id: security-hotspots-guard
             category: basic
-            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 3건의 공공데이터 http 엔드포인트는 SECURITY_BOUNDARY.md의 평문 예외 근거로 qa:allow 처리했습니다."
+            description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 3건의 공공데이터 http 엔드포인트는 SECURITY_BOUNDARY.md의 평문 예외 근거로, masters-panel-agent의 쿠키 이름 상수·테스트 픽스처 2건은 CWE-798 오탐으로 qa:allow 처리했습니다."
             check: "python scripts/check_security_hotspots.py"
             status: pass
-            last_verified: 2026-09-18
+            last_verified: 2026-09-20
           - id: security-hotspots-guard-regression
             category: regression
             description: "규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다."
             check: "python -m pytest tests/test_security_hotspots.py -q"
             status: pass
-            last_verified: 2026-09-18
+            last_verified: 2026-09-20
