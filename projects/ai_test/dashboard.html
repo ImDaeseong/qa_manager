@@ -41,6 +41,9 @@
   }
   h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
   a { color: var(--primary); }
+  summary:focus-visible, a:focus-visible {
+    outline: 2px solid var(--primary); outline-offset: 2px;
+  }
   a.back {
     display: inline-flex; align-items: center; gap: .3rem;
     font-size: .85rem; font-weight: 600; text-decoration: none;

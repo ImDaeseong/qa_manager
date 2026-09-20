@@ -24,6 +24,10 @@ def contrast(first: str, second: str) -> float:
 
 
 class StyleContrastTests(unittest.TestCase):
+    def test_keyboard_focus_uses_contrasting_theme_color(self):
+        self.assertIn("summary:focus-visible, a:focus-visible", STYLE)
+        self.assertIn("outline: 2px solid var(--primary)", STYLE)
+
     def test_normal_text_tokens_meet_aa_in_both_themes(self):
         themes = re.findall(r":root\s*\{([^}]*)\}", STYLE)
         self.assertEqual(len(themes), 2)
