@@ -10,7 +10,7 @@ project: ai_prompt
 repo_root: hermes-agents/ai_prompt
 updated: 2026-08-05
 release_review:
-  release: "acdcb55 (공개 출시 검토 기준점)"
+  release: "4429b68 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
   distribution: "GitHub 소스코드 무료 공개 검토"
   jurisdictions: ["전세계"]
