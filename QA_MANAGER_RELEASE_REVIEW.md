@@ -73,8 +73,8 @@
 
 ## 공급망 라이선스
 
-- 확인: 프로젝트 소스의 MIT 라이선스는 `LICENSE`에 명시했다. 직접 외부 구성요소는 PyYAML 6.0.2와 CI의 `actions/checkout@v5`·`actions/setup-python@v6`이다. 각 버전의 실제 [PyYAML LICENSE](https://raw.githubusercontent.com/yaml/pyyaml/6.0.2/LICENSE), [checkout LICENSE](https://raw.githubusercontent.com/actions/checkout/v5/LICENSE), [setup-python LICENSE](https://raw.githubusercontent.com/actions/setup-python/v6/LICENSE)에서 MIT 허가·고지 조항을 확인했다. CI 설치 대상을 `requirements.txt`의 PyYAML 6.0.2로 고정했다.
-- 남은 일: 런타임·빌드·GitHub Actions 구성요소의 전체 목록과 실제 라이선스 원문, 취약점 대응, 설치 아티팩트의 무결성 및 정적 자산 재배포 권리를 확인한다. 로컬 PyYAML 확인만으로 전체 공급망 검토가 끝나지 않는다.
+- 확인: 프로젝트 소스의 MIT 라이선스는 `LICENSE`에 명시했다. 직접 외부 구성요소는 PyYAML 6.0.2와 CI의 `actions/checkout@v5`·`actions/setup-python@v6`이다. 각 버전의 실제 [PyYAML LICENSE](https://raw.githubusercontent.com/yaml/pyyaml/6.0.2/LICENSE), [checkout LICENSE](https://raw.githubusercontent.com/actions/checkout/v5/LICENSE), [setup-python LICENSE](https://raw.githubusercontent.com/actions/setup-python/v6/LICENSE)에서 MIT 허가·고지 조항을 확인했다. CI 설치 대상을 `requirements.txt`의 PyYAML 6.0.2로 고정했다. GitHub 보안 설정에서 비밀정보 푸시 보호는 켜져 있고, 의존성 그래프와 Dependabot 취약점 알림은 꺼져 있음을 확인했다.
+- 남은 일: 런타임·빌드·GitHub Actions 구성요소의 전체 목록과 실제 라이선스 원문, 취약점 대응, 설치 아티팩트의 무결성 및 정적 자산 재배포 권리를 확인한다. 취약점 감시 수단과 담당자를 결정한다. 로컬 PyYAML 확인만으로 전체 공급망 검토가 끝나지 않는다.
 
 ## 배포 운영
 
