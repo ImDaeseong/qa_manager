@@ -74,7 +74,7 @@
 ## 공급망 라이선스
 
 - 확인: 프로젝트 소스의 MIT 라이선스는 `LICENSE`에 명시했다. 직접 외부 구성요소는 PyYAML 6.0.2와 CI의 `actions/checkout`·`actions/setup-python`이다. 각 버전의 실제 [PyYAML LICENSE](https://raw.githubusercontent.com/yaml/pyyaml/6.0.2/LICENSE), [checkout LICENSE](https://raw.githubusercontent.com/actions/checkout/v5/LICENSE), [setup-python LICENSE](https://raw.githubusercontent.com/actions/setup-python/v6/LICENSE)에서 MIT 허가·고지 조항을 확인했다. CI의 PyYAML은 `requirements.txt`에 고정했다. GitHub 공식 저장소의 `v5`·`v6` 태그를 조회해 각각 `fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09`와 `ece7cb06caefa5fff74198d8649806c4678c61a1` 커밋으로 [고정](https://docs.github.com/en/actions/reference/security/secure-use)하고 회귀 검사를 추가했다.
-- 확인: 2026-09-20에 [OSV 버전 조회 API](https://google.github.io/osv.dev/post-v1-query/) (`PyPI`/`PyYAML`/`6.0.2`)와 [GitHub 권고 API](https://docs.github.com/en/rest/security-advisories/global-advisories) (`affects=PyYAML@6.0.2`, `ecosystem=pip`)를 조회해 두 응답 모두 알려진 권고 0건을 확인했다. 이는 미발견 취약점의 부재나 향후 안전성을 증명하지 않는다. GitHub 보안 설정에서 비밀정보 푸시 보호는 켜져 있고, 의존성 그래프와 Dependabot 취약점 알림은 꺼져 있음을 확인했다.
+- 확인: 2026-09-20에 [OSV 버전 조회 API](https://google.github.io/osv.dev/post-v1-query/) (`PyPI`/`PyYAML`/`6.0.2`)와 [GitHub 권고 API](https://docs.github.com/en/rest/security-advisories/global-advisories) (`affects=PyYAML@6.0.2`, `ecosystem=pip`)를 조회해 두 응답 모두 알려진 권고 0건을 확인했다. 이는 미발견 취약점의 부재나 향후 안전성을 증명하지 않는다. Git 커밋 작성자 메타데이터는 `ImDaeseong` 한 명이지만 원본 코드의 권리까지 증명하지는 않는다. GitHub 보안 설정에서 비밀정보 푸시 보호는 켜져 있고, 의존성 그래프와 Dependabot 취약점 알림은 꺼져 있음을 확인했다.
 - 남은 일: 런타임·빌드·GitHub Actions 구성요소의 전체 목록과 실제 라이선스 원문, 취약점 대응, 설치 아티팩트의 무결성 및 정적 자산 재배포 권리를 확인한다. 고정된 Action의 업데이트·취약점 감시 수단과 담당자를 결정한다. 이번 직접 구성요소 확인만으로 전체 공급망 검토가 끝나지 않는다.
 
 ## 배포 운영
