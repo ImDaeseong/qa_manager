@@ -12,6 +12,8 @@
 **상용 출시 검토 기준 →** [RELEASE_READINESS_STANDARD.md](RELEASE_READINESS_STANDARD.md)
 **qa_manager 출시 검토 기록 →** [QA_MANAGER_RELEASE_REVIEW.md](QA_MANAGER_RELEASE_REVIEW.md)
 
+소스코드에는 [MIT 라이선스](LICENSE)를 적용합니다. 출시 검토는 현재 [HOLD](QA_MANAGER_RELEASE_REVIEW.md) 상태입니다.
+
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서 보여주는
 독립 검수 시스템입니다(특정 프로젝트 소속 대시보드가 아님).
 
@@ -42,9 +44,12 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
 
 ## 작동 흐름
 
-`open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `C:\Users\cs930\Desktop\ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 **지금 이 순간 직접 실행**(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령 — `checklist.yaml`의 `status`/`last_verified`는 참고용 마지막 기록일 뿐, 매번 다시 실행함) → 아래에서 위로 집계 → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.
+`open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `../ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 **지금 이 순간 직접 실행**(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령 — `checklist.yaml`의 `status`/`last_verified`는 참고용 마지막 기록일 뿐, 매번 다시 실행함) → 아래에서 위로 집계 → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.
 
 ## 실행 방법
+
+Python 의존성 설치: `python -m pip install -r requirements.txt`.
+기본 체크리스트 9개는 이 작업공간의 형제 저장소를 검사합니다. `qa_manager`만 새로 복제한 환경에서는 그 저장소들이 없어 전체 재검사가 실행되지 않습니다. 다른 환경에서 재사용하려면 실제 검사할 저장소를 함께 준비하고 `repo_root`와 검사 명령을 조정한 뒤 공개 허용 목록을 검토하세요. 공개된 HTML은 마지막으로 생성된 결과를 읽을 수 있습니다.
 
 ```
 open_qa_system.bat                                               # 전체 재검사 + 브라우저로 index.html 열기
@@ -62,8 +67,10 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 
 1. `projects/<프로젝트명>/checklist.yaml`을 새로 만듭니다. 스키마는
    `projects/hermes-agents/checklist.yaml` 상단 주석을 따릅니다.
+   공개 HTML에 프로젝트 이름·설명·검사 명령을 포함해도 되는지 검토한 뒤
+   `scripts/_checklist_lib.py`의 `PUBLIC_PROJECTS`에 이름을 추가합니다.
 2. `repo_root`를 반드시 지정합니다 — qa_manager 상위 폴더
-   (`C:\Users\cs930\Desktop`) 기준 상대경로 (예: `hermes-agents`, `ai_test1`).
+   (`..`) 기준 상대경로 (예: `hermes-agents`, `ai_test1`).
 3. test_item은 그 프로젝트에 실제로 존재하는 것만 등록합니다(기존 테스트,
    lint 설정, CI workflow, 가드 스크립트 등) — 없는 검사를 지어내지 않습니다.
 4. `python scripts\generate_system_index.py`로 새 프로젝트가 index.html에
@@ -81,9 +88,10 @@ python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 
 승인자·승인일·승인 근거를 `release_review`에 기록해야 합니다. 비적용 결정에는 이유를 적습니다.
 연결된 검사에 실패했거나 근거가 빠졌으면 **출시 검토 보류**로 표시합니다. 기록을 모두 채워도
 화면은 **출시 검토 근거 완료**까지만 표시하며 최종 배포 결정은 별도입니다. 현재 등록된 프로젝트에는
-이 전체 출시 검토 기록이 없으므로 모두 보류입니다. 없는 검사를 만들어 통과로 표시하지 않습니다.
+승인된 전체 출시 검토 기록이 없으므로 모두 보류입니다. 없는 검사를 만들어 통과로 표시하지 않습니다.
 
 정적 보고서는 완성된 임시 파일을 교체하는 방식으로 기록하며, 공개 전 사용자 홈 경로와 자격증명 형태의 문자열을 검사합니다. 이 패턴 검사는 모든 민감 정보를 식별하지 못하므로 프로젝트 이름·검사 명령과 결과의 공개 적합성은 사람이 확인해야 합니다.
+검사 실패의 상세 출력은 공개 HTML에 넣지 않습니다. 로컬에서 `python scripts\run_checklist.py projects\<프로젝트명>\checklist.yaml`로 확인합니다.
 
 ## 현재 등록된 프로젝트
 

@@ -31,7 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _checklist_lib as lib  # noqa: E402
 from _style import STYLE  # noqa: E402
 
-STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기"}
+STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기", "hold": "보류"}
 CATEGORY_LABEL = {"basic": "기본검사", "full": "통합검사", "regression": "재발방지검사"}
 DIMENSION_STATUS_LABEL = {
     "covered": "근거 검토 완료", "failing": "검사 실패", "missing": "미검토",
@@ -172,6 +172,7 @@ def render_project(checklist_path: Path) -> dict:
 
 def generate(checklist_path: Path) -> dict:
     """Run render_project() and write that project's standalone dashboard.html."""
+    lib.validate_public_project(checklist_path)
     result = render_project(checklist_path)
     output_path = checklist_path.parent / "dashboard.html"
 

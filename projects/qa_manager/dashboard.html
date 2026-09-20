@@ -14,7 +14,7 @@
     --primary-soft: #efe9fe;
     --pass-bg: #dcfce7; --pass-text: #15803d;
     --fail-bg: #fee2e2; --fail-text: #b91c1c;
-    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --pending-bg: #eef0f4; --pending-text: #616976;
     --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
   @media (prefers-color-scheme: dark) {
@@ -67,7 +67,7 @@
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
   .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
-  .pill.pending_review, .pill.not_applicable { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.pending_review, .pill.not_applicable, .pill.hold { background: var(--pending-bg); color: var(--pending-text); }
   .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
 
   .readiness {
@@ -131,16 +131,16 @@
 <h1>qa_manager</h1>
 <p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-09-20 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">7</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">11</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">7</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">8</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">15</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">8</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 
     <div class="readiness not-ready">
       <h2>출시 검토 보류 — 미검토·실패·승인 누락 확인</h2>
       <p>최종 승인 기록 없음 · 연결된 자동 검사의 통과만으로 품질 영역 전체가 검증되지는 않습니다.</p>
-      <ul class="dimensions"><li><span class="pill pending_review">검토 대기</span> 기능 적합성 — 주요 사용자 작업과 정확성 — <code>R5</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#기능-적합성</code></li><li><span class="pill pending_review">검토 대기</span> 성능 효율성 — 응답 시간·자원·용량 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#성능-효율성</code></li><li><span class="pill pending_review">검토 대기</span> 호환성 — 지원 환경과 연동 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#호환성</code></li><li><span class="pill pending_review">검토 대기</span> 상호작용 능력 — 사용성·포용성·접근성 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#상호작용-능력</code></li><li><span class="pill pending_review">검토 대기</span> 신뢰성 — 장애 처리·복구·가용성 — <code>R4</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#신뢰성</code></li><li><span class="pill pending_review">검토 대기</span> 보안 — 위협·권한·입력·비밀정보 검증 — <code>R1, R3</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#보안</code></li><li><span class="pill pending_review">검토 대기</span> 유지보수성 — 변경·진단·검증 가능성 — <code>R2</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유지보수성</code></li><li><span class="pill pending_review">검토 대기</span> 유연성·이식성 — 설치·환경 적응·확장 — <code>R7</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유연성-이식성</code></li><li><span class="pill pending_review">검토 대기</span> 안전성 — 위해·오용 위험과 실패 시 안전 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#안전성</code></li><li><span class="pill pending_review">검토 대기</span> 실사용 품질 — 실제 사용자·맥락에서의 결과 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#실사용-품질</code></li><li><span class="pill pending_review">검토 대기</span> 개인정보·데이터 거버넌스 — 수집·보관·삭제·권리 — <code>R6</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#개인정보-데이터-거버넌스</code></li><li><span class="pill pending_review">검토 대기</span> 공급망·라이선스 — 구성요소·취약점·배포 권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#공급망-라이선스</code></li><li><span class="pill pending_review">검토 대기</span> 배포·운영 — 재현 빌드·관측·백업·롤백·지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#배포-운영</code></li><li><span class="pill pending_review">검토 대기</span> 법률·규제 — 판매 지역·산업별 의무와 계약 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#법률-규제</code></li><li><span class="pill pending_review">검토 대기</span> 사업 운영 — 가격·결제·환불·고객 지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#사업-운영</code></li></ul>
+      <ul class="dimensions"><li><span class="pill pending_review">검토 대기</span> 기능 적합성 — 주요 사용자 작업과 정확성 — <code>R5</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#기능-적합성</code></li><li><span class="pill pending_review">검토 대기</span> 성능 효율성 — 응답 시간·자원·용량 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#성능-효율성</code></li><li><span class="pill pending_review">검토 대기</span> 호환성 — 지원 환경과 연동 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#호환성</code></li><li><span class="pill pending_review">검토 대기</span> 상호작용 능력 — 사용성·포용성·접근성 — <code>R8</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#상호작용-능력</code></li><li><span class="pill pending_review">검토 대기</span> 신뢰성 — 장애 처리·복구·가용성 — <code>R4</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#신뢰성</code></li><li><span class="pill pending_review">검토 대기</span> 보안 — 위협·권한·입력·비밀정보 검증 — <code>R1, R3</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#보안</code></li><li><span class="pill pending_review">검토 대기</span> 유지보수성 — 변경·진단·검증 가능성 — <code>R2</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유지보수성</code></li><li><span class="pill pending_review">검토 대기</span> 유연성·이식성 — 설치·환경 적응·확장 — <code>R7</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유연성-이식성</code></li><li><span class="pill pending_review">검토 대기</span> 안전성 — 위해·오용 위험과 실패 시 안전 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#안전성</code></li><li><span class="pill pending_review">검토 대기</span> 실사용 품질 — 실제 사용자·맥락에서의 결과 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#실사용-품질</code></li><li><span class="pill pending_review">검토 대기</span> 개인정보·데이터 거버넌스 — 수집·보관·삭제·권리 — <code>R6</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#개인정보-데이터-거버넌스</code></li><li><span class="pill pending_review">검토 대기</span> 공급망·라이선스 — 구성요소·취약점·배포 권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#공급망-라이선스</code></li><li><span class="pill pending_review">검토 대기</span> 배포·운영 — 재현 빌드·관측·백업·롤백·지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#배포-운영</code></li><li><span class="pill pending_review">검토 대기</span> 법률·규제 — 판매 지역·산업별 의무와 계약 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#법률-규제</code></li><li><span class="pill pending_review">검토 대기</span> 사업 운영 — 가격·결제·환불·고객 지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#사업-운영</code></li></ul>
     </div>
 
     <details class="requirement pass" open>
@@ -320,9 +320,9 @@
     <details class="requirement pass" open>
       <summary>
         <code>R6</code> <span class="pill pass">통과</span>
-        <span class="desc-inline">공개 HTML에 계정 경로와 자격증명 형태의 내용이 포함되면 생성을 차단한다.</span>
+        <span class="desc-inline">공개 HTML의 민감 정보와 미검토 프로젝트의 자동 게시를 차단한다.</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 3개 · 검사항목 4개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -338,6 +338,49 @@
           </div>
           <p class="desc">로컬 사용자 경로와 토큰 형태의 값을 거부하며 기존 파일을 보존하는지 검증한다.</p>
           <p class="check">실행 명령: <code>python -m unittest tests.test_public_report.PublicReportTests.test_private_content_is_rejected_without_replacing_existing_report -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R6-D2</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">새 프로젝트의 공개 적합성 검토 경계</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>R6-D2-T1</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">미검토 프로젝트가 두 공개 보고서를 교체하지 못하는지 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_public_report.PublicReportTests.test_unreviewed_project_cannot_replace_public_reports -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R6-D3</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">공개 문서와 보고서의 로컬 계정 경로 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>R6-D3-T1</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">공개 파일에 로컬 계정 경로가 남아 있지 않은지 검사한다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_public_paths.py</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>R6-D3-T2</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">Windows·Unix 계정 경로 탐지와 상대 경로 허용을 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_check_public_paths -q</code></p>
         </li>
         </ul>
       </details>
@@ -364,6 +407,32 @@
           </div>
           <p class="desc">qa_manager 루트에서 상대 경로 체크리스트를 넘겨 HTML이 생성되는지 검증한다.</p>
           <p class="check">실행 명령: <code>python -m unittest tests.test_public_report.PublicReportTests.test_relative_checklist_path_from_readme_runs -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R8</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">밝은·어두운 테마의 일반 텍스트 색상 대비가 WCAG AA 기준 이상이다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R8-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">생성 페이지의 공통 텍스트·배지 색상 대비</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>R8-D1-T1</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">두 테마의 본문·링크·상태 배지 텍스트가 4.5:1 이상인지 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_style_contrast -q</code></p>
         </li>
         </ul>
       </details>

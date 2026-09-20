@@ -49,6 +49,7 @@ class PublicReportTests(unittest.TestCase):
             checklist = project / "checklist.yaml"
             with patch.object(lib, "QA_ROOT", qa_root), \
                  patch.object(lib, "DESKTOP_ROOT", Path(folder)), \
+                 patch.object(lib, "PUBLIC_PROJECTS", frozenset({"sample"})), \
                  patch.object(system, "OUTPUT_PATH", qa_root / "index.html"):
                 for code, expected in (("0", 0), ("1", 1)):
                     checklist.write_text(
@@ -66,6 +67,8 @@ class PublicReportTests(unittest.TestCase):
                     self.assertIn("class=\"project fail\"" if expected else
                                   "class=\"project pass\"",
                                   (qa_root / "index.html").read_text(encoding="utf-8"))
+                    self.assertIn('<span class="pill hold">보류</span>',
+                                  (qa_root / "index.html").read_text(encoding="utf-8"))
 
     def test_relative_checklist_path_from_readme_runs(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -80,12 +83,46 @@ class PublicReportTests(unittest.TestCase):
             try:
                 os.chdir(qa_root)
                 with patch.object(lib, "QA_ROOT", qa_root), \
-                     patch.object(lib, "DESKTOP_ROOT", Path(folder)):
+                     patch.object(lib, "DESKTOP_ROOT", Path(folder)), \
+                     patch.object(lib, "PUBLIC_PROJECTS", frozenset({"sample"})):
                     result = dashboard.generate(Path("projects/sample/checklist.yaml"))
             finally:
                 os.chdir(previous)
             self.assertEqual(result["project"], "sample")
             self.assertTrue((checklist.parent / "dashboard.html").is_file())
+
+    def test_unreviewed_project_cannot_replace_public_reports(self):
+        with tempfile.TemporaryDirectory() as folder:
+            qa_root = Path(folder) / "qa_manager"
+            project = qa_root / "projects" / "unreviewed"
+            project.mkdir(parents=True)
+            approved = qa_root / "projects" / "approved"
+            approved.mkdir()
+            (Path(folder) / "approved").mkdir()
+            (approved / "checklist.yaml").write_text(
+                "project: approved\nrepo_root: approved\nrequirements: []\n", encoding="utf-8")
+            (Path(folder) / "unreviewed").mkdir()
+            checklist = project / "checklist.yaml"
+            checklist.write_text("project: unreviewed\nrepo_root: unreviewed\nrequirements: []\n",
+                                 encoding="utf-8")
+            index = qa_root / "index.html"
+            dashboard_path = project / "dashboard.html"
+            approved_dashboard = approved / "dashboard.html"
+            index.write_text("previous index", encoding="utf-8")
+            dashboard_path.write_text("previous dashboard", encoding="utf-8")
+            approved_dashboard.write_text("previous approved dashboard", encoding="utf-8")
+            with patch.object(lib, "QA_ROOT", qa_root), \
+                 patch.object(lib, "DESKTOP_ROOT", Path(folder)), \
+                 patch.object(system, "OUTPUT_PATH", index), \
+                 patch.object(lib, "PUBLIC_PROJECTS", frozenset({"approved"}), create=True):
+                with self.assertRaisesRegex(ValueError, "PUBLIC_PROJECT_UNREVIEWED"):
+                    system.main()
+                with self.assertRaisesRegex(ValueError, "PUBLIC_PROJECT_UNREVIEWED"):
+                    dashboard.generate(checklist)
+            self.assertEqual(index.read_text(encoding="utf-8"), "previous index")
+            self.assertEqual(dashboard_path.read_text(encoding="utf-8"), "previous dashboard")
+            self.assertEqual(approved_dashboard.read_text(encoding="utf-8"),
+                             "previous approved dashboard")
 
 
 if __name__ == "__main__":

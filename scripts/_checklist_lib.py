@@ -27,6 +27,10 @@ import yaml
 QA_ROOT = Path(__file__).resolve().parent.parent
 DESKTOP_ROOT = QA_ROOT.parent
 DEFAULT_CHECKLIST = QA_ROOT / "projects" / "hermes-agents" / "checklist.yaml"
+PUBLIC_PROJECTS = frozenset({
+    "ai-workspace", "ai_agent", "ai_prompt", "ai_test", "ai_test1", "ai_test2",
+    "hermes-agents", "qa_manager", "skills",
+})
 
 # No `check` command observed across any registered project takes more than a
 # couple of minutes (the slowest today is CareerDiff's `npm run build`). This
@@ -55,6 +59,13 @@ _PRIVATE_REPORT_PATTERNS = (
 
 def load(path: Path = DEFAULT_CHECKLIST) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def validate_public_project(path: Path) -> None:
+    """Require an explicit public-project review before generating publishable HTML."""
+    resolved = path.resolve()
+    if resolved.parent.parent != (QA_ROOT / "projects").resolve() or resolved.parent.name not in PUBLIC_PROJECTS:
+        raise ValueError(f"PUBLIC_PROJECT_UNREVIEWED: {resolved.parent.name}")
 
 
 def project_root(data: dict) -> Path:

@@ -9,7 +9,7 @@ that project's own dashboard.html via generate_checklist_dashboard.generate()
 render is reused here rather than re-running every check a second time), and
 lists all of them with their live detail and a link into each project's own
 page. Adding a project is just dropping a new
-projects/<name>/checklist.yaml in — no change needed here.
+projects/<name>/checklist.yaml in after public-project review and allowlist update.
 
 Usage:
     python scripts/generate_system_index.py
@@ -40,6 +40,8 @@ def main() -> int:
     if not checklist_paths:
         print(f"No projects found under {lib.QA_ROOT / 'projects'}")
         return 1
+    for checklist_path in checklist_paths:
+        lib.validate_public_project(checklist_path)
 
     rows = []
     total_fail = 0
@@ -55,7 +57,7 @@ def main() -> int:
         readiness = result["readiness"]
         if readiness["ready"]:
             ready_projects += 1
-        readiness_pill = dash.badge("pass" if readiness["ready"] else "fail")
+        readiness_pill = dash.badge("pass" if readiness["ready"] else "hold")
         readiness_label = "출시 검토 근거 완료" if readiness["ready"] else f"출시 검토 보류({len(readiness['gaps'])}개 영역)"
         rel_link = f"projects/{checklist_path.parent.name}/dashboard.html"
 

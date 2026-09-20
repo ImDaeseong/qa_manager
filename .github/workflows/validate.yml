@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install dependencies
-        run: pip install pyyaml
+        run: pip install -r requirements.txt
       - name: Run qa_manager's own regression test suite
         run: python -m unittest discover -s tests -q
       - name: Verify required architecture/LLM-QA documents exist
@@ -27,3 +27,5 @@ jobs:
         run: python scripts/check_security_standard_freshness.py
       - name: Audit qa:allow suppressions
         run: python scripts/check_qa_allow_audit.py
+      - name: Reject local account paths in public files
+        run: python scripts/check_public_paths.py

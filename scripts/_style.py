@@ -16,7 +16,7 @@ STYLE = """
     --primary-soft: #efe9fe;
     --pass-bg: #dcfce7; --pass-text: #15803d;
     --fail-bg: #fee2e2; --fail-text: #b91c1c;
-    --pending-bg: #eef0f4; --pending-text: #6b7280;
+    --pending-bg: #eef0f4; --pending-text: #616976;
     --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
   }
   @media (prefers-color-scheme: dark) {
@@ -69,7 +69,7 @@ STYLE = """
   .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
   .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
   .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
-  .pill.pending_review, .pill.not_applicable { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.pending_review, .pill.not_applicable, .pill.hold { background: var(--pending-bg); color: var(--pending-text); }
   .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
 
   .readiness {
