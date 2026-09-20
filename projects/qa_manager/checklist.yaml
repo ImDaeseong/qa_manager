@@ -2,7 +2,7 @@ project: qa_manager
 repo_root: qa_manager
 release_review:
   release: "2026-09-20-rc1"
-  audience: "개발자·검수 담당자 (검토 가정; 책임자 확인 대기)"
+  audience: "전세계 개발자·QA 담당자 (운영 기본값; 출시 책임자 확인 대기)"
   distribution: "GitHub Pages 대시보드와 GitHub 소스코드의 무료 공개"
   jurisdictions: ["전세계"]
   areas:

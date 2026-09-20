@@ -13,6 +13,7 @@
 **qa_manager 출시 검토 기록 →** [QA_MANAGER_RELEASE_REVIEW.md](QA_MANAGER_RELEASE_REVIEW.md)
 
 소스코드에는 [MIT 라이선스](LICENSE)를 적용합니다. 출시 검토는 현재 [HOLD](QA_MANAGER_RELEASE_REVIEW.md) 상태입니다.
+주 사용자는 전세계 개발자·QA 담당자로 두고 있습니다. 사용 중 발견한 문제와 기능 제안은 [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues)에 남길 수 있습니다. 답변 시간은 보장하지 않으며, 공개 이슈에 비밀번호·토큰·개인정보·내부 로그를 올리지 마세요.
 
 여러 독립 프로젝트(저장소)의 requirement · test item · 통과여부를 한 곳에서 보여주는
 독립 검수 시스템입니다(특정 프로젝트 소속 대시보드가 아님).
