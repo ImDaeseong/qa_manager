@@ -23,6 +23,19 @@
 검사 출력의 비밀값을 남기지 않지만, 민감한 내부 프로젝트의 이름·검사 명령 자체도
 공개 정보가 될 수 있으므로 등록 전에 사람이 검토합니다.
 
+## Quick start (English)
+
+qa_manager runs checks registered for multiple local repositories and publishes their latest results as static HTML. The public [dashboard](https://imdaeseong.github.io/qa_manager/) shows check results separately from the release review, which remains **on hold**. The dashboard interface is currently in Korean.
+
+```sh
+git clone https://github.com/ImDaeseong/qa_manager.git
+cd qa_manager
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -q
+```
+
+The tests above run with this repository alone. Regenerating the nine bundled project dashboards also requires their sibling repositories and valid `repo_root` paths; a standalone clone cannot rerun those external checks. For questions and bug reports, use [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues). Do not include secrets, personal data, or internal logs in a public issue; response times are not guaranteed.
+
 ## 시스템 구조
 
 ```
