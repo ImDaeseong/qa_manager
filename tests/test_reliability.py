@@ -12,10 +12,11 @@ argument-sanitization, but never for a command that actually hangs past the time
 """
 
 import sys
+import subprocess
 import time
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import _checklist_lib as lib  # noqa: E402
@@ -46,29 +47,22 @@ class RunTestItemTimeoutTests(unittest.TestCase):
         self.assertEqual(status, "pass")
         self.assertNotIn("TIMEOUT", output)
 
-    def test_non_windows_falls_back_to_proc_kill_instead_of_taskkill(self):
-        """2026-09-20: this repo's own CI runs on ubuntu-latest, where `taskkill`
-        doesn't exist -- before this fallback existed, the test above would have
-        crashed CI with FileNotFoundError instead of exercising the timeout path.
-
-        This only proves the *branch* taken (taskkill not invoked); it can't prove
-        proc.kill() actually reaps the grandchild the way real Linux does, because
-        it runs real Windows process primitives under a mocked platform.system() --
-        on a real Windows host, a `shell=True` Popen's `.kill()` only kills the cmd.exe
-        wrapper (the exact problem this module exists to work around), so this
-        specific test is slow here (~30s) even though it passes. On real Linux CI,
-        `sh -c "<single command>"` typically execve()s directly into that command
-        without keeping a separate shell process around, so proc.pid already *is*
-        the real command there and proc.kill() is immediate -- untested by this
-        suite since it only runs on this Windows machine.
-        """
+    def test_non_windows_kills_the_process_group(self):
+        """A POSIX timeout must kill shell descendants that hold the output pipe."""
+        proc = MagicMock(pid=12345)
+        proc.communicate.side_effect = [
+            subprocess.TimeoutExpired("check", 1), ("", None),
+        ]
         with patch.object(lib, "CHECK_TIMEOUT_SECONDS", 1), \
              patch.object(lib.platform, "system", return_value="Linux"), \
-             patch.object(lib.subprocess, "run") as mocked_run:
+             patch.object(lib.subprocess, "Popen", return_value=proc) as mocked_popen, \
+             patch.object(lib.signal, "SIGKILL", 9, create=True), \
+             patch.object(lib.os, "killpg", create=True) as mocked_killpg:
             status, output = lib.run_test_item(
                 {"check": "python -c \"import time; time.sleep(30)\""}, ROOT
             )
-        mocked_run.assert_not_called()  # taskkill must not be invoked on non-Windows
+        self.assertTrue(mocked_popen.call_args.kwargs["start_new_session"])
+        mocked_killpg.assert_called_once_with(12345, 9)
         self.assertEqual(status, "fail")
         self.assertIn("TIMEOUT", output)
 

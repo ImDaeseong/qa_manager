@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import os
 import platform
+import signal
 import re
 import subprocess
 import tempfile
@@ -143,9 +144,8 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     process tree (wrapper + child), which actually unblocks the pipes. This
     tool otherwise only runs for real on Windows (see open_qa_system.bat), but
     this repo's own test suite runs in CI on Linux too (.github/workflows/
-    validate.yml) — a `proc.kill()` fallback there keeps a hung-command test
-    from crashing on a missing `taskkill` binary instead of degrading to an
-    ordinary timeout failure.
+    validate.yml). On POSIX, start a new process group so a timeout can kill
+    the shell and any children still holding the output pipe open.
     """
     check_cmd = item.get("check")
     if not check_cmd:
@@ -154,15 +154,17 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
         check_cmd = validate_check_command(check_cmd)
     except ValueError as exc:
         return "fail", f"INVALID CHECK: {exc}"
+    is_windows = platform.system() == "Windows"
     proc = subprocess.Popen(
         check_cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,  # qa:allow CWE-78 - check_cmd is operator-authored checklist.yaml, not external input
         text=True, encoding="utf-8", errors="replace",
         env=sanitized_environment(),
+        start_new_session=not is_windows,
     )
     try:
         output, _ = proc.communicate(timeout=CHECK_TIMEOUT_SECONDS)
     except subprocess.TimeoutExpired:
-        if platform.system() == "Windows":
+        if is_windows:
             # taskkill /T kills the whole process tree; see the docstring above for
             # why the wrapper-only kill that proc.kill() would do isn't enough here.
             subprocess.run(
@@ -170,13 +172,8 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
                 capture_output=True, timeout=15,
             )
         else:
-            # No `shell=True` wrapper-vs-child split on POSIX the way there is on
-            # Windows, so killing the direct child is enough (this tool otherwise
-            # only ever runs for real on Windows -- see open_qa_system.bat -- this
-            # branch exists so a hang on another OS, e.g. this repo's Linux CI,
-            # degrades to a normal timeout failure instead of an unhandled
-            # FileNotFoundError from invoking the Windows-only `taskkill`).
-            proc.kill()
+            # The shell and its children share the new session's process group.
+            os.killpg(proc.pid, signal.SIGKILL)
         partial, _ = proc.communicate()
         return "fail", sanitize_output(
             f"TIMEOUT: check did not finish within {CHECK_TIMEOUT_SECONDS}s, "
