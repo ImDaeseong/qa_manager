@@ -14,6 +14,27 @@
 project: skills
 repo_root: skills
 updated: 2026-09-06
+release_review:
+  release: "f700639 (공개 출시 검토 기준점)"
+  audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
+  distribution: "GitHub 소스코드 무료 공개 검토"
+  jurisdictions: ["전세계"]
+  areas:
+    functional_suitability: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#기능-적합성"}
+    performance_efficiency: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#성능-효율성"}
+    compatibility: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#호환성"}
+    interaction_capability: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#상호작용-능력"}
+    reliability: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#신뢰성"}
+    security: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#보안"}
+    maintainability: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#유지보수성"}
+    portability: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#유연성-이식성"}
+    safety: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#안전성"}
+    quality_in_use: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#실사용-품질"}
+    privacy: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#개인정보-데이터-거버넌스"}
+    supply_chain: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#공급망-라이선스"}
+    operations: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#배포-운영"}
+    legal: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#법률-규제"}
+    commercial: {decision: pending, evidence: "projects/skills/RELEASE_REVIEW.md#사업-운영"}
 
 requirements:
   - id: R1

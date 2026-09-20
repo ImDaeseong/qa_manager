@@ -230,6 +230,10 @@ def commercial_readiness(data: dict, req_statuses: dict[str, str]) -> dict:
             dimensions[dim]["requirement_ids"].append(req.get("id", ""))
 
     review = data.get("release_review") or {}
+    if review.get("status") == "excluded" and review.get("reason") and review.get("evidence"):
+        return {"dimensions": {}, "ready": False, "excluded": True,
+                "reason": review["reason"], "evidence": review["evidence"],
+                "gaps": [], "approval_missing": False}
     areas = review.get("areas") or {}
     for key, info in dimensions.items():
         checks = [req_statuses.get(rid) for rid in info["requirement_ids"]]

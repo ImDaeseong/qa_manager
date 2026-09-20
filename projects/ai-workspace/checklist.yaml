@@ -9,6 +9,10 @@
 project: ai-workspace
 repo_root: hermes-agents/ai-workspace
 updated: 2026-08-05
+release_review:
+  status: excluded
+  reason: "사용자가 개인·사업 내용을 담은 이 저장소를 공개 출시 대상에서 제외함"
+  evidence: "MULTI_PROJECT_RELEASE_REVIEW.md"
 
 requirements:
   - id: R1

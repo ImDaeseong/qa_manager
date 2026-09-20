@@ -31,7 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _checklist_lib as lib  # noqa: E402
 from _style import STYLE  # noqa: E402
 
-STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기", "hold": "보류"}
+STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기", "hold": "보류", "excluded": "제외"}
 CATEGORY_LABEL = {"basic": "기본검사", "full": "통합검사", "regression": "재발방지검사"}
 DIMENSION_STATUS_LABEL = {
     "covered": "근거 검토 완료", "failing": "검사 실패", "missing": "미검토",
@@ -45,6 +45,10 @@ def badge(status: str) -> str:
 
 def render_readiness(readiness: dict) -> str:
     """Show release-review evidence separately from live checklist results."""
+    if readiness.get("excluded"):
+        return (f'<div class="readiness"><h2>공개 출시 검토 대상 제외</h2>'
+                f'<p>{escape(readiness["reason"])} · 기록: '
+                f'<code>{escape(readiness["evidence"])}</code></p></div>')
     ready = readiness["ready"]
     verdict_class = "ready" if ready else "not-ready"
     verdict_text = "출시 검토 근거 완료 — 최종 배포 결정은 별도" if ready else "출시 검토 보류 — 미검토·실패·승인 누락 확인"

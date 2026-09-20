@@ -14,6 +14,36 @@ def _project(requirements):
 
 
 class CommercialReadinessTests(unittest.TestCase):
+    def test_public_source_reviews_link_to_existing_area_evidence(self):
+        root = Path(__file__).resolve().parent.parent
+        names = ("ai_agent", "ai_prompt", "ai_test", "ai_test1", "ai_test2",
+                 "hermes-agents", "skills")
+        for name in names:
+            with self.subTest(project=name):
+                data = lib.load(root / "projects" / name / "checklist.yaml")
+                review = data["release_review"]
+                self.assertEqual(set(review["areas"]), set(lib.COMMERCIAL_DIMENSIONS))
+                self.assertFalse(lib.commercial_readiness(data, {})["ready"])
+                for area in review["areas"].values():
+                    self.assertEqual(area["decision"], "pending")
+                    evidence_file, anchor = area["evidence"].split("#", 1)
+                    headings = {line[3:].strip().lower().replace(" ", "-")
+                                for line in (root / evidence_file).read_text(encoding="utf-8").splitlines()
+                                if line.startswith("## ")}
+                    self.assertIn(anchor, headings)
+
+    def test_excluded_project_needs_reason_and_evidence(self):
+        data = _project([])
+        data["release_review"] = {"status": "excluded", "reason": "Not a public release",
+                                  "evidence": "review.md"}
+        result = lib.commercial_readiness(data, {})
+        self.assertTrue(result["excluded"])
+        self.assertFalse(result["ready"])
+        self.assertEqual(result["gaps"], [])
+
+        del data["release_review"]["evidence"]
+        self.assertFalse(lib.commercial_readiness(data, {}).get("excluded", False))
+
     def test_no_requirements_tagged_reports_all_dimensions_missing(self):
         data = _project([{"id": "R1", "description": "..."}])
         result = lib.commercial_readiness(data, {"R1": "pass"})
@@ -116,7 +146,9 @@ class CommercialReadinessTests(unittest.TestCase):
         data = lib.load(root / "projects" / "qa_manager" / "checklist.yaml")
         review = data["release_review"]
         self.assertEqual(set(review["areas"]), set(lib.COMMERCIAL_DIMENSIONS))
-        self.assertNotIn("approval", review)
+        self.assertEqual(review["approval"], {"reviewer": "ImDaeseong"})
+        result = lib.commercial_readiness(data, {})
+        self.assertFalse(result["ready"])
         for area in review["areas"].values():
             self.assertEqual(area["decision"], "pending")
             evidence_file, anchor = area["evidence"].split("#", 1)

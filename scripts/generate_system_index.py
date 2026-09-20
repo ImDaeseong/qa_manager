@@ -57,8 +57,10 @@ def main() -> int:
         readiness = result["readiness"]
         if readiness["ready"]:
             ready_projects += 1
-        readiness_pill = dash.badge("pass" if readiness["ready"] else "hold")
-        readiness_label = "출시 검토 근거 완료" if readiness["ready"] else f"출시 검토 보류({len(readiness['gaps'])}개 영역)"
+        readiness_pill = dash.badge("excluded" if readiness.get("excluded") else "pass" if readiness["ready"] else "hold")
+        readiness_label = ("공개 출시 대상 제외" if readiness.get("excluded") else
+                           "출시 검토 근거 완료" if readiness["ready"] else
+                           f"출시 검토 보류({len(readiness['gaps'])}개 영역)")
         rel_link = f"projects/{checklist_path.parent.name}/dashboard.html"
 
         rows.append(f"""

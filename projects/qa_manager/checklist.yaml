@@ -5,6 +5,8 @@ release_review:
   audience: "전세계 개발자·QA 담당자 (운영 기본값; 출시 책임자 확인 대기)"
   distribution: "GitHub Pages 대시보드와 GitHub 소스코드의 무료 공개"
   jurisdictions: ["전세계"]
+  approval:
+    reviewer: "ImDaeseong"
   areas:
     functional_suitability: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#기능-적합성"}
     performance_efficiency: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#성능-효율성"}
