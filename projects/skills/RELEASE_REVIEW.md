@@ -1,5 +1,11 @@
 # skills 무료 소스 공개 검토
 
+## 2026-09-21 공개 파일·고지 점검
+
+- 기준 커밋 `f700639`의 Git 추적 파일 57개를 확인했다. 미디어·실행 파일과 Windows 사용자 홈 경로는 발견되지 않았다. 루트 `LICENSE`는 `ImDaeseong`의 MIT 고지를 포함하고, `NOTICE.md`는 이를 권리 있는 자체 추가 부분에 한정하며 원본의 조건을 유지한다고 명시한다.
+- `ATTRIBUTION.md`는 알려진 원본과 사용 방식을 설명하면서 파일별 출처 목록이 완전하지 않다고 명시한다. 스킬 `SKILL.md` 30개에는 각각 `license`·`author`·`source` frontmatter가 없으므로, 중앙 고지만으로 각 파일의 수정·재배포 조건을 확정할 수 없다. 외부 원본과 수정 범위의 파일별 대조가 남는다.
+- `scripts/validate_workspace.ps1`은 30개 스킬 구조를 통과했고 `scripts/validate_links.ps1`도 통과했다. 이는 구조·링크 신호이며 원본 권리 승인 신호가 아니다. 출시 **HOLD**와 15개 영역 `pending`을 유지한다.
+
 상태: **HOLD**. 기준 커밋 `f700639`의 스킬 30개와 공용 자료를 전세계에 무료 공개하는 검토다. `README.md`는 외부 원본을 선별·수정했다고 설명하며 `LICENSE`는 자체 추가 부분에 MIT를 적용한다. 원본별 권리는 `ATTRIBUTION.md`·`NOTICE.md`와 실제 원문을 함께 확인해야 한다. 아래 영역은 모두 `pending`이다.
 
 ## 기능 적합성
