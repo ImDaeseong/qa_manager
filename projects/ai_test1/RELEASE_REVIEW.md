@@ -53,3 +53,10 @@
 
 ## 사업 운영
 - 근거: README는 개인 창작 자동화 작업 공간으로 소개한다. 남은 검토: 지원할 13개 프로젝트, 대상 사용자, 문의 경로와 담당자를 정한다.
+
+## 2026-09-21 source-only scope update
+
+- Owner decision: publish source code only worldwide; exclude images, audio, video, and executables.
+- `ai_test1@ffc86e61` removed 144 media/executable files from the Git index; all 144 local originals were retained. `.gitignore` excludes their extensions. `python scripts/check_source_only.py` reports 0 tracked files and its negative test rejects a staged PNG.
+- Impacted tests: 174 passed. Fresh clones must supply their own media for media-dependent workflows.
+- HOLD remains: earlier public Git history still contains excluded files, source-code and dependency license decisions are unresolved, and the 15 release areas still need human review. Removing files at HEAD does not erase older commits.

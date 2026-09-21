@@ -53,3 +53,10 @@
 
 ## 사업 운영
 - 근거: 6개 독립 프로젝트 모음이다. 남은 검토: 각 프로젝트의 대상 사용자, 문의 채널, 지원·유지 책임 범위를 정한다.
+
+## 2026-09-21 source-only scope update
+
+- Owner decision: publish source code only worldwide; exclude images, audio, video, and executables.
+- `ai_test2@540ce35` removed 38 media/executable files from the Git index; all 38 local originals were retained. `.gitignore` excludes their extensions. `python scripts/check_source_only.py` reports 0 tracked files and its negative test rejects a staged PNG.
+- Impacted tests: 444 passed, 4 skipped. Fresh clones must supply their own media for media-dependent workflows.
+- HOLD remains: earlier public Git history still contains excluded files, source-code and dependency license decisions are unresolved, and the 15 release areas still need human review. Removing files at HEAD does not erase older commits.
