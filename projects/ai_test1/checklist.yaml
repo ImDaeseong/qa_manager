@@ -18,7 +18,7 @@ project: ai_test1
 repo_root: ai_test1
 updated: 2026-08-05
 release_review:
-  release: "dc2129be (공개 출시 검토 기준점)"
+  release: "6a868852 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
   distribution: "GitHub 소스코드 무료 공개 검토"
   jurisdictions: ["전세계"]
