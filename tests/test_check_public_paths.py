@@ -19,8 +19,15 @@ class PublicPathTests(unittest.TestCase):
             project = root / "projects" / "sample"
             project.mkdir(parents=True)
             (project / "checklist.yaml").write_text("# /home/example/project\n", encoding="utf-8")
+            (project / "RELEASE_REVIEW.md").write_text(
+                "Evidence: C:/Users/reviewer/release\n", encoding="utf-8"
+            )
             findings = check(root)
-            self.assertCountEqual(findings, ["README.md:1", "projects/sample/checklist.yaml:1"])
+            self.assertCountEqual(
+                findings,
+                ["README.md:1", "projects/sample/RELEASE_REVIEW.md:1",
+                 "projects/sample/checklist.yaml:1"],
+            )
             self.assertNotIn("example", str(findings))
             stderr = StringIO()
             with redirect_stderr(stderr):
@@ -32,6 +39,11 @@ class PublicPathTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             (root / "README.md").write_text("Use ../sample and projects/sample\n", encoding="utf-8")
+            project = root / "projects" / "sample"
+            project.mkdir(parents=True)
+            (project / "RELEASE_REVIEW.md").write_text(
+                "Use <PROJECT_ROOT>/data\n", encoding="utf-8"
+            )
             self.assertEqual(check(root), [])
 
 

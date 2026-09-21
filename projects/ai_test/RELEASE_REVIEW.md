@@ -4,7 +4,7 @@
 
 - 기준 커밋 `e3d8361`에서 Git 추적 파일 784개를 검사했다. 저장소에 추적된 루트 `LICENSE`·`NOTICE`·`ATTRIBUTION` 파일이 없다. 소스코드 무료 재사용 허락 범위는 미확정이다.
 - 이미지 10개(`ai-webtoon/reference/` 7개, `ai_anime_production/input/` 2개, `imagevideo/input/` 1개), 음원 1개(`imagevideo/input/`), 빌드된 실행 파일 1개(`mp3_daw/`)가 추적된다. 개별 파일의 생성자·원본·배포 허락, 실행 파일의 빌드 출처를 확인하기 전에는 저장소 전체 공개 배포를 **HOLD**한다. README의 '저작권 안전' 표현은 파일별 권리 증명이 아니다.
-- 추적 텍스트의 Windows 사용자 홈 경로 검사에서 `security_scanning/modules/system_scanner.py`의 `C:\Users\Default` 대체 경로 1건만 확인했다. 이는 실제 사용자의 홈 경로가 아닌 기본 계정 예시이지만, `APPDATA`가 없을 때 현 사용자의 경로를 선택하지 못하는 이식성 검토 항목으로 남긴다. 다른 추적 텍스트에서는 해당 형태가 발견되지 않았다.
+- 추적 텍스트의 Windows 사용자 홈 경로 검사에서 `security_scanning/modules/system_scanner.py`의 기본 계정 대체 경로 1건만 확인했다. 이는 실제 사용자의 홈 경로가 아니지만, `APPDATA`가 없을 때 현 사용자의 경로를 선택하지 못하는 이식성 검토 항목으로 남긴다. 다른 추적 텍스트에서는 해당 형태가 발견되지 않았다.
 - 다음 검토: 18개 프로그램 중 소스만 배포할지, 위 미디어·실행 파일도 배포할지 범위를 정하고 각 파일의 권리 증빙을 연결한다. 이후 프로그램별 라이선스와 테스트·설치 범위를 검증한다. 현 체크리스트 15개 영역의 사람 검토 결정은 계속 `pending`이다.
 
 상태: **HOLD**. 기준 커밋 `e3d8361`의 소스 저장소를 전세계에 무료 공개하는 검토다. `README.md`는 음악·영상·보안·날씨 등 서로 다른 18개 프로그램을 나열한다. 현재 체크리스트는 그중 일부의 테스트를 실행하며 저장소 전체 제품 출시를 승인하지 않는다. `README.md`와 `PROJECT_STATUS.md`의 제약을 1차 근거로 삼았다.
@@ -43,7 +43,7 @@
 - 근거: 일부 도구는 로컬 파일·포트 이력·외부 계정 토큰을 다룬다. 남은 검토: 공개될 예제·로그·설정과 실행 중 수집·보관·삭제·전송 경로를 점검한다.
 
 ## 공급망 라이선스
-- 근거: 저장소 루트에서 `LICENSE`를 확인하지 못했고 외부 API·미디어·라이브러리를 사용하는 프로그램이 있다. 남은 검토: 프로그램별 코드·의존성·스톡 자산·생성물의 재배포 권리를 확인한다.
+- 근거: [`LICENSE_SCOPE_REVIEW.md`](LICENSE_SCOPE_REVIEW.md)에서 `ai_test@a7b2bfa`의 소스 전용 경계를 감사했다. 저장소에 직접 포함된 제3자 소스는 고지문이 복원된 JsonCpp 1.7.2로 확인했고, 패키지 관리자로 설치되는 Remotion은 별도 사용 제한이 있는 라이선스이므로 루트 라이선스의 적용 대상이 아님을 명시했다. 남은 검토: 권리자가 직접 작성 코드의 권리·외부 반입 여부를 확인하고 MIT(권고) 또는 Apache-2.0을 선택한 뒤, Remotion 경고와 제3자 제외 범위를 README에 반영한다.
 
 ## 배포 운영
 - 근거: README에는 프로그램별 실행법과 알려진 HOLD가 있다. 남은 검토: 공개 릴리스 파일, 재현 빌드, 취약점 신고, 수정·롤백·지원 절차를 프로그램별로 정한다.
@@ -65,4 +65,5 @@
 
 - `ai_test@40c7168`: six more tracked files (ICO image, two lyric/subtitle inputs, three Visual Studio build-state files) were untracked; all local originals remain. Removed the now-broken ICO references from the MFC resource/project files. Project XML parses and 52 related Python tests pass; a Windows MFC build remains unverified. The media guard rejects a staged FLAC in a negative check and reports zero tracked media at HEAD.
 - `ai_test@a7b2bfa`: restored the JsonCpp 1.7.2 LICENSE from the official [1.7.2 tag](https://github.com/open-source-parsers/jsoncpp/tree/1.7.2) and added `scripts/check_vendor_notices.py`. The guard requires the notice to remain Git-tracked, the bundled version to remain 1.7.2, and the file SHA-256 to match the tagged upstream text. The positive check passed, and a temporary-clone negative check rejected a modified LICENSE.
-- HOLD: old Git history still contains excluded files; the owner's original-code license and human release checks remain open. Restoring the vendor notice does not choose a license for original code.
+- `LICENSE_SCOPE_REVIEW.md` separates owner-authored files, vendored JsonCpp, and package-managed dependencies. It records MIT as the recommended simple permissive option and Apache-2.0 as the patent-grant alternative, without choosing for the owner. Remotion-dependent subprojects require a visible separate-license warning.
+- HOLD: old Git history still contains excluded files; owner rights/attribution and the original-code license choice remain unconfirmed; human release checks remain open.

@@ -12,8 +12,9 @@ PRIVATE_PATH = re.compile(r"(?i)(?:[A-Z]:[\\/]Users[\\/]|/(?:Users|home)/)[^\\/\
 
 def check(root: Path = ROOT) -> list[str]:
     """Return locations of user-home paths in public docs, checklists, and reports."""
-    paths = [root / "README.md", *root.glob("*.md"), *root.glob("projects/*/checklist.yaml"),
-             root / "index.html", *root.glob("projects/*/dashboard.html")]
+    paths = [root / "README.md", *root.glob("*.md"), *root.glob("projects/*/*.md"),
+             *root.glob("projects/*/checklist.yaml"), root / "index.html",
+             *root.glob("projects/*/dashboard.html")]
     findings = []
     for path in sorted(set(paths)):
         if not path.is_file():
