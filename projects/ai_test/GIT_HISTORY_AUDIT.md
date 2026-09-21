@@ -63,3 +63,7 @@ The unauthenticated GitHub API was checked on 2026-09-21. The repository is alre
 ## Recovery backup
 
 A complete pre-rewrite bundle, `ai_test-history-backup-20260921.bundle`, was created outside the repository on 2026-09-21. `git bundle verify` confirmed four refs and complete history; its size is 108,734,717 bytes and SHA-256 is `4BA60509232A0A285DBA1397E75D5D0DECA3ECFCC61C0A1EA6116390330440F8`. A separate restore-check clone passed `git fsck --full --strict` and reproduced HEAD `31c5aa6` with tree `38533a2`. HOLD condition 2 is satisfied.
+
+## Push readiness
+
+The remote `main` remained at the expected pre-rewrite SHA `a7b2bfa`. An authenticated `git push --dry-run --force-with-lease` accepted the exact proposed update from `a7b2bfa` to rewritten `8ddcfb5`. The real force push was not performed: safety review requires explicit approval for rewriting the public default branch after acknowledging the existing fork, open pull request, and unverified authenticated protection settings.
