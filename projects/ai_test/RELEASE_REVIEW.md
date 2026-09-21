@@ -43,7 +43,7 @@
 - 근거: 일부 도구는 로컬 파일·포트 이력·외부 계정 토큰을 다룬다. 남은 검토: 공개될 예제·로그·설정과 실행 중 수집·보관·삭제·전송 경로를 점검한다.
 
 ## 공급망 라이선스
-- 근거: [`LICENSE_SCOPE_REVIEW.md`](LICENSE_SCOPE_REVIEW.md)에서 `ai_test@a7b2bfa`의 소스 전용 경계를 감사했다. 저장소에 직접 포함된 제3자 소스는 고지문이 복원된 JsonCpp 1.7.2로 확인했고, 패키지 관리자로 설치되는 Remotion은 별도 사용 제한이 있는 라이선스이므로 루트 라이선스의 적용 대상이 아님을 명시했다. 남은 검토: 권리자가 직접 작성 코드의 권리·외부 반입 여부를 확인하고 MIT(권고) 또는 Apache-2.0을 선택한 뒤, Remotion 경고와 제3자 제외 범위를 README에 반영한다.
+- 근거: [`LICENSE_SCOPE_REVIEW.md`](LICENSE_SCOPE_REVIEW.md)에 따라 `ai_test@31c5aa6`이 직접 작성 코드와 문서에 MIT(`Copyright (c) 2026 ImDaeseong`)를 적용했다. `THIRD_PARTY_NOTICES.md`는 JsonCpp 고지를 보존하고 Remotion·설치 의존성·외부 서비스가 루트 MIT 범위가 아님을 명시한다. 라이선스 가드는 Git 추적·원문 해시·필수 경계·README 링크를 검사하고 이유별 음성 테스트를 갖춘다. 남은 검토: 완전한 의존성/SBOM, 과거 Git 이력, 사람의 권리·출시 판단을 완료한다.
 
 ## 배포 운영
 - 근거: README에는 프로그램별 실행법과 알려진 HOLD가 있다. 남은 검토: 공개 릴리스 파일, 재현 빌드, 취약점 신고, 수정·롤백·지원 절차를 프로그램별로 정한다.
@@ -65,5 +65,6 @@
 
 - `ai_test@40c7168`: six more tracked files (ICO image, two lyric/subtitle inputs, three Visual Studio build-state files) were untracked; all local originals remain. Removed the now-broken ICO references from the MFC resource/project files. Project XML parses and 52 related Python tests pass; a Windows MFC build remains unverified. The media guard rejects a staged FLAC in a negative check and reports zero tracked media at HEAD.
 - `ai_test@a7b2bfa`: restored the JsonCpp 1.7.2 LICENSE from the official [1.7.2 tag](https://github.com/open-source-parsers/jsoncpp/tree/1.7.2) and added `scripts/check_vendor_notices.py`. The guard requires the notice to remain Git-tracked, the bundled version to remain 1.7.2, and the file SHA-256 to match the tagged upstream text. The positive check passed, and a temporary-clone negative check rejected a modified LICENSE.
-- `LICENSE_SCOPE_REVIEW.md` separates owner-authored files, vendored JsonCpp, and package-managed dependencies. It records MIT as the recommended simple permissive option and Apache-2.0 as the patent-grant alternative, without choosing for the owner. Remotion-dependent subprojects require a visible separate-license warning.
-- HOLD: old Git history still contains excluded files; owner rights/attribution and the original-code license choice remain unconfirmed; human release checks remain open.
+- `LICENSE_SCOPE_REVIEW.md` separates owner-authored files, vendored JsonCpp, and package-managed dependencies. The initial audit recommended MIT over the Apache-2.0 alternative; the owner then instructed the recommended default to be applied. Remotion-dependent subprojects retain a visible separate-license warning.
+- `ai_test@31c5aa6`: applied MIT to original source and documentation, added third-party/Remotion boundaries, and added a tracked/hash/content guard with reason-specific negative tests. Root tests report 12 passed plus 3 subtests.
+- HOLD: old Git history still contains excluded files; complete dependency/SBOM and human provenance review remain open; Windows MFC compilation and other release checks remain open.

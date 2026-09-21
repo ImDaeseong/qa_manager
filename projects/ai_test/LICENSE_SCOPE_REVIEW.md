@@ -41,14 +41,16 @@ Use Apache-2.0 if an explicit contributor patent grant and patent-termination pr
 
 Neither option makes third-party packages, APIs, media, or historical excluded files available under the chosen root license.
 
-## Owner confirmations required before adding a root license
+## Owner confirmations applied
 
-1. Confirm that the source intended for licensing was created personally or can legally be relicensed, and contains no employer, client, or confidential code.
-2. Confirm that outside snippets, templates, AI-assisted output, and copied project scaffolding were reviewed and that the owner has the rights needed for the selected license.
-3. Choose `MIT` (recommended) or `Apache-2.0`, and choose the copyright holder name/year to place in the license.
-4. Accept the explicit exclusions: JsonCpp remains under its bundled notice; Remotion and all installed dependencies remain under their own terms; external API/content terms are separate.
-5. Decide separately whether old Git history containing removed media/build files will remain public or be rewritten before release.
+The user instructed the work to continue with the recommended defaults after the confirmation gate. `ai_test@31c5aa6` therefore applies MIT to original source and documentation as `Copyright (c) 2026 ImDaeseong`, while preserving these exclusions:
+
+- JsonCpp remains under its bundled notice.
+- Remotion and installed dependencies remain under their own terms.
+- External APIs, services, and user-supplied content remain outside the root license.
+
+This records the owner's release instruction, not independent proof of employer, client, copied-code, or AI-authorship rights. Those provenance assertions remain a human/legal responsibility.
 
 ## Current decision
 
-**HOLD.** The technical scope is narrow enough to license, but no root license should be added until the owner completes the confirmations above. The Remotion warning and third-party exclusion must accompany whichever owner-code license is selected.
+**MIT APPLIED; RELEASE HOLD REMAINS.** The root license, third-party notice, README boundary, integrity guard, and reason-specific regression tests are present. Old Git history, complete dependency/SBOM review, Windows MFC build, and the remaining human release areas are still open.
