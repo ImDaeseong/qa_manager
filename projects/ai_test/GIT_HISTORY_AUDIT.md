@@ -42,3 +42,16 @@ GitHub documents that history rewriting changes commit identities, requires a fo
 5. Obtain explicit approval for force-pushing rewritten refs. Coordinate all other clones so old history is not merged back.
 
 Until these conditions are met, keep the current local and remote history unchanged.
+
+## Disposable-mirror dry run
+
+On 2026-09-21, `git-filter-repo` 2.47.0 was run only against a disposable local mirror. Neither the working repository nor GitHub was updated.
+
+- Removal rules covered `ai-webtoon/output/`, `extensions/suno-lyric-downloader/node_modules/`, media extensions, and executable/build-state extensions. With `core.quotePath=false`, they selected 10,315 historical paths and zero paths at the current HEAD. Disabling path quoting is required when counting or matching the non-ASCII output paths.
+- The rewritten history contains zero paths matching those rules. Reachable commits changed from 42 to 41 because one commit became empty.
+- Packed size fell from 101.87 MiB to 1.82 MiB. The rewritten HEAD commit is `8ddcfb5`, while its tree remains `38533a2`, exactly matching the original `31c5aa6` HEAD tree.
+- The bounded common-secret scan still found zero matching files.
+- All 11 registered subproject suites passed in a temporary checkout: 363 tests total.
+- The original repository remained at `31c5aa6`, clean, and 1 commit ahead of `origin/main`; its object database remained unchanged.
+
+Dry-run result: **PASS**, but remote replacement remains **HOLD**. Before any force push, complete conditions 1, 2, and 5 above and preserve the exact removal rules and verification evidence from this run.

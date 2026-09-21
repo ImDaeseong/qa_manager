@@ -46,7 +46,7 @@
 - 근거: [`LICENSE_SCOPE_REVIEW.md`](LICENSE_SCOPE_REVIEW.md)에 따라 `ai_test@31c5aa6`이 직접 작성 코드와 문서에 MIT(`Copyright (c) 2026 ImDaeseong`)를 적용했다. `THIRD_PARTY_NOTICES.md`는 JsonCpp 고지를 보존하고 Remotion·설치 의존성·외부 서비스가 루트 MIT 범위가 아님을 명시한다. 라이선스 가드는 Git 추적·원문 해시·필수 경계·README 링크를 검사하고 이유별 음성 테스트를 갖춘다. 남은 검토: 완전한 의존성/SBOM, 과거 Git 이력, 사람의 권리·출시 판단을 완료한다.
 
 ## 배포 운영
-- 근거: README에는 프로그램별 실행법과 알려진 HOLD가 있다. [`GIT_HISTORY_AUDIT.md`](GIT_HISTORY_AUDIT.md)는 42개 커밋의 과거 객체를 비노출 방식으로 감사하고 공개 전 이력 재작성을 권고한다. 남은 검토: 원격 공개 상태·협업자·PR·보호 브랜치를 확인하고, 백업·검증·강제 push 승인을 포함한 재작성 계획을 확정한다. 프로그램별 재현 빌드, 취약점 신고, 수정·롤백·지원 절차도 정한다.
+- 근거: README에는 프로그램별 실행법과 알려진 HOLD가 있다. [`GIT_HISTORY_AUDIT.md`](GIT_HISTORY_AUDIT.md)는 42개 커밋의 과거 객체를 비노출 방식으로 감사하고, 폐기 가능한 미러의 재작성 예행연습에서 대상 경로 0건·동일 HEAD 트리·363개 테스트 통과·팩 101.87 MiB에서 1.82 MiB 감소를 확인했다. 남은 검토: 원격 공개 상태·협업자·PR·보호 브랜치를 확인하고, 백업·검증·강제 push 승인을 포함한 원격 교체 계획을 확정한다. 프로그램별 재현 빌드, 취약점 신고, 수정·롤백·지원 절차도 정한다.
 
 ## 법률 규제
 - 근거: 전세계 무료 소스 공개를 검토하며 스트림 다운로드·보안 스캔·미디어 자산 등이 포함된다. 남은 검토: 권한 있는 대상 사용, 콘텐츠 권리, 개인정보 및 지역별 의무를 검토한다. 이 문서는 법률 적합성 판단이 아니다.
@@ -67,5 +67,5 @@
 - `ai_test@a7b2bfa`: restored the JsonCpp 1.7.2 LICENSE from the official [1.7.2 tag](https://github.com/open-source-parsers/jsoncpp/tree/1.7.2) and added `scripts/check_vendor_notices.py`. The guard requires the notice to remain Git-tracked, the bundled version to remain 1.7.2, and the file SHA-256 to match the tagged upstream text. The positive check passed, and a temporary-clone negative check rejected a modified LICENSE.
 - `LICENSE_SCOPE_REVIEW.md` separates owner-authored files, vendored JsonCpp, and package-managed dependencies. The initial audit recommended MIT over the Apache-2.0 alternative; the owner then instructed the recommended default to be applied. Remotion-dependent subprojects retain a visible separate-license warning.
 - `ai_test@31c5aa6`: applied MIT to original source and documentation, added third-party/Remotion boundaries, and added a tracked/hash/content guard with reason-specific negative tests. Root tests report 12 passed plus 3 subtests.
-- `GIT_HISTORY_AUDIT.md`: 10,454 deleted paths remain reachable (7,977 generated webtoon output, 2,317 `node_modules`, and other source/input paths). Large history includes WAV, MP3, images, executables, native modules, and Visual Studio build state. A bounded common-secret scan found zero key-shaped matches; this is not proof of absence. History rewrite is recommended but was not performed.
-- HOLD: history rewrite preconditions and approval, complete dependency/SBOM and human provenance review, Windows MFC compilation, and other release checks remain open.
+- `GIT_HISTORY_AUDIT.md`: 10,454 deleted paths remain reachable in the unchanged original repository. A disposable-mirror rewrite removed all 10,315 paths selected by the approved output/dependency/media/build rules, preserved the current HEAD tree, reduced the pack to 1.82 MiB, retained zero bounded secret-shape matches, and passed all 363 registered tests.
+- HOLD: the dry run passed, but remote visibility/collaborator/fork/PR/protection checks, a recoverable mirror backup, explicit force-push approval, complete dependency/SBOM and human provenance review, Windows MFC compilation, and other release checks remain open.
