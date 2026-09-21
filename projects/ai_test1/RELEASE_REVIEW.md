@@ -60,3 +60,8 @@
 - `ai_test1@ffc86e61` removed 144 media/executable files from the Git index; all 144 local originals were retained. `.gitignore` excludes their extensions. `python scripts/check_source_only.py` reports 0 tracked files and its negative test rejects a staged PNG.
 - Impacted tests: 174 passed. Fresh clones must supply their own media for media-dependent workflows.
 - HOLD remains: earlier public Git history still contains excluded files, source-code and dependency license decisions are unresolved, and the 15 release areas still need human review. Removing files at HEAD does not erase older commits.
+
+## 2026-09-21 extended source-only audit
+
+- `ai_test1@6a868852`: no additional tracked media were found; `.gitignore` and the tracked-media guard now also cover ICO, SVG, FLAC, subtitle/lyric files, and Visual Studio build-state extensions. A staged FLAC is rejected in a negative check; HEAD reports zero tracked media.
+- HOLD: old Git history, original-code license, dependency notices, and human release checks remain open.

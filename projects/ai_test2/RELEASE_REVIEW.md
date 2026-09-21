@@ -60,3 +60,8 @@
 - `ai_test2@540ce35` removed 38 media/executable files from the Git index; all 38 local originals were retained. `.gitignore` excludes their extensions. `python scripts/check_source_only.py` reports 0 tracked files and its negative test rejects a staged PNG.
 - Impacted tests: 444 passed, 4 skipped. Fresh clones must supply their own media for media-dependent workflows.
 - HOLD remains: earlier public Git history still contains excluded files, source-code and dependency license decisions are unresolved, and the 15 release areas still need human review. Removing files at HEAD does not erase older commits.
+
+## 2026-09-21 extended source-only audit
+
+- `ai_test2@32bcc67`: seven more tracked files (SVG and ICO images, one FLAC test fixture) were untracked; all local originals remain. No source references to the removed SVG assets were found. The guard rejects a staged FLAC and reports zero tracked media. Related Python checks: 107 passed, 4 skipped.
+- HOLD: old Git history, original-code license, dependency notices, and human release checks remain open. The published `music_insight_studio` verification commands that use fixture audio require locally supplied media in a fresh clone.

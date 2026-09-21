@@ -60,3 +60,9 @@
 - `ai_test@db400c3` removed 12 media/executable files from the Git index; all 12 local originals were retained. `.gitignore` excludes their extensions. `python scripts/check_source_only.py` reports 0 tracked files and its negative test rejects a staged PNG.
 - Impacted tests: 52 passed. Fresh clones must supply their own media for media-dependent workflows.
 - HOLD remains: earlier public Git history still contains excluded files, source-code and dependency license decisions are unresolved, and the 15 release areas still need human review. Removing files at HEAD does not erase older commits.
+
+## 2026-09-21 extended source-only audit
+
+- `ai_test@40c7168`: six more tracked files (ICO image, two lyric/subtitle inputs, three Visual Studio build-state files) were untracked; all local originals remain. Removed the now-broken ICO references from the MFC resource/project files. Project XML parses and 52 related Python tests pass; a Windows MFC build remains unverified. The media guard rejects a staged FLAC in a negative check and reports zero tracked media at HEAD.
+- Vendored JsonCpp in `run_game/run_game/json/` declares version 1.7.2 and its source headers point to a LICENSE file, but none is tracked. The official upstream [JsonCpp LICENSE](https://raw.githubusercontent.com/open-source-parsers/jsoncpp/master/LICENSE) includes a required copyright and permission notice. The matching version's license text and vendor attribution should be restored before source release; this does not decide a license for the owner's original code.
+- HOLD: old Git history still contains excluded files; original-code license, vendored notice, and human release checks remain open.
