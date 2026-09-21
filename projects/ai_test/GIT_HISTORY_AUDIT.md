@@ -58,7 +58,7 @@ Dry-run result: **PASS**, but remote replacement remains **HOLD**. Before any fo
 
 ## Remote state
 
-The unauthenticated GitHub API was checked on 2026-09-21. The repository is already public, uses `main` as its default branch, has one fork, and has one open pull request. Collaborator and branch-protection endpoints returned HTTP 401 without authenticated repository access, so those controls remain unverified. Because a public fork already exists, rewriting the origin cannot remove the old objects from that fork; coordinate with its owner or treat the old history as permanently distributed.
+The unauthenticated GitHub API was checked on 2026-09-21. The repository is already public, uses `main` as its default branch, and has one fork. A later raw-response check confirmed the open-pulls endpoint returns `[]`: the earlier one-PR count was a PowerShell `@($null).Count` counting error. Collaborator and branch-protection endpoints returned HTTP 401 without authenticated repository access, so those controls remain unverified. Because a public fork already exists, rewriting the origin cannot remove the old objects from that fork; coordinate with its owner or treat the old history as permanently distributed.
 
 ## Recovery backup
 
@@ -66,7 +66,7 @@ A complete pre-rewrite bundle, `ai_test-history-backup-20260921.bundle`, was cre
 
 ## Push readiness
 
-The completed MIT/source-boundary commit was pushed normally, moving remote `main` from `a7b2bfa` to `31c5aa6`. An authenticated `git push --dry-run --force-with-lease` then accepted the exact proposed rewrite from `31c5aa6` to `8ddcfb5`. The real force push was not performed: safety review requires explicit approval for rewriting the public default branch after acknowledging the existing fork, open pull request, and unverified authenticated protection settings.
+The completed MIT/source-boundary commit was pushed normally, moving remote `main` from `a7b2bfa` to `31c5aa6`. An authenticated `git push --dry-run --force-with-lease` then accepted the exact proposed rewrite from `31c5aa6` to `8ddcfb5`. The real force push was not performed: safety review required explicit approval for rewriting the public default branch after acknowledging the existing fork and unverified authenticated protection settings. The contemporaneous one-open-PR report was later corrected to zero.
 
 ## Superseding dry run for current HEAD
 
@@ -77,17 +77,21 @@ After the dependency-inventory and checkout-independent CRLF regression commits 
 - Its tree `fa22ec1` exactly matches original `7afa58c`; bounded OpenAI, Google, GitHub, Slack, and private-key patterns match zero files; full strict fsck passes.
 - A fresh checkout passes all 19 registered live checks. That verification exposed and fixed one pre-existing test-fixture defect: the CRLF regression test doubled CR bytes when the checkout was already CRLF under `core.autocrlf=true`; `7afa58c` normalizes to LF before constructing its CRLF fixture.
 - Updated recovery bundle `ai_test-history-backup-20260921-7afa58c.bundle` contains all four current refs and complete history, is 108,740,642 bytes, and has SHA-256 `152D0F33731F278384B853B6952717DFF8B75A51E2E2C57CC8049DBBD226F4F1`. A separate restore clone passes strict fsck and reproduces `7afa58c` / tree `fa22ec1`.
-- An exact-lease dry run accepted `7afa58c→2ddd8313`. The real push was not performed. The latest public API check still reports public/default `main`, one fork, and one open pull request; authenticated collaborator and protection checks remain open.
+- An exact-lease dry run accepted `7afa58c→2ddd8313`. The real push was not performed. The public API reports public/default `main` and one fork; the raw open-pulls response is `[]`. Authenticated collaborator and protection checks remain open.
 
 Dry-run result: **PASS**, remote replacement remains **HOLD** pending authenticated controls review, fork/PR coordination, and explicit public-default-branch force-push approval.
 
 ## Approved remote replacement
 
-The owner explicitly approved replacing public `main` after being shown the existing one-fork/one-open-PR risk. Immediately before the write, the remote still matched exact expected SHA `7afa58c`, remained public with default branch `main`, and still reported one fork and one open pull request.
+The owner explicitly approved replacing public `main` after being shown the then-reported one-fork/one-open-PR risk. Immediately before the write, the remote still matched exact expected SHA `7afa58c` and remained public with default branch `main`. The fork count was one; a later raw-response check corrected the open-PR count from one to zero.
 
 - Exact `--force-with-lease=refs/heads/main:7afa58c...` replaced only `refs/heads/main` with verified candidate `2ddd8313`; no other ref was targeted.
 - A post-write `ls-remote` and a fresh GitHub clone both resolve to `2ddd8313` / tree `fa22ec1`; full strict fsck and all 19 registered live checks pass in that fresh clone.
 - The original local clone was clean and had the identical tree, then its `main` ref was moved with compare-and-swap from `7afa58c` to `2ddd8313` after fetching the forced remote update. Local `main` and `origin/main` now match.
-- The full pre-rewrite recovery bundle remains outside the repository. Old history can still exist in the public fork and other clones; rewriting origin does not revoke those copies. The open PR and any collaborator clones may need rebasing or fresh cloning before further work.
+- The full pre-rewrite recovery bundle remains outside the repository. Old history can still exist in the public fork and other clones; rewriting origin does not revoke those copies. There are zero open PRs. Any collaborator clones may need rebasing or fresh cloning before further work.
+
+## Fork follow-up
+
+Public fork `ko9ma7/ai_test` remains at `91bdc829` (last pushed 2026-08-03) and has no common ancestor with rewritten upstream `2ddd8313`. Its issues are disabled, and the current environment has no authenticated GitHub session, so this repository cannot rewrite or contact that third-party fork. Treat the old history as publicly distributed unless its owner independently deletes or rewrites the fork.
 
 Origin-history replacement result: **PASS**. This closes the origin rewrite execution gate, not the remaining dependency-license/vulnerability, human provenance, Windows MFC build, fork/PR coordination, or other release-review HOLDs.
