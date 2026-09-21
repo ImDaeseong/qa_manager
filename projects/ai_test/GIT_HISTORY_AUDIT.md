@@ -31,7 +31,7 @@ This is a targeted pattern scan, not proof that history contains no sensitive or
 
 GitHub documents that history rewriting changes commit identities, requires a force push, affects collaborators and pull requests, and cannot clean other clones or forks. The official process uses `git-filter-repo`, followed by verification, coordinated remote replacement, and collaborator cleanup: <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository>.
 
-`git-filter-repo` is not installed on this machine. Its official project documents installation and analysis procedures: <https://github.com/newren/git-filter-repo>.
+`git-filter-repo` 2.47.0 is available only in a temporary local tool directory, not as a system installation. Its official project documents installation and analysis procedures: <https://github.com/newren/git-filter-repo>.
 
 ## HOLD conditions before rewriting
 
@@ -67,3 +67,16 @@ A complete pre-rewrite bundle, `ai_test-history-backup-20260921.bundle`, was cre
 ## Push readiness
 
 The completed MIT/source-boundary commit was pushed normally, moving remote `main` from `a7b2bfa` to `31c5aa6`. An authenticated `git push --dry-run --force-with-lease` then accepted the exact proposed rewrite from `31c5aa6` to `8ddcfb5`. The real force push was not performed: safety review requires explicit approval for rewriting the public default branch after acknowledging the existing fork, open pull request, and unverified authenticated protection settings.
+
+## Superseding dry run for current HEAD
+
+After the dependency-inventory and checkout-independent CRLF regression commits advanced public `main` to `7afa58c`, the older `8ddcfb5` candidate became stale. A fresh disposable-mirror run produced the following evidence:
+
+- The same path and extension policy selects 10,323 historical paths and zero current-HEAD paths. Reapplying the current rule to the older `31c5aa6` baseline also yields 10,323, so the former 10,315 figure was an eight-path undercount, not new exposure introduced by later commits.
+- Rewritten candidate `2ddd8313` has 43 commits (from 44), contains zero selected paths, and has a 1.75 MiB pack.
+- Its tree `fa22ec1` exactly matches original `7afa58c`; bounded OpenAI, Google, GitHub, Slack, and private-key patterns match zero files; full strict fsck passes.
+- A fresh checkout passes all 19 registered live checks. That verification exposed and fixed one pre-existing test-fixture defect: the CRLF regression test doubled CR bytes when the checkout was already CRLF under `core.autocrlf=true`; `7afa58c` normalizes to LF before constructing its CRLF fixture.
+- Updated recovery bundle `ai_test-history-backup-20260921-7afa58c.bundle` contains all four current refs and complete history, is 108,740,642 bytes, and has SHA-256 `152D0F33731F278384B853B6952717DFF8B75A51E2E2C57CC8049DBBD226F4F1`. A separate restore clone passes strict fsck and reproduces `7afa58c` / tree `fa22ec1`.
+- An exact-lease dry run accepted `7afa58c→2ddd8313`. The real push was not performed. The latest public API check still reports public/default `main`, one fork, and one open pull request; authenticated collaborator and protection checks remain open.
+
+Dry-run result: **PASS**, remote replacement remains **HOLD** pending authenticated controls review, fork/PR coordination, and explicit public-default-branch force-push approval.

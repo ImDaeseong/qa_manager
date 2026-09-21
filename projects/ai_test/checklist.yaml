@@ -16,7 +16,7 @@ project: ai_test
 repo_root: ai_test
 updated: 2026-09-21
 release_review:
-  release: "ce929cd (MIT 소스 전용 공개 출시 검토 기준점)"
+  release: "7afa58c (MIT 소스 전용 공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
   distribution: "GitHub 소스코드 무료 공개 검토; 미디어·실행 파일 제외"
   jurisdictions: ["전세계"]
