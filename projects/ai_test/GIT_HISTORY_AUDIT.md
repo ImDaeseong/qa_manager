@@ -55,3 +55,7 @@ On 2026-09-21, `git-filter-repo` 2.47.0 was run only against a disposable local 
 - The original repository remained at `31c5aa6`, clean, and 1 commit ahead of `origin/main`; its object database remained unchanged.
 
 Dry-run result: **PASS**, but remote replacement remains **HOLD**. Before any force push, complete conditions 1, 2, and 5 above and preserve the exact removal rules and verification evidence from this run.
+
+## Remote state
+
+The unauthenticated GitHub API was checked on 2026-09-21. The repository is already public, uses `main` as its default branch, has one fork, and has one open pull request. Collaborator and branch-protection endpoints returned HTTP 401 without authenticated repository access, so those controls remain unverified. Because a public fork already exists, rewriting the origin cannot remove the old objects from that fork; coordinate with its owner or treat the old history as permanently distributed.
