@@ -46,7 +46,7 @@ project: hermes-agents
 repo_root: hermes-agents
 updated: 2026-08-05
 release_review:
-  release: "68489f5 (공개 출시 검토 기준점)"
+  release: "1dc1720 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
   distribution: "GitHub 소스코드 무료 공개 검토"
   jurisdictions: ["전세계"]
