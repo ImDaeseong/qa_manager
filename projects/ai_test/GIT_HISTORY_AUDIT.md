@@ -59,3 +59,7 @@ Dry-run result: **PASS**, but remote replacement remains **HOLD**. Before any fo
 ## Remote state
 
 The unauthenticated GitHub API was checked on 2026-09-21. The repository is already public, uses `main` as its default branch, has one fork, and has one open pull request. Collaborator and branch-protection endpoints returned HTTP 401 without authenticated repository access, so those controls remain unverified. Because a public fork already exists, rewriting the origin cannot remove the old objects from that fork; coordinate with its owner or treat the old history as permanently distributed.
+
+## Recovery backup
+
+A complete pre-rewrite bundle, `ai_test-history-backup-20260921.bundle`, was created outside the repository on 2026-09-21. `git bundle verify` confirmed four refs and complete history; its size is 108,734,717 bytes and SHA-256 is `4BA60509232A0A285DBA1397E75D5D0DECA3ECFCC61C0A1EA6116390330440F8`. A separate restore-check clone passed `git fsck --full --strict` and reproduced HEAD `31c5aa6` with tree `38533a2`. HOLD condition 2 is satisfied.
