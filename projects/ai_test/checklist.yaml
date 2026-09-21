@@ -14,11 +14,11 @@
 
 project: ai_test
 repo_root: ai_test
-updated: 2026-08-05
+updated: 2026-09-21
 release_review:
-  release: "e3d8361 (공개 출시 검토 기준점)"
+  release: "a7b2bfa (소스 전용 공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
-  distribution: "GitHub 소스코드 무료 공개 검토"
+  distribution: "GitHub 소스코드 무료 공개 검토; 미디어·실행 파일 제외"
   jurisdictions: ["전세계"]
   areas:
     functional_suitability: {decision: pending, evidence: "projects/ai_test/RELEASE_REVIEW.md#기능-적합성"}
@@ -166,3 +166,26 @@ requirements:
             check: "python -m pytest tests/test_security_hotspots.py -q"
             status: pass
             last_verified: 2026-09-18
+
+  - id: R3
+    quality_dimension: supply_chain
+    description: "소스 전용 배포 범위와 포함된 JsonCpp 1.7.2 고지문을 자동 검사한다"
+    dev_items:
+      - id: R3-D1
+        description: "미디어·실행 파일이 Git 추적 목록에 남지 않도록 확인한다"
+        test_items:
+          - id: source-only-guard
+            category: basic
+            description: "Git 인덱스의 미디어·실행 파일 수가 0인지 확인합니다."
+            check: "python scripts/check_source_only.py"
+            status: pass
+            last_verified: 2026-09-21
+      - id: R3-D2
+        description: "포함된 JsonCpp 버전의 원본 라이선스 고지문을 유지한다"
+        test_items:
+          - id: jsoncpp-license-guard
+            category: regression
+            description: "JsonCpp 1.7.2 LICENSE가 추적되고 원본 내용과 일치하는지 확인합니다."
+            check: "python scripts/check_vendor_notices.py"
+            status: pass
+            last_verified: 2026-09-21
