@@ -135,7 +135,7 @@
 <div class="stat-grid">
   <div class="stat"><div class="n">9</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">47</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">109</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">111</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">9</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
   <div class="stat"><div class="n">0</div><div class="label">출시 검토 근거 완료 프로젝트</div></div>
@@ -885,7 +885,7 @@
         <span>ai_test</span>
         <span class="pill pass">통과</span>
         <span class="pill hold">보류</span> <span class="desc-inline">출시 검토 보류(15개 영역)</span>
-        <span class="counts-inline">요구사항 3개 · 검사항목 17개 · 실패 0건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 3개 · 검사항목 19개 · 실패 0건 · <a href="projects/ai_test/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       
     <div class="readiness not-ready">
@@ -1130,7 +1130,7 @@
         <code>R3</code> <span class="pill pass">통과</span>
         <span class="desc-inline">소스 전용 배포 범위, 루트 MIT 범위, 포함된 JsonCpp 1.7.2 고지문을 자동 검사한다</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 3개 · 검사항목 4개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 4개 · 검사항목 6개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -1189,6 +1189,32 @@
           </div>
           <p class="desc">라이선스 변조·무관 누락·CRLF 차이를 구분하는 가드 회귀 테스트입니다.</p>
           <p class="check">실행 명령: <code>python -m pytest tests/test_license_scope.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D4</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">추적 중인 의존성 manifest와 lockfile 검토 근거를 최신 상태로 유지한다</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>dependency-inventory-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">모든 추적 manifest가 인벤토리에 기록되고 해시가 일치하며 npm lock 형식이 지원되는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python scripts/check_dependency_inventory.py</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>dependency-inventory-guard-regression</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">누락·잔존·변경 manifest와 누락·손상·구형 npm lock을 가드가 거부하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>python -m pytest tests/test_dependency_inventory.py -q --basetemp .pytest_dependency_inventory</code></p>
         </li>
         </ul>
       </details>
