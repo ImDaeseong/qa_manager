@@ -80,3 +80,14 @@ After the dependency-inventory and checkout-independent CRLF regression commits 
 - An exact-lease dry run accepted `7afa58c→2ddd8313`. The real push was not performed. The latest public API check still reports public/default `main`, one fork, and one open pull request; authenticated collaborator and protection checks remain open.
 
 Dry-run result: **PASS**, remote replacement remains **HOLD** pending authenticated controls review, fork/PR coordination, and explicit public-default-branch force-push approval.
+
+## Approved remote replacement
+
+The owner explicitly approved replacing public `main` after being shown the existing one-fork/one-open-PR risk. Immediately before the write, the remote still matched exact expected SHA `7afa58c`, remained public with default branch `main`, and still reported one fork and one open pull request.
+
+- Exact `--force-with-lease=refs/heads/main:7afa58c...` replaced only `refs/heads/main` with verified candidate `2ddd8313`; no other ref was targeted.
+- A post-write `ls-remote` and a fresh GitHub clone both resolve to `2ddd8313` / tree `fa22ec1`; full strict fsck and all 19 registered live checks pass in that fresh clone.
+- The original local clone was clean and had the identical tree, then its `main` ref was moved with compare-and-swap from `7afa58c` to `2ddd8313` after fetching the forced remote update. Local `main` and `origin/main` now match.
+- The full pre-rewrite recovery bundle remains outside the repository. Old history can still exist in the public fork and other clones; rewriting origin does not revoke those copies. The open PR and any collaborator clones may need rebasing or fresh cloning before further work.
+
+Origin-history replacement result: **PASS**. This closes the origin rewrite execution gate, not the remaining dependency-license/vulnerability, human provenance, Windows MFC build, fork/PR coordination, or other release-review HOLDs.
