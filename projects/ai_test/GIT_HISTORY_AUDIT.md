@@ -66,4 +66,4 @@ A complete pre-rewrite bundle, `ai_test-history-backup-20260921.bundle`, was cre
 
 ## Push readiness
 
-The remote `main` remained at the expected pre-rewrite SHA `a7b2bfa`. An authenticated `git push --dry-run --force-with-lease` accepted the exact proposed update from `a7b2bfa` to rewritten `8ddcfb5`. The real force push was not performed: safety review requires explicit approval for rewriting the public default branch after acknowledging the existing fork, open pull request, and unverified authenticated protection settings.
+The completed MIT/source-boundary commit was pushed normally, moving remote `main` from `a7b2bfa` to `31c5aa6`. An authenticated `git push --dry-run --force-with-lease` then accepted the exact proposed rewrite from `31c5aa6` to `8ddcfb5`. The real force push was not performed: safety review requires explicit approval for rewriting the public default branch after acknowledging the existing fork, open pull request, and unverified authenticated protection settings.
