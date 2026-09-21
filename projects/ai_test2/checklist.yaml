@@ -13,7 +13,7 @@ project: ai_test2
 repo_root: ai_test2
 updated: 2026-09-18
 release_review:
-  release: "fa88c21 (공개 출시 검토 기준점)"
+  release: "afc9cbe (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
   distribution: "GitHub 소스코드 무료 공개 검토"
   jurisdictions: ["전세계"]
