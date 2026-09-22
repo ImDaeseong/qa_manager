@@ -2,15 +2,13 @@
 # See ../hermes-agents/checklist.yaml's header comment for the full schema
 # explanation.
 #
-# ai_agent is in Phase 0 (design stage per README.md/ROADMAP.md): no src/
-# agent, model adapter, or write/transmit tool exists yet. The only runnable
-# artifacts at registration time (2026-09-10) are the api/ public-data
-# client library (unittest-based, mocked network calls) and the docs +
-# eval-schema validation scripts. No lint/type-check config exists.
+# At initial registration (2026-09-10), only the api/ public-data clients
+# and the docs/eval-schema validation scripts were runnable. R5-R7 add the
+# three research apps' automated tests; live answer quality remains on HOLD.
 
 project: ai_agent
 repo_root: ai_agent
-updated: 2026-09-10
+updated: 2026-09-22
 release_review:
   release: "5fb997e (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
@@ -178,10 +176,52 @@ requirements:
             description: "소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 3건의 공공데이터 http 엔드포인트는 SECURITY_BOUNDARY.md의 평문 예외 근거로, masters-panel-agent의 쿠키 이름 상수·테스트 픽스처 2건은 CWE-798 오탐으로 qa:allow 처리했습니다."
             check: "python scripts/check_security_hotspots.py"
             status: pass
-            last_verified: 2026-09-20
+            last_verified: 2026-09-22
           - id: security-hotspots-guard-regression
             category: regression
             description: "규칙별 실탐/오탐 및 스캐너 자기제외가 의도대로 동작하는지 확인합니다."
             check: "python -m pytest tests/test_security_hotspots.py -q"
             status: pass
-            last_verified: 2026-09-20
+            last_verified: 2026-09-22
+
+  - id: R5
+    quality_dimension: functional_suitability
+    description: "경제 조사 앱의 주장·검색·출처 대조 자동 회귀 검사가 통과해야 한다. 실제 유료 검색과 판단 품질은 별도 HOLD다."
+    dev_items:
+      - id: R5-D1
+        description: "economic-research-assistant 테스트"
+        test_items:
+          - id: economic-research-tests
+            category: full
+            description: "경제 조사 앱의 서버·저장소·출처 대조 회귀 검사를 실행합니다."
+            check: "cd projects\\economic-research-assistant && python -m pytest tests -q -p no:cacheprovider"
+            status: pass
+            last_verified: 2026-09-22
+
+  - id: R6
+    quality_dimension: functional_suitability
+    description: "로컬 문서 앱의 색인·검색·답변 자동 회귀 검사가 통과해야 한다. 실제 인용·대형 색인 품질은 별도 HOLD다."
+    dev_items:
+      - id: R6-D1
+        description: "local-dev-docs-assistant 테스트"
+        test_items:
+          - id: local-dev-docs-tests
+            category: full
+            description: "로컬 문서 앱의 색인·검색·웹 API 회귀 검사를 실행합니다."
+            check: "cd projects\\local-dev-docs-assistant && python -m pytest tests -q -p no:cacheprovider"
+            status: pass
+            last_verified: 2026-09-22
+
+  - id: R7
+    quality_dimension: functional_suitability
+    description: "작업공간 앱의 색인·질문·웹 UI 자동 회귀 검사가 통과해야 한다. 실제 답변과 출처 품질은 별도 HOLD다."
+    dev_items:
+      - id: R7-D1
+        description: "workspace-research-assistant 테스트"
+        test_items:
+          - id: workspace-research-tests
+            category: full
+            description: "작업공간 앱의 색인·검색·웹 UI 회귀 검사를 실행합니다."
+            check: "cd projects\\workspace-research-assistant && python -m pytest tests -q -p no:cacheprovider"
+            status: pass
+            last_verified: 2026-09-22
