@@ -194,7 +194,7 @@ requirements:
           - id: economic-research-tests
             category: full
             description: "경제 조사 앱의 서버·저장소·출처 대조 회귀 검사를 실행합니다."
-            check: "cd projects\\economic-research-assistant && python -m pytest tests -q -p no:cacheprovider"
+            check: "cd projects\\economic-research-assistant && python -m pytest tests -q -p no:cacheprovider --basetemp ../../../qa_manager/.pytest_temp_economic"
             status: pass
             last_verified: 2026-09-22
 
@@ -208,7 +208,7 @@ requirements:
           - id: local-dev-docs-tests
             category: full
             description: "로컬 문서 앱의 색인·검색·웹 API 회귀 검사를 실행합니다."
-            check: "cd projects\\local-dev-docs-assistant && python -m pytest tests -q -p no:cacheprovider"
+            check: "cd projects\\local-dev-docs-assistant && python -m pytest tests -q -p no:cacheprovider --basetemp ../../../qa_manager/.pytest_temp_local_docs"
             status: pass
             last_verified: 2026-09-22
 
@@ -222,6 +222,6 @@ requirements:
           - id: workspace-research-tests
             category: full
             description: "작업공간 앱의 색인·검색·웹 UI 회귀 검사를 실행합니다."
-            check: "cd projects\\workspace-research-assistant && python -m pytest tests -q -p no:cacheprovider"
+            check: "cd projects\\workspace-research-assistant && python -m pytest tests -q -p no:cacheprovider --basetemp ../../../qa_manager/.pytest_temp_workspace"
             status: pass
             last_verified: 2026-09-22

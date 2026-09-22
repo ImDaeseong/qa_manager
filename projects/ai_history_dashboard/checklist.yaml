@@ -1,0 +1,23 @@
+project: ai_history_dashboard
+repo_root: ai_history_dashboard
+updated: 2026-09-22
+requirements:
+  - id: R1
+    quality_dimension: reliability
+    description: Prompt-analysis and empty-repository handling keep their tested behavior.
+    dev_items:
+      - id: R1-D1
+        description: Run the repository's existing unit checks without reading private session data.
+        test_items:
+          - id: prompt-analysis-tests
+            category: regression
+            description: Synthetic prompt analysis checks.
+            check: node scripts/analyze-prompts.test.js
+            status: pass
+            last_verified: 2026-09-22
+          - id: empty-repo-tests
+            category: regression
+            description: Empty-repository handling checks.
+            check: node scripts/git-empty-repo.test.js
+            status: pass
+            last_verified: 2026-09-22

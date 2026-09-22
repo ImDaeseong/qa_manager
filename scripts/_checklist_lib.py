@@ -29,8 +29,8 @@ QA_ROOT = Path(__file__).resolve().parent.parent
 DESKTOP_ROOT = QA_ROOT.parent
 DEFAULT_CHECKLIST = QA_ROOT / "projects" / "hermes-agents" / "checklist.yaml"
 PUBLIC_PROJECTS = frozenset({
-    "ai-workspace", "ai_agent", "ai_prompt", "ai_test", "ai_test1", "ai_test2",
-    "hermes-agents", "qa_manager", "skills",
+    "ai-workspace", "ai_agent", "ai_history_dashboard", "ai_prompt", "ai_test",
+    "ai_test1", "ai_test2", "career", "hermes-agents", "llm-wiki", "qa_manager", "skills",
 })
 
 # No `check` command observed across any registered project takes more than a

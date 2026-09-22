@@ -61,6 +61,8 @@ class PublicReportTests(unittest.TestCase):
                     self.assertEqual(system.main(), expected)
                     for report in (qa_root / "index.html", project / "dashboard.html"):
                         html = report.read_text(encoding="utf-8")
+                        if report == qa_root / "index.html":
+                            self.assertTrue(all(line == line.rstrip() for line in html.splitlines()))
                         self.assertIn("출시 검토 보류", html)
                         self.assertIn(f'class="requirement {"fail" if expected else "pass"}"',
                                       html)

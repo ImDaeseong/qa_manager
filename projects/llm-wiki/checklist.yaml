@@ -1,0 +1,17 @@
+project: llm-wiki
+repo_root: llm-wiki
+updated: 2026-09-22
+requirements:
+  - id: R1
+    quality_dimension: functional_suitability
+    description: The browser extension manifest and public entry point remain present.
+    dev_items:
+      - id: R1-D1
+        description: Validate existing publishable artifacts without loading private context data.
+        test_items:
+          - id: extension-entry-points
+            category: basic
+            description: Parse the extension manifest and check the public landing page.
+            check: "python -c \"import json,pathlib; m=json.loads(pathlib.Path('wiki-extension/manifest.json').read_text(encoding='utf-8')); assert m['manifest_version']==3; assert pathlib.Path('index.html').is_file(); print('PASS: extension manifest and public entry point')\""
+            status: pass
+            last_verified: 2026-09-22

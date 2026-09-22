@@ -105,6 +105,7 @@ def main() -> int:
 </body>
 </html>
 """
+    html_doc = "\n".join(line.rstrip() for line in html_doc.splitlines()) + "\n"
     lib.write_public_report(OUTPUT_PATH, html_doc)
     print(f"Wrote {OUTPUT_PATH} ({len(checklist_paths)} project(s), {total_fail} total failing)")
     return 1 if total_fail else 0

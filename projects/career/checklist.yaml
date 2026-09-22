@@ -1,0 +1,17 @@
+project: career
+repo_root: career
+updated: 2026-09-22
+requirements:
+  - id: R1
+    quality_dimension: functional_suitability
+    description: The published career page and its README remain present.
+    dev_items:
+      - id: R1-D1
+        description: Check artifact existence only; do not expose resume content in the public report.
+        test_items:
+          - id: public-page-files
+            category: basic
+            description: Verify the published page and README files exist.
+            check: "python -c \"from pathlib import Path; assert Path('index.html').is_file() and Path('README.md').is_file(); print('PASS: published page and README exist')\""
+            status: pass
+            last_verified: 2026-09-22
