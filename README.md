@@ -140,10 +140,9 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
 hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent,
 qa_manager, ai_history_dashboard, llm-wiki, career, ebook — 총 13개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
 
-`ai_agent`는 2026-09-10에 등록했습니다. 아직 Phase 0(설계 단계)라 src/ 에이전트나
-실제 모델·전송 어댑터가 없어, 등록 시점 검사항목은 문서/링크 검증
-(`scripts/validate_docs.ps1`), eval 스키마 검증기 자체 테스트, `api/` 공공데이터
-클라이언트 라이브러리(모듈별 + 전체 스위트)로 한정했습니다.
+`ai_agent`는 2026-09-10에 등록한 뒤 개별 에이전트·검색 앱의 자동 테스트까지 검사 범위를
+확장했습니다. 문서/링크 검증, eval 스키마, 공공데이터 API 클라이언트와 함께 현재 등록된
+프로젝트 테스트를 실행합니다. 실제 모델 호출 품질과 외부 전송·고위험 도구 승인은 별도 HOLD입니다.
 
 `ai_test3`는 2026-09-06 CareerDiff가 `ai_test2`로 이동하면서 등록 프로젝트가
 0개가 돼 2026-09-07에 이 목록에서 제외했습니다(테스트 항목은 `ai_test2`
@@ -158,6 +157,6 @@ checklist.yaml의 R1-D7~D10으로 이관).
 
 qa_manager 자신의 회귀 테스트·필수 문서 검사·보안 허점 자기검사는 2026-09-18부터
 `.github/workflows/validate.yml`로 매 push마다 자동 실행됩니다(다른 8개 형제
-프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
+형제 프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
 `open_qa_system.bat`을 실행합니다).
-- `python scripts\generate_system_index.py` 전체 재실행(2026-09-18): 9개 프로젝트 전량 `OK`, 0 failing.
+- 현재 등록 수와 검사 결과는 생성된 `index.html`을 기준으로 확인합니다. 2026-09-24 기준 13개 프로젝트가 등록되어 있으며, 저장된 결과가 아니라 재실행 결과로 판정합니다.
