@@ -103,7 +103,8 @@ requirements:
             category: regression
             description: 결과 교체 실패를 주입하여 기존 보고서 내용과 임시 파일 정리를 검증한다.
             check: "python -m unittest tests.test_public_report.PublicReportTests.test_replace_failure_preserves_previous_report_and_removes_temp -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
 
   - id: R5
     description: 프로젝트 검사 결과가 개별 대시보드와 전체 색인에 같은 실시간 판정으로 반영된다.
@@ -116,7 +117,8 @@ requirements:
             category: regression
             description: 저장된 pass 표시와 달리 실제 검사 실패 시 두 화면이 실패로 바뀌는지 검증한다.
             check: "python -m unittest tests.test_public_report.PublicReportTests.test_checklist_to_dashboard_and_index_uses_live_result -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
 
   - id: R6
     description: 공개 HTML의 민감 정보와 미검토 프로젝트의 자동 게시를 차단한다.
@@ -129,7 +131,8 @@ requirements:
             category: regression
             description: 로컬 사용자 경로와 토큰 형태의 값을 거부하며 기존 파일을 보존하는지 검증한다.
             check: "python -m unittest tests.test_public_report.PublicReportTests.test_private_content_is_rejected_without_replacing_existing_report -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
       - id: R6-D2
         description: 새 프로젝트의 공개 적합성 검토 경계
         test_items:
@@ -137,7 +140,8 @@ requirements:
             category: regression
             description: 미검토 프로젝트가 두 공개 보고서를 교체하지 못하는지 검증한다.
             check: "python -m unittest tests.test_public_report.PublicReportTests.test_unreviewed_project_cannot_replace_public_reports -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
       - id: R6-D3
         description: 공개 문서와 보고서의 로컬 계정 경로 검사
         test_items:
@@ -145,12 +149,14 @@ requirements:
             category: basic
             description: 공개 파일에 로컬 계정 경로가 남아 있지 않은지 검사한다.
             check: "python scripts/check_public_paths.py"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
           - id: R6-D3-T2
             category: regression
             description: Windows·Unix 계정 경로 탐지와 상대 경로 허용을 검증한다.
             check: "python -m unittest tests.test_check_public_paths -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
 
   - id: R7
     description: 문서에 나온 상대 경로 명령으로 프로젝트 대시보드를 생성할 수 있다.
@@ -163,7 +169,8 @@ requirements:
             category: regression
             description: qa_manager 루트에서 상대 경로 체크리스트를 넘겨 HTML이 생성되는지 검증한다.
             check: "python -m unittest tests.test_public_report.PublicReportTests.test_relative_checklist_path_from_readme_runs -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
 
   - id: R8
     description: 밝은·어두운 테마의 일반 텍스트 색상 대비가 WCAG AA 기준 이상이다.
@@ -176,4 +183,18 @@ requirements:
             category: regression
             description: 두 테마의 본문·링크·상태 배지 텍스트가 4.5:1 이상인지 검증한다.
             check: "python -m unittest tests.test_style_contrast -q"
-            status: pending
+            status: pass
+            last_verified: 2026-09-24
+
+  - id: R9
+    description: 검사 실패는 무제한 재시도하지 않고 수정 증거를 이월하며 PASS 또는 HOLD로 끝난다.
+    quality_dimension: reliability
+    dev_items:
+      - id: R9-D1
+        description: Hermes 수정 루프의 반복 제한·상태 기록·사람 승인 경계
+        test_items:
+          - id: R9-D1-T1
+            category: regression
+            description: 무변경 재시도 1회, 최대 3회, 동일 위치 수정 실패와 고위험 HOLD 판정을 검증한다.
+            check: "python -m unittest tests.test_verification_loop -q"
+            status: pass

@@ -72,7 +72,30 @@ open_qa_system.bat                                               # 전체 재검
 python scripts\generate_system_index.py                          # 전체 프로젝트 재검사 + index.html 생성
 python scripts\generate_checklist_dashboard.py [checklist.yaml]  # 프로젝트 1개만 재검사
 python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고
+python scripts\run_verification_loop.py [checklist.yaml] [test_item ID] --state .qa-loop\[project]-[check].json
 ```
+
+## 실패 수정·재검증 루프
+
+`qa_manager`는 검사와 증거를 담당하고 대상 저장소의 코드를 직접 수정하지 않습니다.
+Hermes가 실패 원인을 확인하고 최소 범위로 수정한 뒤 같은 상태 파일을 사용해 다시
+검사합니다. 첫 실패가 간헐적이라고 의심될 때만 `--suspect-flaky`를 지정하며, 이 경우
+같은 명령 안에서 변경 없는 재실행을 정확히 한 번 수행합니다. 수정한 파일은
+`--changed-file`로 기록합니다.
+
+```powershell
+python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e `
+  --state .qa-loop\sample-auth.json --goal "로그인 전후 인증 흐름 검증"
+
+# Hermes가 원인을 수정한 뒤
+python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e `
+  --state .qa-loop\sample-auth.json --changed-file src/auth/session.py
+```
+
+검사 통과 시 종료하고, 동일 루프가 3회 실패하거나 같은 파일을 수정한 두 번의 시도가
+모두 실패하면 사람 검토 `HOLD`로 전환합니다. 인증·권한·결제·데이터 삭제처럼 사람
+승인이 필요한 변경은 `--high-risk`로 즉시 `HOLD` 처리합니다. 실행기는 수정 명령이나
+외부 AI를 호출하지 않으므로 쓰기 권한과 최종 판단은 Hermes와 사람에게 남습니다.
 
 재검사 없이 마지막 생성 결과만 보려면 위 "바로가기" 링크로 보거나, 로컬 폴더에서
 `index.html`을 더블클릭합니다. GitHub.com 저장소 화면에서 파일명을 클릭하면
