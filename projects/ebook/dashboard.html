@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 시스템 · ebook</title>
+<style>
+  :root {
+    --bg: #f6f4fb;
+    --card-bg: #ffffff;
+    --border: #e7e2f5;
+    --text: #201c33;
+    --text-muted: #6f6a85;
+    --primary: #7c3aed;
+    --primary-soft: #efe9fe;
+    --pass-bg: #dcfce7; --pass-text: #15803d;
+    --fail-bg: #fee2e2; --fail-text: #b91c1c;
+    --pending-bg: #eef0f4; --pending-text: #616976;
+    --shadow: 0 1px 2px rgba(32,28,51,.05), 0 4px 14px rgba(32,28,51,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151f;
+      --card-bg: #211e2c;
+      --border: #34304a;
+      --text: #f1eefb;
+      --text-muted: #a9a3c2;
+      --primary: #a78bfa;
+      --primary-soft: #2c2540;
+      --pass-bg: #113123; --pass-text: #4ade80;
+      --fail-bg: #3a1414; --fail-text: #f87171;
+      --pending-bg: #2a2736; --pending-text: #a9a3c2;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+    color: var(--text); background: var(--bg);
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
+  a { color: var(--primary); }
+  summary:focus-visible, a:focus-visible {
+    outline: 2px solid var(--primary); outline-offset: 2px;
+  }
+  a.back {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .85rem; font-weight: 600; text-decoration: none;
+    color: var(--primary); margin-bottom: .8rem;
+  }
+  a.back:hover { text-decoration: underline; }
+  p.meta { color: var(--text-muted); font-size: .85rem; margin: 0 0 1.6rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .7rem; margin-bottom: 2rem; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.1rem; box-shadow: var(--shadow);
+  }
+  .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+  .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+  .stat.fail .n { color: var(--fail-text); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .02em;
+    padding: .2rem .55rem; border-radius: 999px; margin-left: .4rem;
+    text-transform: uppercase;
+  }
+  .pill.pass { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.fail { background: var(--fail-bg); color: var(--fail-text); }
+  .pill.pending { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.covered { background: var(--pass-bg); color: var(--pass-text); }
+  .pill.pending_review, .pill.not_applicable, .pill.hold, .pill.excluded { background: var(--pending-bg); color: var(--pending-text); }
+  .pill.missing, .pill.failing { background: var(--fail-bg); color: var(--fail-text); }
+
+  .readiness {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .readiness.ready { border-left: 4px solid var(--pass-text); }
+  .readiness.not-ready { border-left: 4px solid var(--fail-text); }
+  .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
+  ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
+  ul.dimensions li:first-child { border-top: none; }
+
+  details {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: .65rem; padding: .7rem 1rem; box-shadow: var(--shadow);
+  }
+  details[open] > summary { margin-bottom: .5rem; }
+  summary {
+    cursor: pointer; font-weight: 700; list-style: none;
+    display: flex; align-items: center; flex-wrap: wrap; gap: .3rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; display: inline-block; color: var(--primary);
+    transition: transform .12s ease; font-size: .8em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+
+  details.project { border-left: 4px solid var(--primary); }
+  details.project.fail { border-left-color: var(--fail-text); }
+  details.requirement { background: var(--primary-soft); border-color: var(--border); }
+  details.dev-item { margin-top: .5rem; }
+
+  .desc-inline { font-weight: 400; color: var(--text-muted); margin-left: .2rem; font-size: .92rem; }
+  p.coverage { font-size: .76rem; color: var(--text-muted); margin: .2rem 0 .6rem; }
+  p.coverage.uncovered { color: var(--fail-text); font-weight: 700; }
+  .counts-inline { font-weight: 400; color: var(--text-muted); font-size: .78rem; margin-left: auto; }
+
+  ul.test-items { list-style: none; padding-left: 0; margin: .5rem 0 0; }
+  li.test-item {
+    border-left: 3px solid var(--border); border-radius: 8px;
+    padding: .5rem .7rem; margin-bottom: .4rem; background: var(--bg);
+  }
+  li.test-item.pass { border-left-color: var(--pass-text); }
+  li.test-item.fail { border-left-color: var(--fail-text); }
+  .row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .category {
+    font-size: .68rem; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: .05rem .5rem;
+  }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .85em; }
+  p.desc { margin: .35rem 0 0; font-size: .88rem; }
+  p.check { margin: .25rem 0 0; font-size: .8rem; color: var(--text-muted); }
+
+  ul.projects { list-style: none; padding: 0; }
+</style>
+</head>
+<body>
+<a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
+<h1>ebook</h1>
+<p class="meta">projects/ebook/checklist.yaml 기반 (검사 프로젝트: ebook), 생성시각 2026-09-24 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<div class="stat-grid">
+  <div class="stat"><div class="n">4</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">7</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">4</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
+</div>
+
+    <div class="readiness not-ready">
+      <h2>출시 검토 보류 — 미검토·실패·승인 누락 확인</h2>
+      <p>최종 승인 기록 없음 · 연결된 자동 검사의 통과만으로 품질 영역 전체가 검증되지는 않습니다.</p>
+      <ul class="dimensions"><li><span class="pill pending_review">검토 대기</span> 기능 적합성 — 주요 사용자 작업과 정확성 — <code>R1</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#기능-적합성</code></li><li><span class="pill pending_review">검토 대기</span> 성능 효율성 — 응답 시간·자원·용량 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#성능-효율성</code></li><li><span class="pill pending_review">검토 대기</span> 호환성 — 지원 환경과 연동 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#호환성</code></li><li><span class="pill pending_review">검토 대기</span> 상호작용 능력 — 사용성·포용성·접근성 — <code>R3</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#상호작용-능력</code></li><li><span class="pill pending_review">검토 대기</span> 신뢰성 — 장애 처리·복구·가용성 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#신뢰성</code></li><li><span class="pill pending_review">검토 대기</span> 보안 — 위협·권한·입력·비밀정보 검증 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#보안</code></li><li><span class="pill pending_review">검토 대기</span> 유지보수성 — 변경·진단·검증 가능성 — <code>R2</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#유지보수성</code></li><li><span class="pill pending_review">검토 대기</span> 유연성·이식성 — 설치·환경 적응·확장 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#유연성-이식성</code></li><li><span class="pill pending_review">검토 대기</span> 안전성 — 위해·오용 위험과 실패 시 안전 — <code>R4</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#안전성</code></li><li><span class="pill pending_review">검토 대기</span> 실사용 품질 — 실제 사용자·맥락에서의 결과 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#실사용-품질</code></li><li><span class="pill pending_review">검토 대기</span> 개인정보·데이터 거버넌스 — 수집·보관·삭제·권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#개인정보-데이터-거버넌스</code></li><li><span class="pill pending_review">검토 대기</span> 공급망·라이선스 — 구성요소·취약점·배포 권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#공급망-라이선스</code></li><li><span class="pill pending_review">검토 대기</span> 배포·운영 — 재현 빌드·관측·백업·롤백·지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#배포-운영</code></li><li><span class="pill pending_review">검토 대기</span> 법률·규제 — 판매 지역·산업별 의무와 계약 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#법률-규제</code></li><li><span class="pill pending_review">검토 대기</span> 사업 운영 — 가격·결제·환불·고객 지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>projects/ebook/RELEASE_REVIEW.md#사업-운영</code></li></ul>
+    </div>
+
+    <details class="requirement pass" open>
+      <summary>
+        <code>R1</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">원고·EPUB 생성·출시 게이트의 전체 자동 회귀 검사가 통과한다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">ebook 루트 전체 단위·회귀 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>ebook-full-tests</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">원고, EPUB, 판매 사실, 출시 게이트와 자산 검사를 모두 실행한다.</p>
+          <p class="check">실행 명령: <code>python -B -m unittest -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R2</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">원고 구조·링크·편집 계약과 강의 자료 계약이 현재 파일에서 재검증된다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 3개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">원고와 강의 자료 검증기</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>manuscript-contract</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">원고 목록, 링크, 깊이, 근거와 사건 계약을 검사한다.</p>
+          <p class="check">실행 명령: <code>python -B validate_manuscript.py</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>lecture-contract</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">장별 학습목표·활동·평가 정렬 계약을 검사한다.</p>
+          <p class="check">실행 명령: <code>python -B lecture/validate_course.py --self-test</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>editorial-audit</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">기계적으로 판정 가능한 편집 결함을 검사한다.</p>
+          <p class="check">실행 명령: <code>python -B scripts/editorial_audit.py --self-test</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R3</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">크몽 노출 이미지가 요구 비율과 최소 크기를 만족한다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R3-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">판매 채널 이미지 자산 검사</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>kmong-assets</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">PNG 존재·비율·최소 크기를 검사한다.</p>
+          <p class="check">실행 명령: <code>python -B scripts/validate_kmong_assets.py</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R4</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">사람 검토와 판매 채널 준비가 남은 동안 출시 게이트가 정확한 이유로 HOLD한다.</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">부크크와 크몽의 현재 출시 차단 근거</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass">
+          <div class="row">
+            <code>bookk-release-hold</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">부크크 판매 후보가 전문 교정·실독자·리더 화면·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다.</p>
+          <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel bookk</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>kmong-release-hold</code>
+            <span class="category">통합검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">크몽 판매 후보가 전문 교정·실독자·리더 화면·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다.</p>
+          <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel kmong</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
+</body>
+</html>

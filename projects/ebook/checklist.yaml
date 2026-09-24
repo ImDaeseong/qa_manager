@@ -1,0 +1,100 @@
+project: ebook
+repo_root: ebook
+updated: 2026-09-24
+release_review:
+  release: "sales-candidate-2026-09-24"
+  audience: "한국어 AI 코딩 입문·실무 독자"
+  distribution: "부크크 또는 크몽 전자책 판매 후보"
+  jurisdictions: ["대한민국"]
+  approval: {reviewer: "ImDaeseong"}
+  areas:
+    functional_suitability: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#기능-적합성"}
+    performance_efficiency: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#성능-효율성"}
+    compatibility: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#호환성"}
+    interaction_capability: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#상호작용-능력"}
+    reliability: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#신뢰성"}
+    security: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#보안"}
+    maintainability: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#유지보수성"}
+    portability: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#유연성-이식성"}
+    safety: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#안전성"}
+    quality_in_use: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#실사용-품질"}
+    privacy: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#개인정보-데이터-거버넌스"}
+    supply_chain: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#공급망-라이선스"}
+    operations: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#배포-운영"}
+    legal: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#법률-규제"}
+    commercial: {decision: pending, evidence: "projects/ebook/RELEASE_REVIEW.md#사업-운영"}
+requirements:
+  - id: R1
+    quality_dimension: functional_suitability
+    description: 원고·EPUB 생성·출시 게이트의 전체 자동 회귀 검사가 통과한다.
+    dev_items:
+      - id: R1-D1
+        description: ebook 루트 전체 단위·회귀 검사
+        test_items:
+          - id: ebook-full-tests
+            category: full
+            description: 원고, EPUB, 판매 사실, 출시 게이트와 자산 검사를 모두 실행한다.
+            check: "python -B -m unittest -q"
+            status: pass
+            last_verified: 2026-09-24
+  - id: R2
+    quality_dimension: maintainability
+    description: 원고 구조·링크·편집 계약과 강의 자료 계약이 현재 파일에서 재검증된다.
+    dev_items:
+      - id: R2-D1
+        description: 원고와 강의 자료 검증기
+        test_items:
+          - id: manuscript-contract
+            category: regression
+            description: 원고 목록, 링크, 깊이, 근거와 사건 계약을 검사한다.
+            check: "python -B validate_manuscript.py"
+            status: pass
+            last_verified: 2026-09-24
+          - id: lecture-contract
+            category: regression
+            description: 장별 학습목표·활동·평가 정렬 계약을 검사한다.
+            check: "python -B lecture/validate_course.py --self-test"
+            status: pass
+            last_verified: 2026-09-24
+          - id: editorial-audit
+            category: regression
+            description: 기계적으로 판정 가능한 편집 결함을 검사한다.
+            check: "python -B scripts/editorial_audit.py --self-test"
+            status: pass
+            last_verified: 2026-09-24
+  - id: R3
+    quality_dimension: interaction_capability
+    description: 크몽 노출 이미지가 요구 비율과 최소 크기를 만족한다.
+    dev_items:
+      - id: R3-D1
+        description: 판매 채널 이미지 자산 검사
+        test_items:
+          - id: kmong-assets
+            category: basic
+            description: PNG 존재·비율·최소 크기를 검사한다.
+            check: "python -B scripts/validate_kmong_assets.py"
+            status: pass
+            last_verified: 2026-09-24
+  - id: R4
+    quality_dimension: safety
+    description: 사람 검토와 판매 채널 준비가 남은 동안 출시 게이트가 정확한 이유로 HOLD한다.
+    dev_items:
+      - id: R4-D1
+        description: 부크크와 크몽의 현재 출시 차단 근거
+        test_items:
+          - id: bookk-release-hold
+            category: full
+            description: 부크크 판매 후보가 전문 교정·실독자·리더 화면·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다.
+            check: "python -B scripts/release_gate.py --channel bookk"
+            expected_exit_codes: [1]
+            required_output: ["release gate (bookk): HOLD", "- PRO_EDIT_NOT_RUN", "- READER_PILOT_NOT_RUN", "- READER_RENDER_HOLD", "- BOOKK_METADATA_HOLD", "- BOOKK_UPLOAD_FILES_HOLD"]
+            status: pass
+            last_verified: 2026-09-24
+          - id: kmong-release-hold
+            category: full
+            description: 크몽 판매 후보가 전문 교정·실독자·리더 화면·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다.
+            check: "python -B scripts/release_gate.py --channel kmong"
+            expected_exit_codes: [1]
+            required_output: ["release gate (kmong): HOLD", "- PRO_EDIT_NOT_RUN", "- READER_PILOT_NOT_RUN", "- READER_RENDER_HOLD", "- KMONG_PRODUCT_INFO_HOLD", "- KMONG_DELIVERY_FILES_HOLD"]
+            status: pass
+            last_verified: 2026-09-24

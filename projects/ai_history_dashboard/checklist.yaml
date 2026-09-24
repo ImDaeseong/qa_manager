@@ -1,6 +1,6 @@
 project: ai_history_dashboard
 repo_root: ai_history_dashboard
-updated: 2026-09-22
+updated: 2026-09-24
 requirements:
   - id: R1
     quality_dimension: reliability
@@ -21,3 +21,21 @@ requirements:
             check: node scripts/git-empty-repo.test.js
             status: pass
             last_verified: 2026-09-22
+          - id: dashboard-metrics-tests
+            category: regression
+            description: Time-zone normalization, privacy configuration, and qa_manager outcome aggregation checks.
+            check: node scripts/dashboard-metrics.test.js
+            status: pass
+            last_verified: 2026-09-24
+          - id: calibration-tests
+            category: regression
+            description: Independent human-label agreement and heuristic calibration checks.
+            check: node scripts/calibration.test.js
+            status: pass
+            last_verified: 2026-09-24
+          - id: devex-pulse-tests
+            category: regression
+            description: Local weekly developer-experience pulse validation and summary checks.
+            check: node scripts/devex-pulse.test.js
+            status: pass
+            last_verified: 2026-09-24

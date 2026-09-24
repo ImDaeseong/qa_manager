@@ -29,7 +29,7 @@ QA_ROOT = Path(__file__).resolve().parent.parent
 DESKTOP_ROOT = QA_ROOT.parent
 DEFAULT_CHECKLIST = QA_ROOT / "projects" / "hermes-agents" / "checklist.yaml"
 PUBLIC_PROJECTS = frozenset({
-    "ai-workspace", "ai_agent", "ai_history_dashboard", "ai_prompt", "ai_test",
+    "ai-workspace", "ai_agent", "ai_history_dashboard", "ai_prompt", "ai_test", "ebook",
     "ai_test1", "ai_test2", "career", "hermes-agents", "llm-wiki", "qa_manager", "skills",
 })
 
@@ -131,6 +131,21 @@ def validate_check_command(check_cmd: object) -> str:
     return check_cmd
 
 
+def check_expectations(item: dict) -> tuple[set[int], list[str]]:
+    """Validate optional exit-code and output expectations for one local check."""
+    exit_codes = item.get("expected_exit_codes", [0])
+    required_output = item.get("required_output", [])
+    if (not isinstance(exit_codes, list) or not exit_codes
+            or any(type(code) is not int for code in exit_codes)):
+        raise ValueError("expected_exit_codes must be a non-empty list of integers")
+    if (not isinstance(required_output, list)
+            or any(not isinstance(marker, str) or not marker for marker in required_output)):
+        raise ValueError("required_output must be a list of non-empty strings")
+    if set(exit_codes) != {0} and not required_output:
+        raise ValueError("nonzero expected_exit_codes require required_output markers")
+    return set(exit_codes), required_output
+
+
 def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     """Run one test_item's `check` command now, inside `cwd`. Returns (live_status, output).
 
@@ -152,6 +167,7 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
         return "pending", ""
     try:
         check_cmd = validate_check_command(check_cmd)
+        expected_exit_codes, required_output = check_expectations(item)
     except ValueError as exc:
         return "fail", f"INVALID CHECK: {exc}"
     is_windows = platform.system() == "Windows"
@@ -179,7 +195,13 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
             f"TIMEOUT: check did not finish within {CHECK_TIMEOUT_SECONDS}s, "
             f"process tree killed.\n{partial}"
         )
-    live_status = "pass" if proc.returncode == 0 else "fail"
+    missing = [marker for marker in required_output if marker not in output]
+    live_status = "pass" if proc.returncode in expected_exit_codes and not missing else "fail"
+    if missing:
+        output = f"EXPECTED OUTPUT MISSING: {missing!r}\n" + output
+    elif proc.returncode not in expected_exit_codes:
+        output = (f"UNEXPECTED EXIT CODE: {proc.returncode}; "
+                  f"expected {sorted(expected_exit_codes)}\n" + output)
     return live_status, sanitize_output(output)
 
 

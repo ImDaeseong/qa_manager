@@ -132,10 +132,10 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_history_dashboard</h1>
-<p class="meta">projects/ai_history_dashboard/checklist.yaml 기반 (검사 프로젝트: ai_history_dashboard), 생성시각 2026-09-22 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<p class="meta">projects/ai_history_dashboard/checklist.yaml 기반 (검사 프로젝트: ai_history_dashboard), 생성시각 2026-09-24 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">1</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">2</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">5</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">1</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
@@ -151,7 +151,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">Prompt-analysis and empty-repository handling keep their tested behavior.</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 2개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 5개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -176,6 +176,33 @@
           </div>
           <p class="desc">Empty-repository handling checks.</p>
           <p class="check">실행 명령: <code>node scripts/git-empty-repo.test.js</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>dashboard-metrics-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">Time-zone normalization, privacy configuration, and qa_manager outcome aggregation checks.</p>
+          <p class="check">실행 명령: <code>node scripts/dashboard-metrics.test.js</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>calibration-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">Independent human-label agreement and heuristic calibration checks.</p>
+          <p class="check">실행 명령: <code>node scripts/calibration.test.js</code></p>
+        </li>
+        <li class="test-item pass">
+          <div class="row">
+            <code>devex-pulse-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">Local weekly developer-experience pulse validation and summary checks.</p>
+          <p class="check">실행 명령: <code>node scripts/devex-pulse.test.js</code></p>
         </li>
         </ul>
       </details>

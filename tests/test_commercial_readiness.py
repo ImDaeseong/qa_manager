@@ -17,7 +17,7 @@ class CommercialReadinessTests(unittest.TestCase):
     def test_public_source_reviews_link_to_existing_area_evidence(self):
         root = Path(__file__).resolve().parent.parent
         names = ("ai_agent", "ai_prompt", "ai_test", "ai_test1", "ai_test2",
-                 "hermes-agents", "skills")
+                 "ebook", "hermes-agents", "skills")
         for name in names:
             with self.subTest(project=name):
                 data = lib.load(root / "projects" / name / "checklist.yaml")

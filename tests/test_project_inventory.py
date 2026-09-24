@@ -10,7 +10,7 @@ class ProjectInventoryTests(unittest.TestCase):
         expected = {
             "hermes-agents", "ai_prompt", "ai-workspace", "skills", "ai_test",
             "ai_test1", "ai_test2", "ai_agent", "qa_manager", "ai_history_dashboard",
-            "llm-wiki", "career",
+            "llm-wiki", "career", "ebook",
         }
         actual = {path.parent.name for path in (lib.QA_ROOT / "projects").glob("*/checklist.yaml")}
         self.assertEqual(actual, expected)

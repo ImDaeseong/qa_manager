@@ -34,9 +34,9 @@ python -m pip install -r requirements.txt
 python -m unittest discover -s tests -q
 ```
 
-The tests above run with this repository alone. Regenerating the twelve bundled project dashboards also requires their sibling repositories and valid `repo_root` paths; a standalone clone cannot rerun those external checks. For questions and bug reports, use [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues). Do not include secrets, personal data, or internal logs in a public issue; response times are not guaranteed.
+The tests above run with this repository alone. Regenerating the thirteen bundled project dashboards also requires their sibling project folders and valid `repo_root` paths; a standalone clone cannot rerun those external checks. For questions and bug reports, use [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues). Do not include secrets, personal data, or internal logs in a public issue; response times are not guaranteed.
 
-The registered projects are `hermes-agents`, `ai_prompt`, `ai-workspace`, `skills`, `ai_test`, `ai_test1`, `ai_test2`, `ai_agent`, `qa_manager`, `ai_history_dashboard`, `llm-wiki`, and `career`. The last three have initial, deliberately narrow checks: existing synthetic unit tests for the history dashboard, extension manifest and public entry-point presence for the wiki, and public page/README presence for career. These checks do not inspect private session logs, wiki context, or resume content. All three remain on release-review HOLD; a passing file-presence check is not a product-quality approval.
+The registered projects are `hermes-agents`, `ai_prompt`, `ai-workspace`, `skills`, `ai_test`, `ai_test1`, `ai_test2`, `ai_agent`, `qa_manager`, `ai_history_dashboard`, `llm-wiki`, `career`, and `ebook`. The ebook checks run its existing synthetic tests and validators without copying manuscript text into the public report; its expected release-gate HOLD passes only when the exact human-review blockers are present. Automated PASS remains separate from release approval.
 
 ## 시스템 구조
 
@@ -65,7 +65,7 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
 ## 실행 방법
 
 Python 의존성 설치: `python -m pip install -r requirements.txt`.
-기본 체크리스트 12개는 이 작업공간의 형제 저장소를 검사합니다. `qa_manager`만 새로 복제한 환경에서는 그 저장소들이 없어 전체 재검사가 실행되지 않습니다. 다른 환경에서 재사용하려면 실제 검사할 저장소를 함께 준비하고 `repo_root`와 검사 명령을 조정한 뒤 공개 허용 목록을 검토하세요. 공개된 HTML은 마지막으로 생성된 결과를 읽을 수 있습니다.
+기본 체크리스트 13개는 이 작업공간의 형제 저장소·프로젝트 폴더를 검사합니다. `qa_manager`만 새로 복제한 환경에서는 대상 폴더들이 없어 전체 재검사가 실행되지 않습니다. 다른 환경에서 재사용하려면 실제 검사할 프로젝트를 함께 준비하고 `repo_root`와 검사 명령을 조정한 뒤 공개 허용 목록을 검토하세요. 공개된 HTML은 마지막으로 생성된 결과를 읽을 수 있습니다.
 
 ```
 open_qa_system.bat                                               # 전체 재검사 + 브라우저로 index.html 열기
@@ -112,6 +112,9 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
    (`..`) 기준 상대경로 (예: `hermes-agents`, `ai_test1`).
 3. test_item은 그 프로젝트에 실제로 존재하는 것만 등록합니다(기존 테스트,
    lint 설정, CI workflow, 가드 스크립트 등) — 없는 검사를 지어내지 않습니다.
+   의도된 HOLD처럼 종료 코드가 0이 아니어야 정상인 검사는 `expected_exit_codes`와
+   `required_output`을 함께 등록합니다. 종료 코드만 맞고 지정한 진단 문구가 없으면
+   관련 없는 충돌일 수 있으므로 실패로 처리합니다.
 4. `python scripts\generate_system_index.py`로 새 프로젝트가 index.html에
    나타나고 검사가 실제로 통과/실패하는지 확인합니다.
 
@@ -135,7 +138,7 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
 ## 현재 등록된 프로젝트
 
 hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent,
-qa_manager, ai_history_dashboard, llm-wiki, career — 총 12개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+qa_manager, ai_history_dashboard, llm-wiki, career, ebook — 총 13개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
 
 `ai_agent`는 2026-09-10에 등록했습니다. 아직 Phase 0(설계 단계)라 src/ 에이전트나
 실제 모델·전송 어댑터가 없어, 등록 시점 검사항목은 문서/링크 검증
