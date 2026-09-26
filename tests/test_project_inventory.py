@@ -23,6 +23,40 @@ class ProjectInventoryTests(unittest.TestCase):
                 self.assertTrue(list(lib.iter_test_items(data)))
                 self.assertTrue(all(item.get("check") for _, _, item in lib.iter_test_items(data)))
 
+    def test_registered_projects_publish_documentation_entry_points(self):
+        """Every registered project exposes current overview, ELI5, and design entry points."""
+        for name in sorted(lib.PUBLIC_PROJECTS):
+            with self.subTest(name=name):
+                data = lib.load(lib.QA_ROOT / "projects" / name / "checklist.yaml")
+                root = lib.project_root(data)
+                readme = root / "README.md"
+                eli5 = root / "ELI5.html"
+                design = root / "DESIGN.md"
+                self.assertTrue(readme.is_file(), f"{name}: README.md missing")
+                self.assertTrue(eli5.is_file(), f"{name}: ELI5.html missing")
+                self.assertTrue(design.is_file(), f"{name}: DESIGN.md missing")
+                self.assertIn("DESIGN.md", readme.read_text(encoding="utf-8"))
+                self.assertIn("DESIGN.md", eli5.read_text(encoding="utf-8"))
+                design_text = design.read_text(encoding="utf-8")
+                for heading in (
+                    "## Purpose",
+                    "## Stakeholders, concerns, and scenarios",
+                    "## Boundaries",
+                    "## Main components",
+                    "## Key decisions and tradeoffs",
+                    "## Verification and human review",
+                    "## Evidence basis and limits",
+                ):
+                    self.assertIn(heading, design_text, f"{name}: missing {heading}")
+                for source_marker in (
+                    "IEEE 1016-2009",
+                    "Kruchten",
+                    "Parnas",
+                    "ISO/IEC 25010:2023",
+                    "NIST SSDF 1.1",
+                ):
+                    self.assertIn(source_marker, design_text, f"{name}: missing {source_marker}")
+
 
 if __name__ == "__main__":
     unittest.main()
