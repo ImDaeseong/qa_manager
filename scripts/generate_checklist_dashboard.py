@@ -33,6 +33,9 @@ from _style import STYLE  # noqa: E402
 
 STATUS_LABEL = {"pass": "통과", "fail": "실패", "pending": "대기", "hold": "보류", "excluded": "제외"}
 CATEGORY_LABEL = {"basic": "기본검사", "full": "통합검사", "regression": "재발방지검사"}
+STATUS_LABEL.update({
+    "detected": "DETECTED", "missed": "MISSED", "invalid": "INVALID",
+})
 DIMENSION_STATUS_LABEL = {
     "covered": "근거 검토 완료", "failing": "검사 실패", "missing": "미검토",
     "pending_review": "검토 대기", "not_applicable": "비적용 근거 검토",
@@ -69,16 +72,17 @@ def render_readiness(readiness: dict) -> str:
 
 def render_test_item(test_item: dict, cwd: Path) -> tuple[str, str]:
     live_status, output = lib.run_test_item(test_item, cwd)
+    presentation = lib.presentation_status(test_item, live_status, output)
     description = test_item.get("description", "")
     desc_html = f'<p class="desc">{escape(description)}</p>' if description else ""
     category = test_item.get("category", "")
     category_label = CATEGORY_LABEL.get(category, category)
     html = f"""
-        <li class="test-item {live_status}">
+        <li class="test-item {live_status} {presentation}">
           <div class="row">
             <code>{escape(test_item.get('id', ''))}</code>
             <span class="category">{escape(category_label)}</span>
-            {badge(live_status)}
+            {badge(presentation)}
           </div>
           {desc_html}
           <p class="check">실행 명령: <code>{escape(test_item.get('check', ''))}</code></p>

@@ -38,6 +38,8 @@ The tests above run with this repository alone. Regenerating the thirteen bundle
 
 The registered projects are `hermes-agents`, `ai_prompt`, `ai-workspace`, `skills`, `ai_test`, `ai_test1`, `ai_test2`, `ai_agent`, `qa_manager`, `ai_history_dashboard`, `llm-wiki`, `career`, and `ebook`. The ebook checks run its existing synthetic tests and validators without copying manuscript text into the public report; its expected release-gate HOLD passes only when the exact human-review blockers are present. Automated PASS remains separate from release approval.
 
+Expected-failure checks use two layers of status. The command's raw exit and diagnostic are evaluated against `expected_exit_codes` and `required_output`; the report then shows `DETECTED` when the intended failure was caught, `MISSED` when a failure was expected but the target passed, and `INVALID` when an unrelated error or wrong diagnostic occurred. Parent requirements still aggregate the verifier verdict (`pass` or `fail`), not the target's raw exit code.
+
 ## 시스템 구조
 
 ```

@@ -146,6 +146,24 @@ def check_expectations(item: dict) -> tuple[set[int], list[str]]:
     return set(exit_codes), required_output
 
 
+def presentation_status(item: dict, live_status: str, output: str) -> str:
+    """Describe verification meaning separately from the raw command result."""
+    if live_status == "pending":
+        return "pending"
+    try:
+        expected_exit_codes, _ = check_expectations(item)
+    except ValueError:
+        return "invalid"
+    expects_failure = 0 not in expected_exit_codes
+    if not expects_failure:
+        return live_status
+    if live_status == "pass":
+        return "detected"
+    if output.startswith("UNEXPECTED EXIT CODE: 0;"):
+        return "missed"
+    return "invalid"
+
+
 def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     """Run one test_item's `check` command now, inside `cwd`. Returns (live_status, output).
 

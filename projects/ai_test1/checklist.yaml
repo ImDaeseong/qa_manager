@@ -7,10 +7,8 @@
 # root-level automated check, test_repository_consistency.py, is a
 # doc-consistency check (asserts README/PROJECT_STATUS/per-project CLAUDE.md
 # report the correct current test count) — not an aggregate test runner.
-# Everything else is per-subproject pytest, listed below for every
-# subdirectory confirmed to have conftest.py + pytest.ini + tests_unit.py.
-# mov_img_skills is intentionally not listed: it has zero .py files (pure
-# markdown prompt/workflow docs), so there is nothing to run pytest against.
+# Everything else is per-subproject pytest, including the documentation
+# contract tests in mov_img_skills.
 # No ruff/mypy/pyright config exists anywhere in this repo (verified by
 # direct grep, despite a prior assumption that pyright was configured here).
 
@@ -52,7 +50,7 @@ requirements:
             description: "안내 문서에 적힌 테스트 개수가 실제와 다르지 않은지, 설치 스크립트에 문법 오류가 없는지, 문서 안 링크가 깨지지 않았는지 확인합니다."
             check: "python -m pytest test_repository_consistency.py -q"
             status: pass
-            last_verified: 2026-08-05
+            last_verified: 2026-09-27
 
   - id: R2
     quality_dimension: functional_suitability
@@ -157,6 +155,24 @@ requirements:
             check: "cd music_story_skills && python -m pytest tests_unit.py -q"
             status: pass
             last_verified: 2026-08-20
+      - id: R2-D12
+        description: "aim_music_mp4_app — 매니페스트 기반 MP4 렌더링 및 CapCut 패키징 프로그램"
+        test_items:
+          - id: aim-music-mp4-app-tests
+            category: basic
+            description: "렌더링 계약, 입력 검증, 패키징, 제작 이력 검사가 통과하는지 확인합니다."
+            check: "cd aim_music_mp4_app && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-09-27
+      - id: R2-D13
+        description: "mov_img_skills — 이미지·영상 프롬프트 규칙과 템플릿 문서"
+        test_items:
+          - id: mov-img-skills-tests
+            category: basic
+            description: "필수 문서, 입력 필드, 영상 프롬프트 구조, 검토 단계가 일관되는지 확인합니다."
+            check: "cd mov_img_skills && python -m pytest tests_unit.py -q"
+            status: pass
+            last_verified: 2026-09-27
 
   - id: R3
     quality_dimension: security

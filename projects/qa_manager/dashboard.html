@@ -132,7 +132,7 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>qa_manager</h1>
-<p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-09-25 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-09-27 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">9</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">16</div><div class="label">검사항목</div></div>
@@ -159,7 +159,7 @@
           <span class="desc-inline">경로·환경·출력·명령 입력 보안 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R1-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -185,7 +185,7 @@
           <span class="desc-inline">근거 기반 LLM 위험 기준 및 구조 문서</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R2-D1-T1</code>
             <span class="category">기본검사</span>
@@ -211,7 +211,7 @@
           <span class="desc-inline">OWASP/CWE/NIST 근거 기반 정적 패턴 스캐너</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -220,7 +220,7 @@
           <p class="desc">하드코딩된 자격증명, 명령/SQL 삽입, TLS 검증 비활성화, 평문 http, CORS 전체허용 패턴을 자동 검증한다.</p>
           <p class="check">실행 명령: <code>python -m unittest discover -s tests -q</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T2</code>
             <span class="category">기본검사</span>
@@ -229,7 +229,7 @@
           <p class="desc">qa_manager 자체 코드에 미검토(qa:allow 미표기) 보안/네트워크 허점이 없는지 확인한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py .</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T3</code>
             <span class="category">재발방지검사</span>
@@ -238,7 +238,7 @@
           <p class="desc">SECURITY_NETWORK_QA_STANDARD.md의 CWE/OWASP 근거가 1년 넘게 재검토 없이 방치되지 않았는지 확인한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_standard_freshness.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T4</code>
             <span class="category">재발방지검사</span>
@@ -264,7 +264,7 @@
           <span class="desc-inline">run_test_item()의 타임아웃+프로세스 트리 강제 종료 로직</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R4-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -281,7 +281,7 @@
           <span class="desc-inline">공개 결과 파일을 완성한 뒤 교체하고 실패 시 이전 결과를 보존한다.</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R4-D2-T1</code>
             <span class="category">재발방지검사</span>
@@ -307,7 +307,7 @@
           <span class="desc-inline">등록부터 검사 실행과 두 HTML 결과 생성까지 종단 검증</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R5-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -333,7 +333,7 @@
           <span class="desc-inline">보고서 공개 전 민감 정보 차단</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -350,7 +350,7 @@
           <span class="desc-inline">새 프로젝트의 공개 적합성 검토 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D2-T1</code>
             <span class="category">재발방지검사</span>
@@ -367,7 +367,7 @@
           <span class="desc-inline">공개 문서와 보고서의 로컬 계정 경로 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D3-T1</code>
             <span class="category">기본검사</span>
@@ -376,7 +376,7 @@
           <p class="desc">공개 파일에 로컬 계정 경로가 남아 있지 않은지 검사한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_public_paths.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D3-T2</code>
             <span class="category">재발방지검사</span>
@@ -402,7 +402,7 @@
           <span class="desc-inline">현재 작업 디렉터리 기준 체크리스트 경로 처리</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R7-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -428,7 +428,7 @@
           <span class="desc-inline">생성 페이지의 공통 텍스트·배지 색상 대비</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R8-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -454,7 +454,7 @@
           <span class="desc-inline">Hermes 수정 루프의 반복 제한·상태 기록·사람 승인 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R9-D1-T1</code>
             <span class="category">재발방지검사</span>

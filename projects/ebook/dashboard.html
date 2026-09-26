@@ -132,7 +132,7 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ebook</h1>
-<p class="meta">projects/ebook/checklist.yaml 기반 (검사 프로젝트: ebook), 생성시각 2026-09-25 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<p class="meta">projects/ebook/checklist.yaml 기반 (검사 프로젝트: ebook), 생성시각 2026-09-27 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">4</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">7</div><div class="label">검사항목</div></div>
@@ -159,7 +159,7 @@
           <span class="desc-inline">ebook 루트 전체 단위·회귀 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ebook-full-tests</code>
             <span class="category">통합검사</span>
@@ -185,7 +185,7 @@
           <span class="desc-inline">원고와 강의 자료 검증기</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>manuscript-contract</code>
             <span class="category">재발방지검사</span>
@@ -194,7 +194,7 @@
           <p class="desc">원고 목록, 링크, 깊이, 근거와 사건 계약을 검사한다.</p>
           <p class="check">실행 명령: <code>python -B validate_manuscript.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>lecture-contract</code>
             <span class="category">재발방지검사</span>
@@ -203,7 +203,7 @@
           <p class="desc">장별 학습목표·활동·평가 정렬 계약을 검사한다.</p>
           <p class="check">실행 명령: <code>python -B lecture/validate_course.py --self-test</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>editorial-audit</code>
             <span class="category">재발방지검사</span>
@@ -229,7 +229,7 @@
           <span class="desc-inline">판매 채널 이미지 자산 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>kmong-assets</code>
             <span class="category">기본검사</span>
@@ -255,20 +255,20 @@
           <span class="desc-inline">부크크와 크몽의 현재 출시 차단 근거</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass detected">
           <div class="row">
             <code>bookk-release-hold</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill detected">DETECTED</span>
           </div>
           <p class="desc">부크크 판매 후보가 전문 교정·실독자·리더 화면·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다.</p>
           <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel bookk</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass detected">
           <div class="row">
             <code>kmong-release-hold</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill detected">DETECTED</span>
           </div>
           <p class="desc">크몽 판매 후보가 전문 교정·실독자·리더 화면·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다.</p>
           <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel kmong</code></p>

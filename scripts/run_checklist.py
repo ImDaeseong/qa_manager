@@ -49,10 +49,19 @@ def main(argv: list[str]) -> int:
         recorded_status = test_item.get("status", "pending")
         live_status, output = lib.run_test_item(test_item, cwd)
 
-        marker = "OK  " if live_status == "pass" else "FAIL"
+        presentation = lib.presentation_status(test_item, live_status, output)
+        marker = {
+            "pass": "PASS    ",
+            "detected": "DETECTED",
+            "missed": "MISSED  ",
+            "invalid": "INVALID ",
+            "pending": "PENDING ",
+            "fail": "FAIL    ",
+        }.get(presentation, presentation.upper())
         print(
             f"{marker} [{req.get('id')}/{dev_item.get('id')}] {item_id} "
-            f"[{test_item.get('category', '?')}] live={live_status} recorded={recorded_status}"
+            f"[{test_item.get('category', '?')}] verdict={live_status} "
+            f"meaning={presentation} recorded={recorded_status}"
         )
 
         if live_status != "pass":

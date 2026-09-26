@@ -88,6 +88,36 @@ class SecurityBoundaryTests(unittest.TestCase):
         self.assertIn("require required_output markers", output)
         popen.assert_not_called()
 
+    def test_expected_failure_presentation_separates_detection_from_raw_result(self) -> None:
+        item = {
+            "check": "python release_gate.py",
+            "expected_exit_codes": [1],
+            "required_output": ["EXPECTED_BLOCKER"],
+        }
+        self.assertEqual(lib.presentation_status(item, "pass", "EXPECTED_BLOCKER"), "detected")
+        self.assertEqual(
+            lib.presentation_status(
+                item,
+                "fail",
+                "UNEXPECTED EXIT CODE: 0; expected [1]\n",
+            ),
+            "missed",
+        )
+        self.assertEqual(
+            lib.presentation_status(
+                item,
+                "fail",
+                "EXPECTED OUTPUT MISSING: ['EXPECTED_BLOCKER']\nTraceback",
+            ),
+            "invalid",
+        )
+
+    def test_normal_check_presentation_keeps_pass_fail_and_pending(self) -> None:
+        item = {"check": "python -V"}
+        self.assertEqual(lib.presentation_status(item, "pass", "Python 3"), "pass")
+        self.assertEqual(lib.presentation_status(item, "fail", "boom"), "fail")
+        self.assertEqual(lib.presentation_status({}, "pending", ""), "pending")
+
 
 if __name__ == "__main__":
     unittest.main()

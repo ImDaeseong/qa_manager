@@ -131,11 +131,11 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-25 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-09-27 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">13</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">58</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">129</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">131</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">13</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
   <div class="stat"><div class="n">0</div><div class="label">출시 검토 근거 완료 프로젝트</div></div>
@@ -163,7 +163,7 @@
           <span class="desc-inline">작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>handoff-hygiene-guard</code>
             <span class="category">기본검사</span>
@@ -189,7 +189,7 @@
           <span class="desc-inline">문서 내부 링크 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-links-guard</code>
             <span class="category">기본검사</span>
@@ -215,7 +215,7 @@
           <span class="desc-inline">점검 도구 자체 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>handoff-hygiene-unit-tests</code>
             <span class="category">재발방지검사</span>
@@ -241,7 +241,7 @@
           <span class="desc-inline">통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
@@ -267,7 +267,7 @@
           <span class="desc-inline">안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>verify-repo-side-effect-selftest</code>
             <span class="category">재발방지검사</span>
@@ -293,7 +293,7 @@
           <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard</code>
             <span class="category">기본검사</span>
@@ -310,7 +310,7 @@
           <span class="desc-inline">패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -336,7 +336,7 @@
           <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 이 저장소는 Python 가드가 이미 있어 8개 규칙 전체 이식</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -345,7 +345,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 직접 실행 기준(verify_repo.ps1 전체 체인이 아님 — 그 체인은 R1/R4의 기존 HANDOFF.md 위생 이슈로 이 항목 이전에 이미 실패함).</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -386,7 +386,7 @@
           <span class="desc-inline">scripts/validate_docs.ps1 — 마크다운 링크 검사 + 문서 계약 검증</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-docs</code>
             <span class="category">통합검사</span>
@@ -412,7 +412,7 @@
           <span class="desc-inline">scripts/validate_evals.py — JSON Schema 검증 로직과 그 자체 테스트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-evals-tests</code>
             <span class="category">기본검사</span>
@@ -438,7 +438,7 @@
           <span class="desc-inline">kma_asos_hourly — 종관기상관측 시간자료 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>asos-client-tests</code>
             <span class="category">기본검사</span>
@@ -455,7 +455,7 @@
           <span class="desc-inline">molit_bus_stop — 국토교통부 버스정류소 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>bus-stop-client-tests</code>
             <span class="category">기본검사</span>
@@ -472,7 +472,7 @@
           <span class="desc-inline">kma_mid_forecast/kma_vilage_forecast 등 기상청 클라이언트 공통 베이스</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>kma-base-client-tests</code>
             <span class="category">기본검사</span>
@@ -489,7 +489,7 @@
           <span class="desc-inline">epost_address — 우정사업본부 주소 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>epost-address-tests</code>
             <span class="category">기본검사</span>
@@ -506,7 +506,7 @@
           <span class="desc-inline">kakao_message — 카카오톡 메시지 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>kakao-message-tests</code>
             <span class="category">기본검사</span>
@@ -523,7 +523,7 @@
           <span class="desc-inline">seoul_bus_arrival — 서울 버스 도착정보 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>seoul-bus-arrival-tests</code>
             <span class="category">기본검사</span>
@@ -540,7 +540,7 @@
           <span class="desc-inline">seoul_bus_route — 서울 버스 노선정보 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>seoul-bus-route-tests</code>
             <span class="category">기본검사</span>
@@ -557,7 +557,7 @@
           <span class="desc-inline">seoul_train_schedule — 서울교통공사 열차시각 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>seoul-train-schedule-tests</code>
             <span class="category">기본검사</span>
@@ -574,7 +574,7 @@
           <span class="desc-inline">telegram_bot — 텔레그램 봇 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>telegram-bot-tests</code>
             <span class="category">기본검사</span>
@@ -591,7 +591,7 @@
           <span class="desc-inline">whatsapp_message — WhatsApp Cloud API 클라이언트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>whatsapp-message-tests</code>
             <span class="category">기본검사</span>
@@ -608,7 +608,7 @@
           <span class="desc-inline">api/ 전체 테스트 스위트 — 개별 모듈 테스트 사이의 상호작용까지 포함해 한 번에 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>api-full-suite</code>
             <span class="category">통합검사</span>
@@ -634,7 +634,7 @@
           <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -643,7 +643,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. 3건의 공공데이터 http 엔드포인트는 SECURITY_BOUNDARY.md의 평문 예외 근거로, masters-panel-agent의 쿠키 이름 상수·테스트 픽스처 2건은 CWE-798 오탐으로 qa:allow 처리했습니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -669,7 +669,7 @@
           <span class="desc-inline">economic-research-assistant 테스트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>economic-research-tests</code>
             <span class="category">통합검사</span>
@@ -695,7 +695,7 @@
           <span class="desc-inline">local-dev-docs-assistant 테스트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>local-dev-docs-tests</code>
             <span class="category">통합검사</span>
@@ -721,7 +721,7 @@
           <span class="desc-inline">workspace-research-assistant 테스트</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>workspace-research-tests</code>
             <span class="category">통합검사</span>
@@ -762,7 +762,7 @@
           <span class="desc-inline">Run the repository&#x27;s existing unit checks without reading private session data.</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>prompt-analysis-tests</code>
             <span class="category">재발방지검사</span>
@@ -771,7 +771,7 @@
           <p class="desc">Synthetic prompt analysis checks.</p>
           <p class="check">실행 명령: <code>node scripts/analyze-prompts.test.js</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>empty-repo-tests</code>
             <span class="category">재발방지검사</span>
@@ -780,7 +780,7 @@
           <p class="desc">Empty-repository handling checks.</p>
           <p class="check">실행 명령: <code>node scripts/git-empty-repo.test.js</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>dashboard-metrics-tests</code>
             <span class="category">재발방지검사</span>
@@ -789,7 +789,7 @@
           <p class="desc">Time-zone normalization, privacy configuration, and qa_manager outcome aggregation checks.</p>
           <p class="check">실행 명령: <code>node scripts/dashboard-metrics.test.js</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>calibration-tests</code>
             <span class="category">재발방지검사</span>
@@ -798,7 +798,7 @@
           <p class="desc">Independent human-label agreement and heuristic calibration checks.</p>
           <p class="check">실행 명령: <code>node scripts/calibration.test.js</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>devex-pulse-tests</code>
             <span class="category">재발방지검사</span>
@@ -839,7 +839,7 @@
           <span class="desc-inline">통합 검사 실행기 — 아래 R2, R3의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
@@ -865,7 +865,7 @@
           <span class="desc-inline">스킬 문서 형식 검사 — 이름/설명 누락이나 중복, 존재하지 않는 다른 스킬 문서 참조, 라이선스 문서 상호 연결 누락을 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-skills-guard</code>
             <span class="category">기본검사</span>
@@ -891,7 +891,7 @@
           <span class="desc-inline">문서 내부 링크 검사 — 코드 예시 안의 텍스트는 제외하고 실제 링크만 대상 문서 존재 여부 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-links-guard</code>
             <span class="category">기본검사</span>
@@ -917,7 +917,7 @@
           <span class="desc-inline">설치 스크립트 회귀 검사 — 임시 저장소를 만들어 설치 스크립트를 실제로 실행해봄</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>install-hooks-regression</code>
             <span class="category">재발방지검사</span>
@@ -943,7 +943,7 @@
           <span class="desc-inline">안전장치 자가 점검 — 임시 저장소에 일부러 파일을 하나 만들어서, 그걸 실제로 잡아내는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>verify-repo-side-effect-selftest</code>
             <span class="category">재발방지검사</span>
@@ -969,7 +969,7 @@
           <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard</code>
             <span class="category">기본검사</span>
@@ -986,7 +986,7 @@
           <span class="desc-inline">패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1012,7 +1012,7 @@
           <span class="desc-inline">정적 패턴 스캐너(PowerShell 이식, qa_manager SECURITY_NETWORK_QA_STANDARD.md 기준) — 이 저장소에 해당 없는 SQL/pickle/eval 규칙은 제외</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -1021,7 +1021,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴(하드코딩 자격증명, Invoke-Expression, TLS검증비활성화, 평문http, CORS전체허용)이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/check_security_hotspots.ps1</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1062,7 +1062,7 @@
           <span class="desc-inline">Analysis_music — 음악 데이터를 분석하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>analysis-music-tests</code>
             <span class="category">기본검사</span>
@@ -1079,7 +1079,7 @@
           <span class="desc-inline">Pexels — 무료 이미지/영상 소스(Pexels)에서 소재를 가져오는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>pexels-tests</code>
             <span class="category">기본검사</span>
@@ -1096,7 +1096,7 @@
           <span class="desc-inline">ai-webtoon — 웹툰 관련 자동화 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-webtoon-tests</code>
             <span class="category">기본검사</span>
@@ -1113,7 +1113,7 @@
           <span class="desc-inline">ai-webtoon_capcut — 웹툰 영상을 캡컷(CapCut) 편집 형식으로 변환하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-webtoon-capcut-tests</code>
             <span class="category">기본검사</span>
@@ -1130,7 +1130,7 @@
           <span class="desc-inline">findstring_foldfiles — 파일에서 문자열을 찾고 폴더를 정리하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>findstring-foldfiles-tests</code>
             <span class="category">기본검사</span>
@@ -1147,7 +1147,7 @@
           <span class="desc-inline">lyrics_tag — 음원 파일에 가사 정보를 입력하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>lyrics-tag-tests</code>
             <span class="category">기본검사</span>
@@ -1164,7 +1164,7 @@
           <span class="desc-inline">master_tag — 음원 마스터링 파일에 태그 정보를 입력하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>master-tag-tests</code>
             <span class="category">기본검사</span>
@@ -1181,7 +1181,7 @@
           <span class="desc-inline">mp4_tag — mp4 영상 파일에 태그 정보를 입력하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>mp4-tag-tests</code>
             <span class="category">기본검사</span>
@@ -1198,7 +1198,7 @@
           <span class="desc-inline">security_scanning — 보안 취약점을 점검하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-scanning-tests</code>
             <span class="category">기본검사</span>
@@ -1215,7 +1215,7 @@
           <span class="desc-inline">weather_alarm — 날씨 정보를 받아 알림을 보내는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>weather-alarm-tests</code>
             <span class="category">기본검사</span>
@@ -1232,7 +1232,7 @@
           <span class="desc-inline">windows-port-monitor — 윈도우 PC의 네트워크 포트 사용 현황을 감시하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>windows-port-monitor-tests</code>
             <span class="category">기본검사</span>
@@ -1258,7 +1258,7 @@
           <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식) — 저장소 전체(195개 소스파일) 대상</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -1267,7 +1267,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. weather_alarm의 data.go.kr http 엔드포인트는 https 지원 확인 후 코드로 수정, 나머지 4건(테스트 픽스처·서술형 문자열·PRAGMA)은 qa:allow 처리했습니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1293,7 +1293,7 @@
           <span class="desc-inline">미디어·실행 파일이 Git 추적 목록에 남지 않도록 확인한다</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>source-only-guard</code>
             <span class="category">기본검사</span>
@@ -1310,7 +1310,7 @@
           <span class="desc-inline">포함된 JsonCpp 버전의 원본 라이선스 고지문을 유지한다</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>jsoncpp-license-guard</code>
             <span class="category">재발방지검사</span>
@@ -1327,7 +1327,7 @@
           <span class="desc-inline">직접 작성 코드의 MIT와 제3자 라이선스 경계를 유지한다</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>root-license-guard</code>
             <span class="category">기본검사</span>
@@ -1336,7 +1336,7 @@
           <p class="desc">루트 MIT 원문, 제3자 고지, README 링크와 Git 추적 상태를 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_license_scope.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>root-license-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1353,7 +1353,7 @@
           <span class="desc-inline">추적 중인 의존성 manifest와 lockfile 검토 근거를 최신 상태로 유지한다</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>dependency-inventory-guard</code>
             <span class="category">기본검사</span>
@@ -1362,7 +1362,7 @@
           <p class="desc">모든 추적 manifest가 인벤토리에 기록되고 해시가 일치하며 npm lock 형식이 지원되는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_dependency_inventory.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>dependency-inventory-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1381,7 +1381,7 @@
         <span>ai_test1</span>
         <span class="pill pass">통과</span>
         <span class="pill hold">보류</span> <span class="desc-inline">출시 검토 보류(15개 영역)</span>
-        <span class="counts-inline">요구사항 3개 · 검사항목 14개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 3개 · 검사항목 16개 · 실패 0건 · <a href="projects/ai_test1/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
 
     <div class="readiness not-ready">
@@ -1403,7 +1403,7 @@
           <span class="desc-inline">문서-실제 개수 일치 검사 — 각 프로그램의 실제 테스트 개수를 세어 문서에 적힌 숫자와 비교, 설치 스크립트 문법과 문서 링크도 함께 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>repo-consistency-check</code>
             <span class="category">통합검사</span>
@@ -1421,7 +1421,7 @@
         <code>R2</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 11개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 13개 · 검사항목 13개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -1429,7 +1429,7 @@
           <span class="desc-inline">ai_Scenario — 드라마 시나리오를 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-scenario-tests</code>
             <span class="category">기본검사</span>
@@ -1446,7 +1446,7 @@
           <span class="desc-inline">ai_story — 소설 스토리를 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-story-tests</code>
             <span class="category">기본검사</span>
@@ -1463,7 +1463,7 @@
           <span class="desc-inline">aim_music_app — 음악과 캐릭터 이미지·영상을 함께 만드는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>aim-music-app-tests</code>
             <span class="category">기본검사</span>
@@ -1480,7 +1480,7 @@
           <span class="desc-inline">aim_music_character_app — 음악 캐릭터 관련 프로그램 (aim_music_app과 유사하지만 별도 구성)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>aim-music-character-app-tests</code>
             <span class="category">기본검사</span>
@@ -1497,7 +1497,7 @@
           <span class="desc-inline">music_beats — 인스트루멘탈(가사 없는) 비트를 만들어 판매용으로 준비하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-beats-tests</code>
             <span class="category">기본검사</span>
@@ -1514,7 +1514,7 @@
           <span class="desc-inline">music_codes — 음악 작곡 패턴(코드 진행)을 모아놓은 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-codes-tests</code>
             <span class="category">기본검사</span>
@@ -1531,7 +1531,7 @@
           <span class="desc-inline">music_lyric — 노래 가사를 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-lyric-tests</code>
             <span class="category">기본검사</span>
@@ -1548,7 +1548,7 @@
           <span class="desc-inline">music_skills — 음악 제작에 쓰이는 여러 기법을 모아놓은 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-skills-tests</code>
             <span class="category">기본검사</span>
@@ -1565,7 +1565,7 @@
           <span class="desc-inline">music_skills_trot — 트로트 장르 전용 음악 제작 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-skills-trot-tests</code>
             <span class="category">기본검사</span>
@@ -1582,7 +1582,7 @@
           <span class="desc-inline">music_skills_unpredictable — 실험적/예측불가 스타일 음악 제작 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-skills-unpredictable-tests</code>
             <span class="category">기본검사</span>
@@ -1599,7 +1599,7 @@
           <span class="desc-inline">music_story_skills — 스토리 기반 가사·음악 프롬프트 엔진 (outline→bank→structure→lyrics→music→review)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-story-skills-tests</code>
             <span class="category">기본검사</span>
@@ -1607,6 +1607,40 @@
           </div>
           <p class="desc">이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>cd music_story_skills &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D12</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">aim_music_mp4_app — 매니페스트 기반 MP4 렌더링 및 CapCut 패키징 프로그램</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>aim-music-mp4-app-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">렌더링 계약, 입력 검증, 패키징, 제작 이력 검사가 통과하는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd aim_music_mp4_app &amp;&amp; python -m pytest tests_unit.py -q</code></p>
+        </li>
+        </ul>
+      </details>
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R2-D13</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">mov_img_skills — 이미지·영상 프롬프트 규칙과 템플릿 문서</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>mov-img-skills-tests</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">필수 문서, 입력 필드, 영상 프롬프트 구조, 검토 단계가 일관되는지 확인합니다.</p>
+          <p class="check">실행 명령: <code>cd mov_img_skills &amp;&amp; python -m pytest tests_unit.py -q</code></p>
         </li>
         </ul>
       </details>
@@ -1625,7 +1659,7 @@
           <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식, ai_test와 동일)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -1634,7 +1668,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1675,7 +1709,7 @@
           <span class="desc-inline">ai_anime — 애니메이션 관련 이미지/영상 생성 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-anime-tests</code>
             <span class="category">기본검사</span>
@@ -1692,7 +1726,7 @@
           <span class="desc-inline">ai_img_video_aiBoygirl — 캐릭터(남녀) 이미지·영상을 생성하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-img-video-aiboygirl-tests</code>
             <span class="category">기본검사</span>
@@ -1709,7 +1743,7 @@
           <span class="desc-inline">ai_img_video_prompt_capcut — 이미지·영상 생성용 문구(프롬프트)를 캡컷 편집 형식으로 만드는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ai-img-video-prompt-capcut-tests</code>
             <span class="category">기본검사</span>
@@ -1726,7 +1760,7 @@
           <span class="desc-inline">youtube_research — 유튜브 콘텐츠를 조사·분석하는 프로그램</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>youtube-research-tests</code>
             <span class="category">기본검사</span>
@@ -1743,7 +1777,7 @@
           <span class="desc-inline">music_insight_studio — 음악 데이터를 분석하는 프로그램 (다른 프로그램들과 달리 자체 실행 환경이 별도로 필요함)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>music-insight-studio-tests</code>
             <span class="category">기본검사</span>
@@ -1760,7 +1794,7 @@
           <span class="desc-inline">CareerDiff — 채용공고와 이력서를 비교해 적합도를 분석해주는 웹서비스, 코드 타입 오류 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>careerdiff-typecheck</code>
             <span class="category">기본검사</span>
@@ -1777,7 +1811,7 @@
           <span class="desc-inline">CareerDiff — 코드 품질 검사(린트)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>careerdiff-lint</code>
             <span class="category">기본검사</span>
@@ -1794,7 +1828,7 @@
           <span class="desc-inline">CareerDiff — 기능별 자체 테스트(적합도 분석, 이력서 불러오기 등 핵심 기능)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>careerdiff-unit-tests</code>
             <span class="category">기본검사</span>
@@ -1811,7 +1845,7 @@
           <span class="desc-inline">CareerDiff — 실서비스용 빌드</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>careerdiff-build</code>
             <span class="category">통합검사</span>
@@ -1837,7 +1871,7 @@
           <span class="desc-inline">정적 패턴 스캐너(qa_manager SECURITY_NETWORK_QA_STANDARD.md 이식, ai_test와 동일)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -1846,7 +1880,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다. CareerDiff의 non-https 거부 검증용 테스트 입력 2건은 qa:allow로 처리했습니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -1887,7 +1921,7 @@
           <span class="desc-inline">Check artifact existence only; do not expose resume content in the public report.</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>public-page-files</code>
             <span class="category">기본검사</span>
@@ -1928,7 +1962,7 @@
           <span class="desc-inline">ebook 루트 전체 단위·회귀 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>ebook-full-tests</code>
             <span class="category">통합검사</span>
@@ -1954,7 +1988,7 @@
           <span class="desc-inline">원고와 강의 자료 검증기</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>manuscript-contract</code>
             <span class="category">재발방지검사</span>
@@ -1963,7 +1997,7 @@
           <p class="desc">원고 목록, 링크, 깊이, 근거와 사건 계약을 검사한다.</p>
           <p class="check">실행 명령: <code>python -B validate_manuscript.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>lecture-contract</code>
             <span class="category">재발방지검사</span>
@@ -1972,7 +2006,7 @@
           <p class="desc">장별 학습목표·활동·평가 정렬 계약을 검사한다.</p>
           <p class="check">실행 명령: <code>python -B lecture/validate_course.py --self-test</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>editorial-audit</code>
             <span class="category">재발방지검사</span>
@@ -1998,7 +2032,7 @@
           <span class="desc-inline">판매 채널 이미지 자산 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>kmong-assets</code>
             <span class="category">기본검사</span>
@@ -2024,20 +2058,20 @@
           <span class="desc-inline">부크크와 크몽의 현재 출시 차단 근거</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass detected">
           <div class="row">
             <code>bookk-release-hold</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill detected">DETECTED</span>
           </div>
           <p class="desc">부크크 판매 후보가 전문 교정·실독자·리더 화면·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다.</p>
           <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel bookk</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass detected">
           <div class="row">
             <code>kmong-release-hold</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill detected">DETECTED</span>
           </div>
           <p class="desc">크몽 판매 후보가 전문 교정·실독자·리더 화면·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다.</p>
           <p class="check">실행 명령: <code>python -B scripts/release_gate.py --channel kmong</code></p>
@@ -2074,7 +2108,7 @@
           <span class="desc-inline">settings.json 권한 항목 형식 검증 로직</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>claude-settings-guard</code>
             <span class="category">기본검사</span>
@@ -2100,7 +2134,7 @@
           <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard</code>
             <span class="category">기본검사</span>
@@ -2126,7 +2160,7 @@
           <span class="desc-inline">요구사항 파일이 bot.py의 import를 실제로 커버하는지 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>telegram-requirements-guard</code>
             <span class="category">기본검사</span>
@@ -2143,7 +2177,7 @@
           <span class="desc-inline">패키지명 파싱이 버전 지정자/extras 구문을 정확히 처리 (회귀: 과거 openai&gt;=1 을 openai&gt; 로 잘못 파싱한 결함)</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>telegram-requirements-parsing-regression</code>
             <span class="category">재발방지검사</span>
@@ -2169,7 +2203,7 @@
           <span class="desc-inline">메시지 본문 변수가 로깅 호출에 전달되지 않는지 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>bot-privacy-guard</code>
             <span class="category">기본검사</span>
@@ -2195,7 +2229,7 @@
           <span class="desc-inline">개행 문자(CRLF) 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>batch-line-endings-guard</code>
             <span class="category">기본검사</span>
@@ -2221,7 +2255,7 @@
           <span class="desc-inline">Codex 미러 동기화 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>codex-mirror-sync-guard</code>
             <span class="category">기본검사</span>
@@ -2247,7 +2281,7 @@
           <span class="desc-inline">통합 게이트 스크립트 실행</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
@@ -2273,7 +2307,7 @@
           <span class="desc-inline">정적 패턴 스캐너 및 qa:allow 억제 규칙 회귀</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -2282,7 +2316,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -2291,7 +2325,7 @@
           <p class="desc">규칙별 실탐/오탐(placeholder, localhost, qa:allow, 스캐너 자기자신 제외)이 의도대로 동작하는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots_test.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>qa-allow-audit-guard</code>
             <span class="category">기본검사</span>
@@ -2300,7 +2334,7 @@
           <p class="desc">모든 qa:allow 억제 주석이 CWE 번호와 실제 사유를 갖추고 있는지 감사합니다(무근거 억제 방지).</p>
           <p class="check">실행 명령: <code>python scripts/check_qa_allow_audit.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>qa-allow-audit-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -2341,7 +2375,7 @@
           <span class="desc-inline">Validate existing publishable artifacts without loading private context data.</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>extension-entry-points</code>
             <span class="category">기본검사</span>
@@ -2382,7 +2416,7 @@
           <span class="desc-inline">경로·환경·출력·명령 입력 보안 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R1-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2408,7 +2442,7 @@
           <span class="desc-inline">근거 기반 LLM 위험 기준 및 구조 문서</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R2-D1-T1</code>
             <span class="category">기본검사</span>
@@ -2434,7 +2468,7 @@
           <span class="desc-inline">OWASP/CWE/NIST 근거 기반 정적 패턴 스캐너</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2443,7 +2477,7 @@
           <p class="desc">하드코딩된 자격증명, 명령/SQL 삽입, TLS 검증 비활성화, 평문 http, CORS 전체허용 패턴을 자동 검증한다.</p>
           <p class="check">실행 명령: <code>python -m unittest discover -s tests -q</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T2</code>
             <span class="category">기본검사</span>
@@ -2452,7 +2486,7 @@
           <p class="desc">qa_manager 자체 코드에 미검토(qa:allow 미표기) 보안/네트워크 허점이 없는지 확인한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_hotspots.py .</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T3</code>
             <span class="category">재발방지검사</span>
@@ -2461,7 +2495,7 @@
           <p class="desc">SECURITY_NETWORK_QA_STANDARD.md의 CWE/OWASP 근거가 1년 넘게 재검토 없이 방치되지 않았는지 확인한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_security_standard_freshness.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R3-D1-T4</code>
             <span class="category">재발방지검사</span>
@@ -2487,7 +2521,7 @@
           <span class="desc-inline">run_test_item()의 타임아웃+프로세스 트리 강제 종료 로직</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R4-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2504,7 +2538,7 @@
           <span class="desc-inline">공개 결과 파일을 완성한 뒤 교체하고 실패 시 이전 결과를 보존한다.</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R4-D2-T1</code>
             <span class="category">재발방지검사</span>
@@ -2530,7 +2564,7 @@
           <span class="desc-inline">등록부터 검사 실행과 두 HTML 결과 생성까지 종단 검증</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R5-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2556,7 +2590,7 @@
           <span class="desc-inline">보고서 공개 전 민감 정보 차단</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2573,7 +2607,7 @@
           <span class="desc-inline">새 프로젝트의 공개 적합성 검토 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D2-T1</code>
             <span class="category">재발방지검사</span>
@@ -2590,7 +2624,7 @@
           <span class="desc-inline">공개 문서와 보고서의 로컬 계정 경로 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D3-T1</code>
             <span class="category">기본검사</span>
@@ -2599,7 +2633,7 @@
           <p class="desc">공개 파일에 로컬 계정 경로가 남아 있지 않은지 검사한다.</p>
           <p class="check">실행 명령: <code>python scripts/check_public_paths.py</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R6-D3-T2</code>
             <span class="category">재발방지검사</span>
@@ -2625,7 +2659,7 @@
           <span class="desc-inline">현재 작업 디렉터리 기준 체크리스트 경로 처리</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R7-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2651,7 +2685,7 @@
           <span class="desc-inline">생성 페이지의 공통 텍스트·배지 색상 대비</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R8-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2677,7 +2711,7 @@
           <span class="desc-inline">Hermes 수정 루프의 반복 제한·상태 기록·사람 승인 경계</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>R9-D1-T1</code>
             <span class="category">재발방지검사</span>
@@ -2718,7 +2752,7 @@
           <span class="desc-inline">전체 규칙 준수 검사 — 모든 스킬 문서와 안내 문서를 오늘 날짜 기준으로 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-workspace-guard</code>
             <span class="category">통합검사</span>
@@ -2744,7 +2778,7 @@
           <span class="desc-inline">문서 내부 링크 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validate-links-guard</code>
             <span class="category">기본검사</span>
@@ -2770,7 +2804,7 @@
           <span class="desc-inline">제외 목록 처리 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>validators-ignore-scan-regression</code>
             <span class="category">재발방지검사</span>
@@ -2796,7 +2830,7 @@
           <span class="desc-inline">비밀정보처럼 보이는 값 패턴 검사 — hermes-agents의 동일 가드를 이식</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard</code>
             <span class="category">기본검사</span>
@@ -2813,7 +2847,7 @@
           <span class="desc-inline">패턴 목록이 실제로 심어둔 가짜 비밀키를 잡아내고, 평범한 문장에는 반응하지 않는지 검사</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>no-example-secrets-guard-regression</code>
             <span class="category">재발방지검사</span>
@@ -2839,7 +2873,7 @@
           <span class="desc-inline">정적 패턴 스캐너(PowerShell 이식, ai_prompt와 동일) — 이 저장소에 해당 없는 SQL/pickle/eval 규칙은 제외</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard</code>
             <span class="category">기본검사</span>
@@ -2848,7 +2882,7 @@
           <p class="desc">소스 파일에 CWE 매핑된 위험 패턴이 qa:allow 근거 주석 없이 남아있지 않은지 확인합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/check_security_hotspots.ps1</code></p>
         </li>
-        <li class="test-item pass">
+        <li class="test-item pass pass">
           <div class="row">
             <code>security-hotspots-guard-regression</code>
             <span class="category">재발방지검사</span>

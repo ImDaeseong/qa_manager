@@ -1,4 +1,4 @@
-"""Regression test for scripts/run_checklist.py's exit code (2026-09-26 independent review).
+"""Regression tests for run_checklist exit codes and verification semantics.
 
 run_checklist.py's terminal marker treats any non-"pass" live_status as "FAIL"
 text, but its exit-code logic used to only fire on the literal string "fail" --
