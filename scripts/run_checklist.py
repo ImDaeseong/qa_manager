@@ -55,7 +55,13 @@ def main(argv: list[str]) -> int:
             f"[{test_item.get('category', '?')}] live={live_status} recorded={recorded_status}"
         )
 
-        if live_status == "fail":
+        if live_status != "pass":
+            # Matches the marker logic above and generate_checklist_dashboard's
+            # aggregation (any non-"pass" leaf, including "pending", fails the
+            # parent) -- this used to only fire on the literal string "fail",
+            # so a "pending" item (missing/empty check command) printed a FAIL
+            # line but left the script's own exit code at 0, letting any
+            # exit-code-only caller (a pre-commit hook, CI step) see success.
             exit_code = 1
             for line in output.splitlines():
                 print(f"       {line}")
