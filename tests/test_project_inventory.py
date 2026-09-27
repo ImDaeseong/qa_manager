@@ -57,6 +57,25 @@ class ProjectInventoryTests(unittest.TestCase):
                 ):
                     self.assertIn(source_marker, design_text, f"{name}: missing {source_marker}")
 
+    def test_design_docs_have_project_specific_detailed_views(self):
+        """Detailed views stay evidence-backed and specific to each registered project."""
+        expected_markers = {'ai-workspace': 'scripts/build_context_packet.py', 'ai_agent': 'src/agentlab/', 'ai_history_dashboard': 'scripts/regenerate.js', 'ai_prompt': 'promotion-manifest.json', 'ai_test': 'windows-port-monitor/', 'ai_test1': 'aim_music_character_app/', 'ai_test2': 'timeline.json / shot_list.md / CapCut draft', 'career': 'private evidence record (ignored local storage)', 'ebook': 'validate_manuscript.py + unit tests', 'hermes-agents': 'MCP/tool permission boundary', 'llm-wiki': 'wiki-extension content script', 'qa_manager': 'verifier judgment (PASS / DETECTED / MISSED / INVALID)', 'skills': 'runtime-dependencies.lock.json'}
+        detailed_sections = set()
+        for name in sorted(lib.PUBLIC_PROJECTS):
+            with self.subTest(name=name):
+                data = lib.load(lib.QA_ROOT / "projects" / name / "checklist.yaml")
+                design_text = (lib.project_root(data) / "DESIGN.md").read_text(encoding="utf-8")
+                self.assertIn("## Detailed structure and views", design_text)
+                self.assertIn(expected_markers[name], design_text)
+                self.assertIn("ISO/IEC/IEEE 42010:2022", design_text)
+                self.assertIn("SEI Views and Beyond", design_text)
+                detailed = design_text.split("## Detailed structure and views", 1)[1].split(
+                    "## Key decisions and tradeoffs", 1
+                )[0].strip()
+                self.assertGreater(len(detailed), 400, f"{name}: detailed view is too thin")
+                self.assertNotIn(detailed, detailed_sections, f"{name}: duplicate detailed view")
+                detailed_sections.add(detailed)
+
 
 if __name__ == "__main__":
     unittest.main()
