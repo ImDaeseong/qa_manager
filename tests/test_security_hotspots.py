@@ -129,6 +129,19 @@ class SecurityHotspotScannerTests(unittest.TestCase):
         )
         self.assertEqual(findings, [])
 
+    def test_excluded_host_lookalike_still_flagged(self) -> None:
+        # Regression: an excluded host must end at a host boundary -- "localhost.evil.com" used to
+        # pass because the exclusion matched only the prefix (found by an independent review).
+        def scan(content: str) -> list[str]:
+            c = content
+            return self._scan_one(Path(self._make_tmp_dir()), "client.py", c)
+
+        for host in ("www.w3.org.evil.com", "localhost.evil.com", "example.com.evil.com"):
+            with self.subTest(host=host):
+                findings = scan(f'URL = "http://{host}/x"\n')
+                self.assertTrue(any("CWE-319" in f for f in findings))
+        self.assertEqual(scan('URL = "http://127.0.0.2:8000/x"\n'), [])
+
     def test_javascript_regexp_exec_not_flagged(self) -> None:
         # Regression: `.exec(` is RegExp.prototype.exec() in JS/TS, not the
         # dangerous exec() builtin -- \b(?:eval|exec)\s*\( matched it because

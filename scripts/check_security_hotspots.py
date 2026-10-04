@@ -87,7 +87,9 @@ RULES = [
         "CWE-319", "평문 http로 외부 엔드포인트 호출",
         "https://로 바꾸세요. localhost/127.0.0.1/0.0.0.0/example.com/example.org/example.net"
         "(RFC 2606 문서·테스트 예약 도메인)과 www.w3.org(XML 네임스페이스, 네트워크 호출 아님)는 제외됩니다.",
-        r"['\"]http://(?!localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(?:com|org|net)|www\.w3\.org)"
+        # Each excluded host must end at a host boundary, or "http://localhost.evil.com" and
+        # "http://www.w3.org.evil.com" would slip through as if they were the excluded host.
+        r"['\"]http://(?!(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0|example\.(?:com|org|net)|www\.w3\.org)(?![\w-]|\.\w))"
         r"[A-Za-z0-9.-]+",
     ),
     Rule(
