@@ -1,8 +1,8 @@
 # DesignDocs Evidence Review
 
-Review date: 2026-09-27
+Review date: 2026-10-05
 
-Scope: the root DESIGN.md files of the 13 projects registered in qa_manager.
+Scope: the root DESIGN.md files of the 14 projects registered in qa_manager.
 
 ## Claims tested
 
@@ -19,7 +19,7 @@ Scope: the root DESIGN.md files of the 13 projects registered in qa_manager.
 
 The first draft already documented purpose, boundaries, components, verification, and human-review HOLD conditions. It did not explicitly map stakeholders to concerns, identify a representative scenario, state key decisions and tradeoffs, or identify its evidence basis.
 
-All 13 DesignDocs now include:
+All 14 DesignDocs now include:
 
 1. purpose and system boundary;
 2. named stakeholders and their concerns;

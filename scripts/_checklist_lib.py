@@ -29,7 +29,7 @@ QA_ROOT = Path(__file__).resolve().parent.parent
 DESKTOP_ROOT = QA_ROOT.parent
 DEFAULT_CHECKLIST = QA_ROOT / "projects" / "hermes-agents" / "checklist.yaml"
 PUBLIC_PROJECTS = frozenset({
-    "ai-workspace", "ai_agent", "ai_history_dashboard", "ai_prompt", "ai_test", "ebook",
+    "ai-workspace", "ai_agent", "ai_history_dashboard", "ai_prompt", "ai_test", "ebook", "ebook_source",
     "ai_test1", "ai_test2", "career", "hermes-agents", "llm-wiki", "qa_manager", "skills",
 })
 

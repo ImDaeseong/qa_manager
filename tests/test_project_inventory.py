@@ -10,7 +10,7 @@ class ProjectInventoryTests(unittest.TestCase):
         expected = {
             "hermes-agents", "ai_prompt", "ai-workspace", "skills", "ai_test",
             "ai_test1", "ai_test2", "ai_agent", "qa_manager", "ai_history_dashboard",
-            "llm-wiki", "career", "ebook",
+            "llm-wiki", "career", "ebook", "ebook_source",
         }
         actual = {path.parent.name for path in (lib.QA_ROOT / "projects").glob("*/checklist.yaml")}
         self.assertEqual(actual, expected)
@@ -22,6 +22,14 @@ class ProjectInventoryTests(unittest.TestCase):
                 self.assertTrue(data["repo_root"])
                 self.assertTrue(list(lib.iter_test_items(data)))
                 self.assertTrue(all(item.get("check") for _, _, item in lib.iter_test_items(data)))
+
+    def test_project_count_is_current_in_entry_documents(self):
+        """README and ELI5 advertise the same project count as the registry."""
+        count = len(lib.PUBLIC_PROJECTS)
+        readme = (lib.QA_ROOT / "README.md").read_text(encoding="utf-8")
+        eli5 = (lib.QA_ROOT / "ELI5.html").read_text(encoding="utf-8")
+        self.assertIn(f"총 {count}개", readme)
+        self.assertIn(f"{count}개 프로젝트", eli5)
 
     def test_registered_projects_publish_documentation_entry_points(self):
         """Every registered project exposes current overview, ELI5, and design entry points."""
@@ -59,7 +67,7 @@ class ProjectInventoryTests(unittest.TestCase):
 
     def test_design_docs_have_project_specific_detailed_views(self):
         """Detailed views stay evidence-backed and specific to each registered project."""
-        expected_markers = {'ai-workspace': 'scripts/build_context_packet.py', 'ai_agent': 'src/agentlab/', 'ai_history_dashboard': 'scripts/regenerate.js', 'ai_prompt': 'promotion-manifest.json', 'ai_test': 'windows-port-monitor/', 'ai_test1': 'aim_music_character_app/', 'ai_test2': 'timeline.json / shot_list.md / CapCut draft', 'career': 'private evidence record (ignored local storage)', 'ebook': 'validate_manuscript.py + unit tests', 'hermes-agents': 'MCP/tool permission boundary', 'llm-wiki': 'wiki-extension content script', 'qa_manager': 'verifier judgment (PASS / DETECTED / MISSED / INVALID)', 'skills': 'runtime-dependencies.lock.json'}
+        expected_markers = {'ai-workspace': 'scripts/build_context_packet.py', 'ai_agent': 'src/agentlab/', 'ai_history_dashboard': 'scripts/regenerate.js', 'ai_prompt': 'promotion-manifest.json', 'ai_test': 'windows-port-monitor/', 'ai_test1': 'aim_music_character_app/', 'ai_test2': 'timeline.json / shot_list.md / CapCut draft', 'career': 'private evidence record (ignored local storage)', 'ebook': 'validate_manuscript.py + unit tests', 'ebook_source': 'verify_distribution.py', 'hermes-agents': 'MCP/tool permission boundary', 'llm-wiki': 'wiki-extension content script', 'qa_manager': 'verifier judgment (PASS / DETECTED / MISSED / INVALID)', 'skills': 'runtime-dependencies.lock.json'}
         detailed_sections = set()
         for name in sorted(lib.PUBLIC_PROJECTS):
             with self.subTest(name=name):

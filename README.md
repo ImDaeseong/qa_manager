@@ -38,9 +38,9 @@ python -m pip install -r requirements.txt
 python -m unittest discover -s tests -q
 ```
 
-The tests above run with this repository alone. Regenerating the thirteen bundled project dashboards also requires their sibling project folders and valid `repo_root` paths; a standalone clone cannot rerun those external checks. For questions and bug reports, use [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues). Do not include secrets, personal data, or internal logs in a public issue; response times are not guaranteed.
+The tests above run with this repository alone. Regenerating the fourteen bundled project dashboards also requires their sibling project folders and valid `repo_root` paths; a standalone clone cannot rerun those external checks. For questions and bug reports, use [GitHub Issues](https://github.com/ImDaeseong/qa_manager/issues). Do not include secrets, personal data, or internal logs in a public issue; response times are not guaranteed.
 
-The registered projects are `hermes-agents`, `ai_prompt`, `ai-workspace`, `skills`, `ai_test`, `ai_test1`, `ai_test2`, `ai_agent`, `qa_manager`, `ai_history_dashboard`, `llm-wiki`, `career`, and `ebook`. The ebook checks run its existing synthetic tests and validators without copying manuscript text into the public report; its expected release-gate HOLD passes only when the exact human-review blockers are present. Automated PASS remains separate from release approval.
+The registered projects are `hermes-agents`, `ai_prompt`, `ai-workspace`, `skills`, `ai_test`, `ai_test1`, `ai_test2`, `ai_agent`, `qa_manager`, `ai_history_dashboard`, `llm-wiki`, `career`, `ebook`, and `ebook_source`. The ebook checks run its existing synthetic tests and validators without copying manuscript text into the public report; the ebook_source checks run its public distribution verifier and companion-contract guards. Automated PASS remains separate from release approval.
 
 Expected-failure checks use two layers of status. The command's raw exit and diagnostic are evaluated against `expected_exit_codes` and `required_output`; the report then shows `DETECTED` when the intended failure was caught, `MISSED` when a failure was expected but the target passed, and `INVALID` when an unrelated error or wrong diagnostic occurred. Parent requirements still aggregate the verifier verdict (`pass` or `fail`), not the target's raw exit code.
 
@@ -71,7 +71,7 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
 ## 실행 방법
 
 Python 의존성 설치: `python -m pip install -r requirements.txt`.
-기본 체크리스트 13개는 이 작업공간의 형제 저장소·프로젝트 폴더를 검사합니다. `qa_manager`만 새로 복제한 환경에서는 대상 폴더들이 없어 전체 재검사가 실행되지 않습니다. 다른 환경에서 재사용하려면 실제 검사할 프로젝트를 함께 준비하고 `repo_root`와 검사 명령을 조정한 뒤 공개 허용 목록을 검토하세요. 공개된 HTML은 마지막으로 생성된 결과를 읽을 수 있습니다.
+기본 체크리스트 14개는 이 작업공간의 형제 저장소·프로젝트 폴더를 검사합니다. `qa_manager`만 새로 복제한 환경에서는 대상 폴더들이 없어 전체 재검사가 실행되지 않습니다. 다른 환경에서 재사용하려면 실제 검사할 프로젝트를 함께 준비하고 `repo_root`와 검사 명령을 조정한 뒤 공개 허용 목록을 검토하세요. 공개된 HTML은 마지막으로 생성된 결과를 읽을 수 있습니다.
 
 ```
 open_qa_system.bat                                               # 전체 재검사 + 브라우저로 index.html 열기
@@ -144,7 +144,7 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
 ## 현재 등록된 프로젝트
 
 hermes-agents, ai_prompt, ai-workspace, skills, ai_test, ai_test1, ai_test2, ai_agent,
-qa_manager, ai_history_dashboard, llm-wiki, career, ebook — 총 13개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
+qa_manager, ai_history_dashboard, llm-wiki, career, ebook, ebook_source — 총 14개. 실시간 통과/실패 현황은 `index.html`을 열어 확인합니다.
 
 `ai_agent`는 2026-09-10에 등록한 뒤 개별 에이전트·검색 앱의 자동 테스트까지 검사 범위를
 확장했습니다. 문서/링크 검증, eval 스키마, 공공데이터 API 클라이언트와 함께 현재 등록된
@@ -162,7 +162,7 @@ checklist.yaml의 R1-D7~D10으로 이관).
 - 개별 check당 300초 타임아웃 + `taskkill /F /T`로 프로세스 트리 강제 종료(Windows에서 `subprocess.run(timeout=)`이 cmd.exe 래퍼만 죽이고 실제 자식 프로세스는 안 죽는 문제를 우회) — 행(hang) 방지 주장과 일치.
 
 qa_manager 자신의 회귀 테스트·필수 문서 검사·보안 허점 자기검사는 2026-09-18부터
-`.github/workflows/validate.yml`로 매 push마다 자동 실행됩니다(다른 8개 형제
-형제 프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
+`.github/workflows/validate.yml`로 매 push마다 자동 실행됩니다(나머지 13개 형제
+프로젝트는 이 저장소에 없으므로 CI 대상이 아니며, 재검사하려면 로컬에서
 `open_qa_system.bat`을 실행합니다).
-- 현재 등록 수와 검사 결과는 생성된 `index.html`을 기준으로 확인합니다. 2026-09-24 기준 13개 프로젝트가 등록되어 있으며, 저장된 결과가 아니라 재실행 결과로 판정합니다.
+- 현재 등록 수와 검사 결과는 생성된 `index.html`을 기준으로 확인합니다. 2026-10-05 기준 14개 프로젝트가 등록되어 있으며, 저장된 결과가 아니라 재실행 결과로 판정합니다.
