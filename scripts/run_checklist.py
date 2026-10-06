@@ -76,6 +76,7 @@ def main(argv: list[str]) -> int:
                 print(f"       {line}")
         if live_status != recorded_status:
             mismatches += 1
+            exit_code = 1
             print(f"       MISMATCH: recorded status is stale, update {checklist_path.name}")
 
     if count == 0:

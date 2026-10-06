@@ -20,7 +20,7 @@ import run_checklist  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def _write_checklist(path: Path, *, with_check: bool) -> None:
+def _write_checklist(path: Path, *, with_check: bool, status: str = "pass") -> None:
     test_item_lines = [
         "          - id: T1",
         "            category: regression",
@@ -28,7 +28,7 @@ def _write_checklist(path: Path, *, with_check: bool) -> None:
     ]
     if with_check:
         test_item_lines.append('            check: "python -c \\"pass\\""')
-    test_item_lines.append("            status: pass")
+    test_item_lines.append(f"            status: {status}")
 
     path.write_text(
         "project: _run_checklist_fixture\n"
@@ -70,6 +70,19 @@ class RunChecklistExitCodeTests(unittest.TestCase):
         finally:
             fixture.unlink(missing_ok=True)
         self.assertEqual(exit_code, 0)
+
+    def test_stale_recorded_status_fails_the_exit_code(self):
+        fixture = ROOT / "tests" / "_tmp_run_checklist_stale_status.yaml"
+        _write_checklist(fixture, with_check=True, status="fail")
+        try:
+            exit_code = run_checklist.main([str(fixture)])
+        finally:
+            fixture.unlink(missing_ok=True)
+        self.assertEqual(
+            exit_code,
+            1,
+            "a stale recorded status must fail the script's exit code, as documented",
+        )
 
 
 if __name__ == "__main__":
