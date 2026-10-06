@@ -24,7 +24,7 @@ Run real checks registered by multiple local repositories and present current ve
 
 - `projects/*/checklist.yaml`: requirement, development item, and executable test definitions.
 - `scripts/_checklist_lib.py`: checklist loading, path resolution, and status semantics.
-- `scripts/run_checklist.py`: text execution report.
+- `scripts/run_checklist.py`: text execution report. Exits 1 when any live status is not `pass` or differs from the recorded `status`, so exit-code-only callers (hooks, CI) cannot see success on a stale checklist.
 - Dashboard generators and generated `index.html`/`dashboard.html` files.
 
 ## Detailed structure and views

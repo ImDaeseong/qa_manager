@@ -53,7 +53,7 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
   scripts/
     _checklist_lib.py             checklist.yaml 로드, repo_root 경로 계산, check 명령 실행
     _style.py                     index.html/dashboard.html 공통 CSS
-    run_checklist.py              프로젝트 1개를 터미널에 텍스트로 보고
+    run_checklist.py              프로젝트 1개를 터미널에 텍스트로 보고 (실패 또는 기록 상태 불일치면 종료 코드 1)
     generate_checklist_dashboard.py   프로젝트 1개의 dashboard.html 생성
     generate_system_index.py      전체 프로젝트를 스캔해 index.html 생성
   projects/
@@ -77,7 +77,7 @@ Python 의존성 설치: `python -m pip install -r requirements.txt`.
 open_qa_system.bat                                               # 전체 재검사 + 브라우저로 index.html 열기
 python scripts\generate_system_index.py                          # 전체 프로젝트 재검사 + index.html 생성
 python scripts\generate_checklist_dashboard.py [checklist.yaml]  # 프로젝트 1개만 재검사
-python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고
+python scripts\run_checklist.py [checklist.yaml]                 # 프로젝트 1개를 터미널 텍스트로 보고 (불일치·실패 시 종료 코드 1)
 python scripts\run_verification_loop.py [checklist.yaml] [test_item ID] --state .qa-loop\[project]-[check].json
 ```
 
