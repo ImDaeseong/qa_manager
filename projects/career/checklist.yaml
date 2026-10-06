@@ -1,6 +1,6 @@
 project: career
 repo_root: career
-updated: 2026-09-22
+updated: 2026-10-07
 requirements:
   - id: R1
     quality_dimension: functional_suitability
@@ -15,3 +15,16 @@ requirements:
             check: "python -c \"from pathlib import Path; assert Path('index.html').is_file() and Path('README.md').is_file(); print('PASS: published page and README exist')\""
             status: pass
             last_verified: 2026-09-22
+  - id: R2
+    quality_dimension: functional_suitability
+    description: The career site, skills, resume summary, and tracker keep their validated behavior.
+    dev_items:
+      - id: R2-D1
+        description: Run the repository's own validator, which also runs the tracker tests; output reports counts only, not resume content.
+        test_items:
+          - id: validate-repo-full
+            category: full
+            description: Validate site files, skills, resume summary, and career tracker tests.
+            check: python scripts/validate_repo.py
+            status: pass
+            last_verified: 2026-10-07
