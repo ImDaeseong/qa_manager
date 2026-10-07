@@ -84,17 +84,17 @@ requirements:
         test_items:
           - id: bookk-release-hold
             category: full
-            description: 부크크 판매 후보가 전문 교정·실독자·리더 화면·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다.
+            description: 부크크 판매 후보가 저자 확인·메타데이터·업로드 파일 미완료로 HOLD하는지 확인한다. 독자 시험·전문 교정·리더 화면은 출판사 인계 항목(PUBLISHER_HANDOFF.md)이라 차단 근거가 아니다.
             check: "python -B scripts/release_gate.py --channel bookk"
             expected_exit_codes: [1]
-            required_output: ["release gate (bookk): HOLD", "- PRO_EDIT_NOT_RUN", "- READER_PILOT_NOT_RUN", "- READER_RENDER_HOLD", "- BOOKK_METADATA_HOLD", "- BOOKK_UPLOAD_FILES_HOLD"]
+            required_output: ["release gate (bookk): HOLD", "- AUTHOR_CONFIRMATION_PENDING", "- BOOKK_METADATA_HOLD", "- BOOKK_UPLOAD_FILES_HOLD"]
             status: pass
-            last_verified: 2026-09-24
+            last_verified: 2026-10-07
           - id: kmong-release-hold
             category: full
-            description: 크몽 판매 후보가 전문 교정·실독자·리더 화면·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다.
+            description: 크몽 판매 후보가 저자 확인·상품 정보·판매 파일 미완료로 HOLD하는지 확인한다. 독자 시험·전문 교정·리더 화면은 출판사 인계 항목(PUBLISHER_HANDOFF.md)이라 차단 근거가 아니다.
             check: "python -B scripts/release_gate.py --channel kmong"
             expected_exit_codes: [1]
-            required_output: ["release gate (kmong): HOLD", "- PRO_EDIT_NOT_RUN", "- READER_PILOT_NOT_RUN", "- READER_RENDER_HOLD", "- KMONG_PRODUCT_INFO_HOLD", "- KMONG_DELIVERY_FILES_HOLD"]
+            required_output: ["release gate (kmong): HOLD", "- AUTHOR_CONFIRMATION_PENDING", "- KMONG_PRODUCT_INFO_HOLD", "- KMONG_DELIVERY_FILES_HOLD"]
             status: pass
-            last_verified: 2026-09-24
+            last_verified: 2026-10-07
