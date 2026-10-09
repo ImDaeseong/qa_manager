@@ -23,6 +23,53 @@ release_review:
     operations: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#배포-운영"}
     legal: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#법률-규제"}
     commercial: {decision: pending, evidence: "QA_MANAGER_RELEASE_REVIEW.md#사업-운영"}
+acceptance_reviews:
+  feature:
+    - id: QA-FEATURE-1
+      title: Generate a project dashboard from a registered checklist
+      role: QA operator
+      preconditions: A reviewed checklist and its repository are available
+      steps:
+        - Run the project dashboard generator
+        - Open the generated dashboard
+        - Confirm technical and acceptance gates remain separate
+      expected_result: The current checks and product acceptance status are both visible
+      actual_result: The generator completed with 9 requirements, 16 test items, and 0 failures
+      evidence: evidence/qa_manager-acceptance/ACCEPTANCE.md#feature-review
+      reviewer: Codex execution review
+      reviewed_at: 2026-10-09
+      status: pass
+  ui:
+    - id: QA-UI-1
+      title: Review the dashboard's primary interaction states
+      role: QA operator
+      preconditions: A current dashboard has been generated
+      steps:
+        - Open the dashboard in a supported browser
+        - Expand requirements and acceptance sections
+        - Check keyboard focus and narrow viewport readability
+      expected_result: All controls, states, and evidence remain readable and operable
+      actual_result: Desktop rendering passed; mobile overflow was repaired, but the post-fix capture retained an unexplained viewport offset
+      evidence: evidence/qa_manager-acceptance/ACCEPTANCE.md#ui-review
+      reviewer: Codex visual review
+      reviewed_at: 2026-10-09
+      status: blocked
+  workflow:
+    - id: QA-WORKFLOW-1
+      title: Complete the checklist-to-release-review workflow
+      role: Release reviewer
+      preconditions: Technical checks and acceptance cases are registered
+      steps:
+        - Run the registered technical checks
+        - Record feature and UI observations
+        - Review evidence and make the release decision
+      expected_result: Technical PASS cannot produce product approval without acceptance evidence
+      actual_result: Technical PASS remained separate from product acceptance and the UI BLOCKED result kept the product gate on HOLD
+      evidence: evidence/qa_manager-acceptance/ACCEPTANCE.md#workflow-review
+      reviewer: Codex workflow review
+      reviewed_at: 2026-10-09
+      status: pass
+
 requirements:
   - id: R1
     description: 검수 실행기는 프로젝트 경계와 비밀정보를 보호한다.

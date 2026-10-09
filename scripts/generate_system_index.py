@@ -55,9 +55,12 @@ def main() -> int:
         total_test_items += result["test_items"]
         overall = "pass" if result["fail"] == 0 else "fail"
         readiness = result["readiness"]
-        if readiness["ready"]:
+        if result["product_ready"]:
             ready_projects += 1
-        readiness_pill = dash.badge("excluded" if readiness.get("excluded") else "pass" if readiness["ready"] else "hold")
+        readiness_pill = dash.badge(
+            "excluded" if readiness.get("excluded") else
+            "pass" if result["product_ready"] else "hold"
+        )
         readiness_label = ("공개 출시 대상 제외" if readiness.get("excluded") else
                            "출시 검토 근거 완료" if readiness["ready"] else
                            f"출시 검토 보류({len(readiness['gaps'])}개 영역)")
@@ -72,6 +75,7 @@ def main() -> int:
         <span class="counts-inline">요구사항 {result['requirements']}개 · 검사항목 {result['test_items']}개 · 실패 {result['fail']}건 · <a href="{escape(rel_link)}">전체 페이지 열기 →</a></span>
       </summary>
       {dash.render_readiness(readiness)}
+      {dash.render_acceptance(result['acceptance'])}
       {''.join(result['req_html'])}
     </details>""")
         print(

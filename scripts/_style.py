@@ -40,7 +40,9 @@ STYLE = """
     max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
     color: var(--text); background: var(--bg);
     line-height: 1.5;
+    overflow-x: hidden;
   }
+  code, .desc, .meta, .dimensions li { overflow-wrap: anywhere; word-break: break-word; }
   h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
   a { color: var(--primary); }
   summary:focus-visible, a:focus-visible {
@@ -61,6 +63,10 @@ STYLE = """
   .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
   .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
   .stat.fail .n { color: var(--fail-text); }
+  @media (max-width: 520px) {
+    .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    details, .readiness, .acceptance { min-width: 0; padding-left: .85rem; padding-right: .85rem; }
+  }
 
   .pill {
     display: inline-flex; align-items: center; gap: .25rem;
@@ -82,6 +88,20 @@ STYLE = """
   .readiness.ready { border-left: 4px solid var(--pass-text); }
   .readiness.not-ready { border-left: 4px solid var(--fail-text); }
   .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  .acceptance {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .acceptance.ready { border-left: 4px solid var(--pass-text); }
+  .acceptance.not-ready { border-left: 4px solid var(--fail-text); }
+  .acceptance h2, .acceptance h3 { margin: 0 0 .5rem; }
+  .acceptance h3 { margin-top: 1rem; font-size: .95rem; }
+  ul.acceptance-cases { list-style: none; padding: 0; margin: 0; }
+  .acceptance-case { border-top: 1px solid var(--border); padding: .7rem 0; }
+  .acceptance-case:first-child { border-top: 0; }
+  .pill.blocked, .pill.not_run, .pill.invalid {
+    background: var(--pending-bg); color: var(--pending-text);
+  }
   ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
   ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
   ul.dimensions li:first-child { border-top: none; }

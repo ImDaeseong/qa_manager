@@ -231,6 +231,52 @@ def iter_test_items(data: dict):
                 yield req, dev_item, test_item
 
 
+ACCEPTANCE_KINDS = ("feature", "ui", "workflow")
+ACCEPTANCE_STATUSES = {"pass", "fail", "blocked", "not_run"}
+
+
+def iter_acceptance_cases(data: dict):
+    """Yield product-acceptance cases grouped by feature, UI, and workflow."""
+    reviews = data.get("acceptance_reviews") or {}
+    for kind in ACCEPTANCE_KINDS:
+        for case in reviews.get(kind, []):
+            yield kind, case
+
+
+def product_acceptance(data: dict) -> dict:
+    """Validate and summarize human product-acceptance evidence."""
+    cases = []
+    invalid = []
+    for kind, case in iter_acceptance_cases(data):
+        case_id = case.get("id", "")
+        status = case.get("status", "not_run")
+        required = ("title", "role", "preconditions", "steps", "expected_result")
+        missing = [field for field in required if not case.get(field)]
+        if status not in ACCEPTANCE_STATUSES:
+            missing.append("valid status")
+        if status == "pass":
+            missing.extend(field for field in ("actual_result", "evidence", "reviewer", "reviewed_at")
+                           if not case.get(field))
+        if missing:
+            status = "invalid"
+            invalid.append({"id": case_id, "missing": missing})
+        cases.append({"kind": kind, **case, "status": status})
+
+    counts = {status: sum(case["status"] == status for case in cases)
+              for status in (*ACCEPTANCE_STATUSES, "invalid")}
+    kinds = {kind: [case for case in cases if case["kind"] == kind]
+             for kind in ACCEPTANCE_KINDS}
+    complete = bool(cases) and all(kinds.values())
+    return {
+        "cases": cases,
+        "counts": counts,
+        "kinds": kinds,
+        "invalid": invalid,
+        "ready": complete and counts["pass"] == len(cases),
+        "missing_kinds": [kind for kind, items in kinds.items() if not items],
+    }
+
+
 # Release-review areas from RELEASE_READINESS_STANDARD.md. A requirement may link a live
 # check to one area via `quality_dimension`; a check passing is only partial evidence.
 COMMERCIAL_DIMENSIONS: dict[str, str] = {
