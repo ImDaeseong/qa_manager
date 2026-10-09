@@ -74,9 +74,9 @@ def main() -> int:
         {readiness_pill} <span class="desc-inline">{escape(readiness_label)}</span>
         <span class="counts-inline">요구사항 {result['requirements']}개 · 검사항목 {result['test_items']}개 · 실패 {result['fail']}건 · <a href="{escape(rel_link)}">전체 페이지 열기 →</a></span>
       </summary>
-      {dash.render_readiness(readiness)}
       {dash.render_acceptance(result['acceptance'])}
       {''.join(result['req_html'])}
+      {dash.render_readiness(readiness)}
     </details>""")
         print(
             f"{'OK  ' if overall == 'pass' else 'FAIL'} {result['project']}: "

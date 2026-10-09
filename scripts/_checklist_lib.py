@@ -237,10 +237,62 @@ ACCEPTANCE_STATUSES = {"pass", "fail", "blocked", "not_run"}
 
 def iter_acceptance_cases(data: dict):
     """Yield product-acceptance cases grouped by feature, UI, and workflow."""
-    reviews = data.get("acceptance_reviews") or {}
+    reviews = data.get("acceptance_reviews") or default_acceptance_reviews(data)
     for kind in ACCEPTANCE_KINDS:
         for case in reviews.get(kind, []):
             yield kind, case
+
+
+def default_acceptance_reviews(data: dict) -> dict:
+    """Build visible NOT RUN review work from registered project requirements."""
+    project = data.get("project", "project")
+    feature_cases = []
+    for req in data.get("requirements", []):
+        feature_cases.append({
+            "id": f"ACCEPT-F-{req.get('id', 'UNKNOWN')}",
+            "title": req.get("description") or f"{project} 기능 검수",
+            "role": "실제 업무 사용자",
+            "preconditions": f"{project}가 실행 가능하고 대표 테스트 데이터가 준비됨",
+            "steps": [
+                "정상 사용자 진입 경로에서 기능을 연다",
+                "유효한 데이터로 주 작업을 완료한다",
+                "잘못된 값 또는 경계값으로 다시 수행한다",
+                "저장·출력·화면 표시 결과를 확인한다",
+            ],
+            "expected_result": "정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다",
+            "status": "not_run",
+        })
+    return {
+        "feature": feature_cases,
+        "ui": [{
+            "id": "ACCEPT-UI-1",
+            "title": f"{project} 주요 화면과 UI 상태 검수",
+            "role": "실제 업무 사용자",
+            "preconditions": f"{project}가 지원 브라우저 또는 인터페이스에서 실행 중임",
+            "steps": [
+                "주요 화면에 모두 진입한다",
+                "버튼·입력폼·링크·대화상자를 조작한다",
+                "로딩·빈 화면·유효성 오류·실패 상태를 확인한다",
+                "키보드 포커스와 좁은 화면 가독성을 확인한다",
+            ],
+            "expected_result": "주요 조작 요소와 상태가 명확히 보이고 이해·조작 가능하다",
+            "status": "not_run",
+        }],
+        "workflow": [{
+            "id": "ACCEPT-WORKFLOW-1",
+            "title": f"{project} 핵심 업무 전체 흐름 검수",
+            "role": "실제 업무 사용자",
+            "preconditions": f"{project}를 문서화된 시작 지점에서 실행할 수 있음",
+            "steps": [
+                "정상 실행기 또는 시작 화면에서 업무를 시작한다",
+                "필요한 모든 단계를 거쳐 핵심 사용자 업무를 완료한다",
+                "최종 결과를 다시 열거나 재사용할 수 있는지 확인한다",
+                "예상 가능한 실패를 1회 발생시켜 복구 안내를 확인한다",
+            ],
+            "expected_result": "숨은 수작업 보정 없이 사용자가 의도한 결과에 도달하고 결과를 유지할 수 있다",
+            "status": "not_run",
+        }],
+    }
 
 
 def product_acceptance(data: dict) -> dict:

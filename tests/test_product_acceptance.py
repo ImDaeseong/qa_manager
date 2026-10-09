@@ -27,6 +27,20 @@ def acceptance_case(case_id: str) -> dict:
 
 
 class ProductAcceptanceTests(unittest.TestCase):
+    def test_requirements_create_visible_not_run_review_work(self):
+        data = {
+            "project": "Example",
+            "requirements": [{"id": "REQ-1", "description": "보고서를 생성하고 다시 연다"}],
+        }
+
+        result = lib.product_acceptance(data)
+
+        self.assertEqual(result["counts"]["not_run"], 3)
+        self.assertEqual(result["missing_kinds"], [])
+        self.assertEqual(result["kinds"]["feature"][0]["title"], "보고서를 생성하고 다시 연다")
+        self.assertIn("핵심 업무 전체 흐름", result["kinds"]["workflow"][0]["title"])
+        self.assertFalse(result["ready"])
+
     def test_mobile_dashboard_has_overflow_guards(self):
         style = (Path(__file__).resolve().parent.parent / "scripts" / "_style.py").read_text(
             encoding="utf-8"
@@ -67,8 +81,8 @@ class ProductAcceptanceTests(unittest.TestCase):
         html = dashboard.render_acceptance(lib.product_acceptance(
             {"acceptance_reviews": {"workflow": [item]}}
         ))
-        self.assertIn("Product acceptance HOLD", html)
-        self.assertIn("Workflow review", html)
+        self.assertIn("제품 인수검수 HOLD", html)
+        self.assertIn("업무 흐름 검수", html)
         self.assertIn("Open the page", html)
         self.assertIn("NOT RUN", html)
 

@@ -40,7 +40,7 @@ DIMENSION_STATUS_LABEL = {
     "covered": "근거 검토 완료", "failing": "검사 실패", "missing": "미검토",
     "pending_review": "검토 대기", "not_applicable": "비적용 근거 검토",
 }
-ACCEPTANCE_KIND_LABEL = {"feature": "Feature", "ui": "UI", "workflow": "Workflow"}
+ACCEPTANCE_KIND_LABEL = {"feature": "기능", "ui": "UI", "workflow": "업무 흐름"}
 ACCEPTANCE_STATUS_LABEL = {
     "pass": "PASS", "fail": "FAIL", "blocked": "BLOCKED",
     "not_run": "NOT RUN", "invalid": "INVALID",
@@ -77,7 +77,7 @@ def render_readiness(readiness: dict) -> str:
 
 def render_acceptance(acceptance: dict) -> str:
     """Render product acceptance separately from executable technical checks."""
-    verdict = "Product acceptance complete" if acceptance["ready"] else "Product acceptance HOLD"
+    verdict = "제품 인수검수 완료" if acceptance["ready"] else "제품 인수검수 HOLD · 사람이 수행하기 전"
     sections = []
     for kind, cases in acceptance["kinds"].items():
         rendered = []
@@ -90,24 +90,24 @@ def render_acceptance(acceptance: dict) -> str:
                 f'<span class="pill {escape(status)}">'
                 f'{ACCEPTANCE_STATUS_LABEL.get(status, status.upper())}</span></div>'
                 f'<strong>{escape(case.get("title", ""))}</strong>'
-                f'<p class="desc">Role: {escape(case.get("role", ""))} | Preconditions: '
+                f'<p class="desc">사용자 역할: {escape(case.get("role", ""))} | 사전조건: '
                 f'{escape(case.get("preconditions", ""))}</p>'
-                f'<p class="desc">Steps: {escape(steps)}</p>'
-                f'<p class="desc">Expected: {escape(case.get("expected_result", ""))}</p>'
-                f'<p class="desc">Actual: {escape(case.get("actual_result", "Not run"))} | Evidence: '
-                f'<code>{escape(case.get("evidence", "Not recorded"))}</code></p></li>'
+                f'<p class="desc">수행 단계: {escape(steps)}</p>'
+                f'<p class="desc">기대 결과: {escape(case.get("expected_result", ""))}</p>'
+                f'<p class="desc">실제 결과: {escape(case.get("actual_result", "미수행"))} | 증빙: '
+                f'<code>{escape(case.get("evidence", "미등록"))}</code></p></li>'
             )
         body = "".join(rendered) if rendered else (
-            '<li class="acceptance-case not_run">No review case registered</li>'
+            '<li class="acceptance-case not_run">등록된 검수 항목 없음</li>'
         )
         sections.append(
-            f'<h3>{ACCEPTANCE_KIND_LABEL[kind]} review</h3>'
+            f'<h3>{ACCEPTANCE_KIND_LABEL[kind]} 검수</h3>'
             f'<ul class="acceptance-cases">{body}</ul>'
         )
     gate_class = "ready" if acceptance["ready"] else "not-ready"
     return (
         f'<section class="acceptance {gate_class}"><h2>{verdict}</h2>'
-        '<p>User outcomes are judged separately from technical test results.</p>'
+        '<p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p>'
         f'{"".join(sections)}</section>'
     )
 
@@ -246,9 +246,9 @@ def generate(checklist_path: Path) -> dict:
   <div class="stat"><div class="n">{result['pass']}</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">{result['fail']}</div><div class="label">실패한 요구사항</div></div>
 </div>
-{render_readiness(result['readiness'])}
 {render_acceptance(result['acceptance'])}
 {''.join(result['req_html'])}
+{render_readiness(result['readiness'])}
 </body>
 </html>
 """
