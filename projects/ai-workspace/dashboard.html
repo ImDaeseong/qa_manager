@@ -38,7 +38,9 @@
     max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
     color: var(--text); background: var(--bg);
     line-height: 1.5;
+    overflow-x: hidden;
   }
+  code, .desc, .meta, .dimensions li { overflow-wrap: anywhere; word-break: break-word; }
   h1 { font-size: 1.6rem; font-weight: 800; margin: .2rem 0 .3rem; letter-spacing: -.01em; }
   a { color: var(--primary); }
   summary:focus-visible, a:focus-visible {
@@ -59,6 +61,10 @@
   .stat .n { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
   .stat .label { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
   .stat.fail .n { color: var(--fail-text); }
+  @media (max-width: 520px) {
+    .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    details, .readiness, .acceptance { min-width: 0; padding-left: .85rem; padding-right: .85rem; }
+  }
 
   .pill {
     display: inline-flex; align-items: center; gap: .25rem;
@@ -80,6 +86,20 @@
   .readiness.ready { border-left: 4px solid var(--pass-text); }
   .readiness.not-ready { border-left: 4px solid var(--fail-text); }
   .readiness h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+  .acceptance {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1rem 1.2rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .acceptance.ready { border-left: 4px solid var(--pass-text); }
+  .acceptance.not-ready { border-left: 4px solid var(--fail-text); }
+  .acceptance h2, .acceptance h3 { margin: 0 0 .5rem; }
+  .acceptance h3 { margin-top: 1rem; font-size: .95rem; }
+  ul.acceptance-cases { list-style: none; padding: 0; margin: 0; }
+  .acceptance-case { border-top: 1px solid var(--border); padding: .7rem 0; }
+  .acceptance-case:first-child { border-top: 0; }
+  .pill.blocked, .pill.not_run, .pill.invalid {
+    background: var(--pending-bg); color: var(--pending-text);
+  }
   ul.dimensions { list-style: none; padding: 0; margin: .5rem 0 0; }
   ul.dimensions li { padding: .3rem 0; font-size: .85rem; border-top: 1px solid var(--border); }
   ul.dimensions li:first-child { border-top: none; }
@@ -139,7 +159,7 @@
   <div class="stat"><div class="n">7</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
-<div class="readiness"><h2>공개 출시 검토 대상 제외</h2><p>사용자가 개인·사업 내용을 담은 이 저장소를 공개 출시 대상에서 제외함 · 기록: <code>MULTI_PROJECT_RELEASE_REVIEW.md</code></p></div>
+<section class="acceptance not-ready"><h2>제품 인수검수 HOLD · 사람이 수행하기 전</h2><p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p><h3>기능 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R1</code><span class="pill not_run">NOT RUN</span></div><strong>작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R2</code><span class="pill not_run">NOT RUN</span></div><strong>문서 안의 내부 링크가 깨지지 않아야 한다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R3</code><span class="pill not_run">NOT RUN</span></div><strong>작업 인계 문서를 점검하는 도구 자체에 오류가 재발하면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R4</code><span class="pill not_run">NOT RUN</span></div><strong>전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R5</code><span class="pill not_run">NOT RUN</span></div><strong>검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R6</code><span class="pill not_run">NOT RUN</span></div><strong>커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R7</code><span class="pill not_run">NOT RUN</span></div><strong>커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>UI 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-UI-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai-workspace 주요 화면과 UI 상태 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 지원 브라우저 또는 인터페이스에서 실행 중임</p><p class="desc">수행 단계: 주요 화면에 모두 진입한다 -&gt; 버튼·입력폼·링크·대화상자를 조작한다 -&gt; 로딩·빈 화면·유효성 오류·실패 상태를 확인한다 -&gt; 키보드 포커스와 좁은 화면 가독성을 확인한다</p><p class="desc">기대 결과: 주요 조작 요소와 상태가 명확히 보이고 이해·조작 가능하다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>업무 흐름 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-WORKFLOW-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai-workspace 핵심 업무 전체 흐름 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace를 문서화된 시작 지점에서 실행할 수 있음</p><p class="desc">수행 단계: 정상 실행기 또는 시작 화면에서 업무를 시작한다 -&gt; 필요한 모든 단계를 거쳐 핵심 사용자 업무를 완료한다 -&gt; 최종 결과를 다시 열거나 재사용할 수 있는지 확인한다 -&gt; 예상 가능한 실패를 1회 발생시켜 복구 안내를 확인한다</p><p class="desc">기대 결과: 숨은 수작업 보정 없이 사용자가 의도한 결과에 도달하고 결과를 유지할 수 있다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul></section>
 
     <details class="requirement pass" open>
       <summary>
@@ -349,5 +369,6 @@
       </details>
       </div>
     </details>
+<div class="readiness"><h2>공개 출시 검토 대상 제외</h2><p>사용자가 개인·사업 내용을 담은 이 저장소를 공개 출시 대상에서 제외함 · 기록: <code>MULTI_PROJECT_RELEASE_REVIEW.md</code></p></div>
 </body>
 </html>

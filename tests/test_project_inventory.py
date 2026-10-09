@@ -6,6 +6,15 @@ from scripts import _checklist_lib as lib
 
 
 class ProjectInventoryTests(unittest.TestCase):
+    def test_qa_manager_checks_do_not_reenter_the_full_suite(self):
+        """Keep system generation from recursively invoking itself through its own checklist."""
+        checklist = (lib.QA_ROOT / "projects" / "qa_manager" / "checklist.yaml").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("unittest discover", checklist)
+        self.assertIn("tests.test_security tests.test_run_checklist", checklist)
+        self.assertIn("tests.test_security_hotspots", checklist)
+
     def test_reviewed_projects_have_checklists_and_checks(self):
         expected = {
             "hermes-agents", "ai_prompt", "ai-workspace", "skills", "ai_test",
