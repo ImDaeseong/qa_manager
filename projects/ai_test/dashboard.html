@@ -155,7 +155,7 @@
 <p class="meta">projects/ai_test/checklist.yaml 기반 (검사 프로젝트: ai_test), 생성시각 2026-10-09 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">4</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">23</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">25</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">4</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
@@ -492,12 +492,12 @@
         <code>R4</code> <span class="pill pass">통과</span>
         <span class="desc-inline">지정된 음악·영상 프로젝트의 비-Python 실행 계약도 실제 명령으로 검증한다.</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 4개 · 검사항목 4개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 4개 · 검사항목 6개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
           <code>R4-D1</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">imagevideo Node 파서·검증 회귀</span>
+          <span class="desc-inline">imagevideo Node 파서·미디어·공급망·출시 판정 회귀</span>
         </summary>
         <ul class="test-items">
         <li class="test-item pass pass">
@@ -506,8 +506,26 @@
             <span class="category">기본검사</span>
             <span class="pill pass">통과</span>
           </div>
-          <p class="desc">가사 파서, 타임코드, 생산 계획 검증을 실행한다.</p>
+          <p class="desc">가사 파서, 타임코드, 생산 계획, MP4 계약과 출시 판정 음성 테스트를 실행한다.</p>
           <p class="check">실행 명령: <code>cd imagevideo &amp;&amp; npm test</code></p>
+        </li>
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>imagevideo-audit-baseline</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">Motion Canvas 전이 취약점에 신규 패키지·권고·심각도 증가가 없는지 현재 npm 감사 결과로 확인한다.</p>
+          <p class="check">실행 명령: <code>cd imagevideo &amp;&amp; npm run audit:baseline</code></p>
+        </li>
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>imagevideo-release-hold</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">미작성 권리·창작·저작권·공개 판정을 PASS로 오인하지 않고 HOLD로 유지한다.</p>
+          <p class="check">실행 명령: <code>cd imagevideo &amp;&amp; npm run validate:release-template</code></p>
         </li>
         </ul>
       </details>

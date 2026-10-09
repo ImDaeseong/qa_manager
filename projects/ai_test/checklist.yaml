@@ -226,12 +226,24 @@ requirements:
     description: "지정된 음악·영상 프로젝트의 비-Python 실행 계약도 실제 명령으로 검증한다."
     dev_items:
       - id: R4-D1
-        description: "imagevideo Node 파서·검증 회귀"
+        description: "imagevideo Node 파서·미디어·공급망·출시 판정 회귀"
         test_items:
           - id: imagevideo-tests
             category: basic
-            description: "가사 파서, 타임코드, 생산 계획 검증을 실행한다."
+            description: "가사 파서, 타임코드, 생산 계획, MP4 계약과 출시 판정 음성 테스트를 실행한다."
             check: "cd imagevideo && npm test"
+            status: pass
+            last_verified: 2026-10-09
+          - id: imagevideo-audit-baseline
+            category: regression
+            description: "Motion Canvas 전이 취약점에 신규 패키지·권고·심각도 증가가 없는지 현재 npm 감사 결과로 확인한다."
+            check: "cd imagevideo && npm run audit:baseline"
+            status: pass
+            last_verified: 2026-10-09
+          - id: imagevideo-release-hold
+            category: regression
+            description: "미작성 권리·창작·저작권·공개 판정을 PASS로 오인하지 않고 HOLD로 유지한다."
+            check: "cd imagevideo && npm run validate:release-template"
             status: pass
             last_verified: 2026-10-09
       - id: R4-D2
