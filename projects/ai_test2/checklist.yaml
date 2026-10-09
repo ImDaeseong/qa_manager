@@ -11,7 +11,7 @@
 
 project: ai_test2
 repo_root: ai_test2
-updated: 2026-09-18
+updated: 2026-10-09
 release_review:
   release: "32bcc67 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
@@ -128,6 +128,15 @@ requirements:
             check: "cd CareerDiff\\app && npm run build"
             status: pass
             last_verified: 2026-09-07
+      - id: R1-D11
+        description: "지정 5개 로컬 AI/미디어 프로젝트의 모델 식별자, 외부 API 경계, 공급망 기준 계약"
+        test_items:
+          - id: ai-api-contract-tests
+            category: regression
+            description: "종료된 모델 표기, 외부 AI SDK 유입, yt-dlp 보안 기준선 및 오디오 의존성 기준의 드리프트를 검사한다."
+            check: "python -m unittest tests.test_ai_api_contract"
+            status: pass
+            last_verified: 2026-10-09
 
   - id: R2
     quality_dimension: security
