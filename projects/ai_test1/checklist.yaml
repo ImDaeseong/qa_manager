@@ -14,7 +14,7 @@
 
 project: ai_test1
 repo_root: ai_test1
-updated: 2026-08-05
+updated: 2026-10-09
 release_review:
   release: "6a868852 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
@@ -51,6 +51,12 @@ requirements:
             check: "python -m pytest test_repository_consistency.py -q"
             status: pass
             last_verified: 2026-09-27
+          - id: ai-provider-contracts
+            category: regression
+            description: "13개 프로젝트의 외부 AI 공급자 허용목록, SDK 범위, Suno v6 및 Voice/Style Persona 계약을 확인합니다."
+            check: "python -m pytest test_ai_provider_contracts.py -q -p no:cacheprovider"
+            status: pass
+            last_verified: 2026-10-09
 
   - id: R2
     quality_dimension: functional_suitability
@@ -62,7 +68,7 @@ requirements:
           - id: ai-scenario-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd ai_Scenario && python -m pytest tests_unit.py -q"
+            check: "cd ai_Scenario && python -m pytest -q -p no:cacheprovider"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D2
@@ -71,7 +77,7 @@ requirements:
           - id: ai-story-tests
             category: basic
             description: "이 프로그램에 포함된 자체 테스트가 정상적으로 통과하는지 확인합니다."
-            check: "cd ai_story && python -m pytest tests_unit.py -q"
+            check: "cd ai_story && python -m pytest -q -p no:cacheprovider"
             status: pass
             last_verified: 2026-08-05
       - id: R2-D3
