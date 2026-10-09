@@ -230,7 +230,7 @@ requirements:
         test_items:
           - id: imagevideo-tests
             category: basic
-            description: "가사 파서, 타임코드, 생산 계획, MP4 계약, 품질 지표와 해시 결속 출시 판정 48개 음성 테스트를 실행한다."
+            description: "가사 파서, 타임코드, 생산 계획, 연속 모션, MP4 계약, 품질 지표와 해시 결속 출시 판정 50개 음성 테스트를 실행한다."
             check: "cd imagevideo && npm test"
             status: pass
             last_verified: 2026-10-09
