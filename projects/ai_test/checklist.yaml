@@ -14,7 +14,7 @@
 
 project: ai_test
 repo_root: ai_test
-updated: 2026-09-21
+updated: 2026-10-09
 release_review:
   release: "2ddd831 (MIT 소스 전용 공개 출시 검토 기준점; rewritten history)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
@@ -180,6 +180,7 @@ requirements:
             check: "python scripts/check_source_only.py"
             status: pass
             last_verified: 2026-09-21
+
       - id: R3-D2
         description: "포함된 JsonCpp 버전의 원본 라이선스 고지문을 유지한다"
         test_items:
@@ -219,3 +220,44 @@ requirements:
             check: "python -m pytest tests/test_dependency_inventory.py -q --basetemp .pytest_dependency_inventory"
             status: pass
             last_verified: 2026-09-21
+
+  - id: R4
+    quality_dimension: maintainability
+    description: "지정된 음악·영상 프로젝트의 비-Python 실행 계약도 실제 명령으로 검증한다."
+    dev_items:
+      - id: R4-D1
+        description: "imagevideo Node 파서·검증 회귀"
+        test_items:
+          - id: imagevideo-tests
+            category: basic
+            description: "가사 파서, 타임코드, 생산 계획 검증을 실행한다."
+            check: "cd imagevideo && npm test"
+            status: pass
+            last_verified: 2026-10-09
+      - id: R4-D2
+        description: "lyricvideo Remotion 입력·레이아웃 계약"
+        test_items:
+          - id: lyricvideo-tests
+            category: basic
+            description: "가사 파서·가독성 테스트와 TypeScript 계약을 실행한다."
+            check: "cd lyricvideo && npm test && npm run typecheck"
+            status: pass
+            last_verified: 2026-10-09
+      - id: R4-D3
+        description: "mp3_daw Go 서버 계약"
+        test_items:
+          - id: mp3-daw-tests
+            category: basic
+            description: "Go 패키지 전체 테스트를 실행한다."
+            check: "cd mp3_daw && go test ./..."
+            status: pass
+            last_verified: 2026-10-09
+      - id: R4-D4
+        description: "ai_anime_production 렌더 메타데이터 계약"
+        test_items:
+          - id: ai-anime-production-tests
+            category: basic
+            description: "Remotion 회귀 테스트와 TypeScript 계약을 실행한다."
+            check: "cd ai_anime_production && npm test && npm run typecheck"
+            status: pass
+            last_verified: 2026-10-09
