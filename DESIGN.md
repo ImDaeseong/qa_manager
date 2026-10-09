@@ -1,6 +1,6 @@
 # qa_manager Design
 
-Updated: 2026-09-27
+Updated: 2026-10-09
 
 ## Purpose
 
@@ -10,6 +10,7 @@ Run real checks registered by multiple local repositories and present current ve
 
 - Project maintainer: see which executable checks currently pass or fail.
 - Reviewer/release owner: distinguish verification evidence from release approval.
+- QA operator: execute feature, UI, and end-to-end workflow review sheets with evidence.
 - Dashboard reader: understand expected-failure semantics without confusing target failure with verifier failure.
 - Representative scenario: load a checklist, resolve its project root, run each check with sanitized output, classify the result, and regenerate static reports.
 
@@ -19,10 +20,11 @@ Run real checks registered by multiple local repositories and present current ve
 - Generated dashboards contain check metadata and sanitized diagnostics, not secrets or private source content.
 - Verifier verdict, target exit status, and expected-failure assessment are separate concepts.
 - Automated PASS does not grant commercial-release approval.
+- Missing acceptance data produces visible NOT RUN starter work, never an inferred pass.
 
 ## Main components
 
-- `projects/*/checklist.yaml`: requirement, development item, and executable test definitions.
+- `projects/*/checklist.yaml`: requirement, development item, executable test, and optional explicit acceptance-review definitions.
 - `scripts/_checklist_lib.py`: checklist loading, path resolution, and status semantics.
 - `scripts/run_checklist.py`: text execution report. Exits 1 when any live status is not `pass` or differs from the recorded `status`, so exit-code-only callers (hooks, CI) cannot see success on a stale checklist.
 - Dashboard generators and generated `index.html`/`dashboard.html` files.
@@ -49,11 +51,25 @@ projects/<name>/checklist.yaml
 
 Check commands run inside each registered repository root. Output is untrusted and sanitized before publication. A target failure can be verifier success when failure was expected; an unrelated crash is INVALID. Reports are replaced atomically only after validation so a failed run preserves the previous public artifact.
 
+### Product acceptance view
+
+```text
+requirements -> feature review starters
+project -> UI review starter + end-to-end workflow starter
+explicit acceptance_reviews -> actual result + evidence + reviewer + date
+all feature/UI/workflow cases PASS -> product acceptance complete
+anything else -> product acceptance HOLD
+```
+
+Technical checks, product acceptance, and the 15-area commercial release review are separate gates.
+Generated starters make pending work visible but remain NOT RUN until a person performs and records it.
+
 ## Key decisions and tradeoffs
 
 - Keep raw exit status, verifier verdict, and semantic presentation separate.
 - Execute only explicit registered commands; this avoids invented checks but requires checklist maintenance.
 - Generate static dashboards for portability, accepting that they represent the most recent run rather than live state.
+- Put product acceptance before the 15-area release review so operators see actionable work before policy gaps.
 
 ## Verification and human review
 

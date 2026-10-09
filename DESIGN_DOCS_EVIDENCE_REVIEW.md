@@ -43,3 +43,8 @@ All 14 DesignDocs now include:
 ## Conclusion
 
 The revised documents are not identical: they share a reviewable core schema, while every detailed section is tied to project-specific files, flows, and trust boundaries. The qa_manager regression test now requires a unique detailed section and a project-specific marker for every registered project. The documents are aligned with the inspected evidence at the level appropriate for repository DesignDocs. They are evidence-informed architecture summaries, not IEEE, ISO, NIST, or SEI certifications.
+
+2026-10-09 implementation note: the architecture now documents three separate decision
+layers—technical checks, feature/UI/workflow product acceptance, and the 15-area release
+review. Requirement-derived acceptance cases are visible starter work and remain NOT RUN;
+they are not new evidence or an inferred approval.

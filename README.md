@@ -27,15 +27,18 @@
 검사 출력의 비밀값을 남기지 않지만, 민감한 내부 프로젝트의 이름·검사 명령 자체도
 공개 정보가 될 수 있으므로 등록 전에 사람이 검토합니다.
 
-## Product acceptance reviews
+## 제품 인수검수: 기능·UI·업무 흐름
 
-Executable checks are the technical gate. A checklist may also define
-`acceptance_reviews` with `feature`, `ui`, and `workflow` cases for the
-product acceptance gate. Each case records the user role, preconditions, steps,
-expected and actual results, evidence, reviewer, and review date. A case marked
-`pass` is invalid unless all result and evidence fields are present. `FAIL`,
-`BLOCKED`, `NOT RUN`, a malformed case, or a missing review kind keeps product
-acceptance on HOLD without changing the raw result of the technical commands.
+실행 가능한 `test_item.check`는 코드·빌드·보안 같은 **기술 게이트**입니다. 실제 사용자가 제품을
+끝까지 이용할 수 있는지는 별도의 **제품 인수 게이트**에서 기능, UI, 업무 흐름으로 검수합니다.
+`acceptance_reviews`를 직접 작성하면 역할, 사전조건, 수행 단계, 기대·실제 결과, 증빙, 검수자,
+검수일을 기록합니다. 아직 작성하지 않은 프로젝트도 요구사항마다 기능 검수 항목을 만들고,
+프로젝트 공통 UI 검수와 핵심 업무 전체 흐름 검수를 자동으로 표시합니다.
+
+자동 생성된 항목은 결과를 지어내지 않고 항상 `NOT RUN`입니다. 직접 작성한 항목도 실제 결과와
+증빙·검수자·검수일이 모두 있어야 `PASS`가 유효합니다. `FAIL`, `BLOCKED`, `NOT RUN`,
+잘못된 항목 또는 기능·UI·업무 흐름 중 하나의 누락은 기술검사 결과를 바꾸지 않은 채 제품
+인수검수를 `HOLD`로 유지합니다. 그 아래의 상용 출시 15영역 검토는 다시 별도 게이트입니다.
 
 ## Quick start (English)
 
@@ -68,7 +71,7 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
     generate_system_index.py      전체 프로젝트를 스캔해 index.html 생성
   projects/
     <프로젝트명>/
-      checklist.yaml              requirement -> dev_item -> test_item + repo_root
+      checklist.yaml              requirement -> dev_item -> test_item + acceptance_reviews + repo_root
       dashboard.html               생성됨 (직접 수정하지 않음)
 ```
 
@@ -131,7 +134,9 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
    의도된 HOLD처럼 종료 코드가 0이 아니어야 정상인 검사는 `expected_exit_codes`와
    `required_output`을 함께 등록합니다. 종료 코드만 맞고 지정한 진단 문구가 없으면
    관련 없는 충돌일 수 있으므로 실패로 처리합니다.
-4. `python scripts\generate_system_index.py`로 새 프로젝트가 index.html에
+4. 기능·UI·업무 흐름을 프로젝트에 맞게 검수하려면 `acceptance_reviews`를 작성합니다.
+   작성 전에도 요구사항 기반 기본 항목이 보이지만 모두 `NOT RUN`이며 인수 승인이 아닙니다.
+5. `python scripts\generate_system_index.py`로 새 프로젝트가 index.html에
    나타나고 검사가 실제로 통과/실패하는지 확인합니다.
 
 ## 상용 배포 검토
