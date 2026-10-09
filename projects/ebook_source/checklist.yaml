@@ -1,6 +1,6 @@
 project: ebook_source
 repo_root: ebook_source
-updated: 2026-10-05
+updated: 2026-10-09
 release_review:
   release: "public-companion-source-2026-10-05"
   audience: "한국어 AI 코딩 전자책 독자와 로컬 예제 사용자"
@@ -37,6 +37,13 @@ requirements:
             check: "python -B verify_distribution.py"
             status: pass
             last_verified: 2026-10-05
+          - id: child-product-registry
+            category: integration
+            description: 저장소 안의 독립 제품을 로컬 qa_manager가 한 번씩 검수하고 누락을 거부한다.
+            check: "python -B sample_project/qa_manager/scripts/run_registry.py --products-only"
+            required_output: ["CHILD REGISTRY PASS"]
+            status: pass
+            last_verified: 2026-10-09
   - id: R2
     quality_dimension: maintainability
     description: 학습 자산과 공개 구조가 현재 파일 배치와 일치한다.

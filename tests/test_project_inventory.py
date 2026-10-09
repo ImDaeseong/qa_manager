@@ -15,6 +15,20 @@ class ProjectInventoryTests(unittest.TestCase):
         self.assertIn("tests.test_security tests.test_run_checklist", checklist)
         self.assertIn("tests.test_security_hotspots", checklist)
 
+    def test_ebook_source_delegates_leaf_products_once(self):
+        """Keep leaf-product execution in the repository-local registry."""
+        checklist = (lib.QA_ROOT / "projects" / "ebook_source" / "checklist.yaml").read_text(
+            encoding="utf-8"
+        )
+        command = "python -B sample_project/qa_manager/scripts/run_registry.py --products-only"
+        self.assertEqual(checklist.count(command), 1)
+        self.assertIn("CHILD REGISTRY PASS", checklist)
+        for product in (
+            "ai_history_dashboard", "ai_knowledge_system", "idea_planner",
+            "llm-wiki", "qa_manager", "source_intelligence_analyzer",
+        ):
+            self.assertNotIn(f"projects/{product}/checklist.yaml", checklist)
+
     def test_reviewed_projects_have_checklists_and_checks(self):
         expected = {
             "hermes-agents", "ai_prompt", "ai-workspace", "skills", "ai_test",

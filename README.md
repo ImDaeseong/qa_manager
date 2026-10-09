@@ -77,6 +77,14 @@ qa_manager/                       (독립 git 저장소, github.com/ImDaeseong/q
 
 **계층**: requirement → dev_item → test_item. test_item의 `check` 명령이 PASS해야 dev_item이 PASS, dev_item이 전부 PASS해야 requirement가 PASS입니다. 화면 문구는 운영 담당자도 읽을 수 있는 평범한 한글로 쓰되, 파일명·명령어는 원문 그대로 둡니다.
 
+### 검수 범위 계층
+
+- 이 최상위 qa_manager에는 저장소·배포 단위만 등록합니다. 내부 폴더를 전부 평평한 프로젝트로 만들지 않습니다.
+- 저장소 안에 독립 실행·배포·사용 흐름을 가진 제품이 여러 개라면 그 저장소의 로컬 qa_manager가 제품 체크리스트를 소유합니다.
+- 최상위 체크리스트는 로컬 제품 레지스트리를 한 번 호출해 결과만 집계합니다. `ebook_source`는 `sample_project/qa_manager/scripts/run_registry.py --products-only`에 하위 제품 검수를 위임합니다.
+- 라이브러리, fixture, 예제, 공통 자격 증명 폴더는 제품이 아니며 소유 제품의 테스트에 포함합니다.
+- 독립 제품 여부는 제품 준비 계약(`PRODUCT_READINESS.md`) 또는 README와 실행·패키지 진입점 조합으로 판정합니다. 발견된 제품에 체크리스트가 없으면 `UNREGISTERED_PRODUCT`로 실패합니다.
+
 ## 작동 흐름
 
 `open_qa_system.bat` 실행 시: `generate_system_index.py`가 `projects/*/checklist.yaml`을 전부 찾음 → 각 파일의 `repo_root`를 실제 폴더 경로로 바꿈(예: `ai_test1` → `../ai_test1`) → 그 폴더 안에서 test_item의 `check` 명령을 **지금 이 순간 직접 실행**(`pytest`, `npm run lint`, PowerShell 가드 스크립트 등 프로젝트에 실제로 있는 명령 — `checklist.yaml`의 `status`/`last_verified`는 참고용 마지막 기록일 뿐, 매번 다시 실행함) → 아래에서 위로 집계 → 프로젝트별 `dashboard.html`과 전체 `index.html`을 씀.

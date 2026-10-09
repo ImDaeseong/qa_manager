@@ -21,12 +21,14 @@ Run real checks registered by multiple local repositories and present current ve
 - Verifier verdict, target exit status, and expected-failure assessment are separate concepts.
 - Automated PASS does not grant commercial-release approval.
 - Missing acceptance data produces visible NOT RUN starter work, never an inferred pass.
+- Portfolio registration stops at repository or release-unit boundaries; repository-local registries own independently usable child products.
 
 ## Main components
 
 - `projects/*/checklist.yaml`: requirement, development item, executable test, and optional explicit acceptance-review definitions.
 - `scripts/_checklist_lib.py`: checklist loading, path resolution, and status semantics.
 - `scripts/run_checklist.py`: text execution report. Exits 1 when any live status is not `pass` or differs from the recorded `status`, so exit-code-only callers (hooks, CI) cannot see success on a stale checklist.
+- `ebook_source/sample_project/qa_manager/scripts/run_registry.py`: read-only child-product rollup invoked once by the `ebook_source` portfolio checklist.
 - Dashboard generators and generated `index.html`/`dashboard.html` files.
 
 ## Detailed structure and views
@@ -64,12 +66,26 @@ anything else -> product acceptance HOLD
 Technical checks, product acceptance, and the 15-area commercial release review are separate gates.
 Generated starters make pending work visible but remain NOT RUN until a person performs and records it.
 
+### Portfolio and product ownership view
+
+```text
+portfolio qa_manager (repository/release units)
+  -> ebook_source checklist
+     -> repository-wide distribution checks
+     -> local child registry, once
+        -> independently usable sample products
+           -> product-owned components, fixtures, and examples
+```
+
+The portfolio never flattens every directory into a project. A local registry discovers direct child products from an explicit product contract or a README plus an executable/package entry point. Infrastructure folders remain components. A discovered product without a reviewed checklist fails with `UNREGISTERED_PRODUCT`.
+
 ## Key decisions and tradeoffs
 
 - Keep raw exit status, verifier verdict, and semantic presentation separate.
 - Execute only explicit registered commands; this avoids invented checks but requires checklist maintenance.
 - Generate static dashboards for portability, accepting that they represent the most recent run rather than live state.
 - Put product acceptance before the 15-area release review so operators see actionable work before policy gaps.
+- Delegate child products to one local registry call so coverage can grow without duplicating leaf checks in the portfolio checklist.
 
 ## Verification and human review
 

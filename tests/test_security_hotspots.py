@@ -20,7 +20,7 @@ class SecurityHotspotScannerTests(unittest.TestCase):
     def test_detects_hardcoded_api_key(self) -> None:
         findings = self._scan_one(
             Path(self._make_tmp_dir()), "app.py",
-            'OPENAI_API_KEY = "sk-realvaluenotplaceholder123456"\n',
+            'OPENAI_API_KEY = "sk-realvaluenotplaceholder123456"\n',  # qa:allow CWE-798 - synthetic detector fixture
         )
         self.assertTrue(any("CWE-798" in f for f in findings))
 
@@ -104,7 +104,7 @@ class SecurityHotspotScannerTests(unittest.TestCase):
     def test_non_source_extension_ignored(self) -> None:
         findings = self._scan_one(
             Path(self._make_tmp_dir()), "notes.txt",
-            'API_KEY = "sk-realvaluenotplaceholder123456"\n',
+            'API_KEY = "sk-realvaluenotplaceholder123456"\n',  # qa:allow CWE-798 - synthetic detector fixture
         )
         self.assertEqual(findings, [])
 
