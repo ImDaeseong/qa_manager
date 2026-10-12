@@ -1,8 +1,8 @@
 # qa_manager — 검수 시스템
 
-**🤔 [쉬운 설명 보기](https://imdaeseong.github.io/qa_manager/ELI5.html)** — 비개발자를 위한 한 페이지 요약
+> **핵심:** 각 프로젝트의 실제 검사 명령을 다시 실행해 원시 결과와 검수 판정을 분리해 보여줍니다.
 
-**설계 문서:** [DESIGN.md](DESIGN.md) — 체크 실행, 판정 상태, 대시보드와 출시 판단의 경계
+[쉬운 설명](ELI5.html) · [구조와 설계](DESIGN.md)
 
 **DesignDocs 근거 검토:** [DESIGN_DOCS_EVIDENCE_REVIEW.md](DESIGN_DOCS_EVIDENCE_REVIEW.md)
 
