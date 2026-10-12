@@ -152,7 +152,7 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>qa_manager</h1>
-<p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-10-09 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-10-10 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">9</div><div class="label">요구사항</div></div>
   <div class="stat"><div class="n">16</div><div class="label">검사항목</div></div>
@@ -181,7 +181,7 @@
             <span class="pill pass">통과</span>
           </div>
           <p class="desc">경로 탈출, 비밀 환경변수, 출력 마스킹, 다중 행 명령을 자동 검증한다.</p>
-          <p class="check">실행 명령: <code>python -m unittest tests.test_security tests.test_run_checklist -q</code></p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_security tests.test_run_checklist tests.test_project_inventory -q</code></p>
         </li>
         </ul>
       </details>

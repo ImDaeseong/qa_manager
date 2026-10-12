@@ -81,7 +81,7 @@ requirements:
           - id: R1-D1-T1
             category: regression
             description: 경로 탈출, 비밀 환경변수, 출력 마스킹, 다중 행 명령을 자동 검증한다.
-            check: "python -m unittest tests.test_security tests.test_run_checklist -q"
+            check: "python -m unittest tests.test_security tests.test_run_checklist tests.test_project_inventory -q"
             status: pass
   - id: R2
     description: LLM 검수 기준과 프로젝트 구조 문서가 실행 코드와 함께 유지된다.
