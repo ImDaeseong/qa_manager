@@ -181,6 +181,7 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
     the shell and any children still holding the output pipe open.
     """
     check_cmd = item.get("check")
+    timeout_seconds = item.get("timeout_seconds", CHECK_TIMEOUT_SECONDS)
     if not check_cmd:
         return "pending", ""
     try:
@@ -196,7 +197,7 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
         start_new_session=not is_windows,
     )
     try:
-        output, _ = proc.communicate(timeout=CHECK_TIMEOUT_SECONDS)
+        output, _ = proc.communicate(timeout=timeout_seconds)
     except subprocess.TimeoutExpired:
         if is_windows:
             # taskkill /T kills the whole process tree; see the docstring above for
@@ -210,7 +211,7 @@ def run_test_item(item: dict, cwd: Path) -> tuple[str, str]:
             os.killpg(proc.pid, signal.SIGKILL)
         partial, _ = proc.communicate()
         return "fail", sanitize_output(
-            f"TIMEOUT: check did not finish within {CHECK_TIMEOUT_SECONDS}s, "
+            f"TIMEOUT: check did not finish within {timeout_seconds}s, "
             f"process tree killed.\n{partial}"
         )
     missing = [marker for marker in required_output if marker not in output]

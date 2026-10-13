@@ -47,6 +47,23 @@ class RunTestItemTimeoutTests(unittest.TestCase):
         self.assertEqual(status, "pass")
         self.assertNotIn("TIMEOUT", output)
 
+    def test_item_can_override_the_default_timeout(self):
+        proc = MagicMock(pid=12345)
+        proc.communicate.side_effect = [
+            subprocess.TimeoutExpired("check", 7), ("", None),
+        ]
+        with patch.object(lib.platform, "system", return_value="Linux"), \
+             patch.object(lib.subprocess, "Popen", return_value=proc), \
+             patch.object(lib.signal, "SIGKILL", 9, create=True), \
+             patch.object(lib.os, "killpg", create=True):
+            status, output = lib.run_test_item(
+                {"check": "python -V", "timeout_seconds": 7}, ROOT
+            )
+
+        self.assertEqual(status, "fail")
+        self.assertIn("within 7s", output)
+        self.assertEqual(proc.communicate.call_args_list[0].kwargs, {"timeout": 7})
+
     def test_non_windows_kills_the_process_group(self):
         """A POSIX timeout must kill shell descendants that hold the output pipe."""
         proc = MagicMock(pid=12345)

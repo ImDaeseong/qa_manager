@@ -1,6 +1,6 @@
 project: ebook_source
 repo_root: ebook_source
-updated: 2026-10-09
+updated: 2026-10-13
 release_review:
   release: "public-companion-source-2026-10-05"
   audience: "한국어 AI 코딩 전자책 독자와 로컬 예제 사용자"
@@ -35,8 +35,9 @@ requirements:
             category: full
             description: 새 환경 재빌드까지 포함한 공식 배포 검증기를 실행한다.
             check: "python -B verify_distribution.py"
+            timeout_seconds: 600
             status: pass
-            last_verified: 2026-10-05
+            last_verified: 2026-10-13
           - id: child-product-registry
             category: integration
             description: 저장소 안의 독립 제품을 로컬 qa_manager가 한 번씩 검수하고 누락을 거부한다.
