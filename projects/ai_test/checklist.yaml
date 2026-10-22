@@ -238,7 +238,7 @@ requirements:
             category: regression
             description: "기본 FFmpeg 런타임 취약점 0건과 개발 전용 Motion Canvas 예외의 패키지·권고·심각도 상한을 현재 npm 감사로 확인한다."
             check: "cd imagevideo && npm run audit:baseline"
-            status: fail
+            status: pass
             last_verified: 2026-10-22
           - id: imagevideo-release-hold
             category: regression
