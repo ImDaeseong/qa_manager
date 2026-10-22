@@ -11,7 +11,7 @@
 
 project: ai_test2
 repo_root: ai_test2
-updated: 2026-10-09
+updated: 2026-10-22
 release_review:
   release: "32bcc67 (공개 출시 검토 기준점)"
   audience: "전세계 사용자 (프로젝트별 세부 역할 미확정)"
@@ -137,6 +137,39 @@ requirements:
             check: "python -m unittest tests.test_ai_api_contract"
             status: pass
             last_verified: 2026-10-09
+      - id: R1-D12
+        description: "marketing_command_center — 채널별 마케팅 문안 작성·점검과 수동 커뮤니티 게시 인계"
+        test_items:
+          - id: marketing-command-center-unit
+            category: basic
+            description: "문안 품질 규칙과 6개 채널 예시가 회귀 없이 동작하는지 확인합니다."
+            check: "cd marketing_command_center && npm test"
+            status: pass
+            last_verified: 2026-10-22
+          - id: marketing-command-center-api-contract
+            category: regression
+            description: "OpenAI 요청·응답 허용 목록, 실패 분류, 키 없는 무호출 경계를 확인합니다."
+            check: "cd marketing_command_center && python -m unittest discover -s tests -p \"test_*.py\""
+            status: pass
+            last_verified: 2026-10-22
+          - id: marketing-command-center-contract
+            category: regression
+            description: "공개 파일 구성과 제거된 기능 용어의 드리프트를 확인합니다."
+            check: "cd marketing_command_center && npm run validate"
+            status: pass
+            last_verified: 2026-10-22
+          - id: marketing-command-center-browser-e2e
+            category: full
+            description: "실제 Chrome에서 작성, 점검, 커뮤니티 열기, 기록, 모바일 화면을 확인합니다."
+            check: "cd marketing_command_center && npm run e2e"
+            status: pass
+            last_verified: 2026-10-22
+          - id: marketing-command-center-lifecycle
+            category: full
+            description: "로컬 서버 시작·보안 헤더·포트 충돌·키 없는 AI 경로·종료를 확인합니다."
+            check: "cd marketing_command_center && python scripts\\smoke_lifecycle.py"
+            status: pass
+            last_verified: 2026-10-22
 
   - id: R2
     quality_dimension: security
