@@ -34,7 +34,7 @@ SELF_EXCLUDE = {"check_exposure_hotspots.py", "test_exposure_hotspots.py"}
 # Test code asserts on these literals (e.g. "0.0.0.0 must be rejected") but is not a server.
 TEST_PATH = re.compile(r"(?i)(?:^|[\\/])(?:tests?|__tests__)[\\/]|(?:^|[\\/])(?:test_[^\\/]*|[^\\/]*_test|[^\\/]*\.test)\.[a-z]+$")
 
-ALL_INTERFACES = re.compile(r"""(?:host|HOST|bind|BIND)\b[^\n]{0,40}['"]0\.0\.0\.0['"]|\(\s*['"]0\.0\.0\.0['"]\s*,""")
+ALL_INTERFACES = re.compile(r"""(?:host|HOST|bind|BIND)\b[^\n]{0,40}['"]0\.0\.0\.0['"]|\(\s*['"]0\.0\.0\.0['"]\s*,|\(\s*['"]{2}\s*,\s*\d|,\s*['"]0\.0\.0\.0['"]\s*\)""")
 BODY_READ = re.compile(r"\brfile\.read\s*\(|\brequest\.(?:json|body|form|stream|get_json)\s*\(|\bawait\s+request\.(?:json|body|form)\b")
 BODY_CAP = re.compile(
     r"(?i)\b[a-z_]*max_[a-z_]*(?:request|body|content|upload|payload)[a-z_]*\b"
@@ -72,10 +72,11 @@ def candidate_files(root: Path) -> list[Path]:
     """Tracked plus new-but-untracked files (minus ignored ones), so a server added since the last commit is still scanned."""
     try:
         result = subprocess.run(
-            ["git", "-C", str(root), "ls-files", "--cached", "--others", "--exclude-standard"],
-            capture_output=True, text=True, timeout=30, check=True,
+            ["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+            capture_output=True, timeout=30, check=True,
         )
-        return [root / name for name in result.stdout.splitlines() if name]
+        names = result.stdout.decode("utf-8", errors="replace").split("\0")
+        return [root / name for name in names if name]
     except (subprocess.SubprocessError, OSError):
         return tracked_files(root)
 

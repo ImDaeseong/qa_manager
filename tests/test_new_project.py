@@ -34,6 +34,16 @@ class NewProjectTests(unittest.TestCase):
             self.assertEqual(commands, ["python ../qa_manager/scripts/check_exposure_hotspots.py ."])
             self.assertTrue((ROOT / "scripts" / "check_exposure_hotspots.py").is_file())
 
+    def test_nested_repo_root_gets_a_depth_aware_path_and_is_normalized(self) -> None:
+        tmp, desktop = self._sandbox()
+        with tmp:
+            (desktop / "outer" / "inner").mkdir(parents=True)
+            path = new_project.create("nested", "outer/../outer/inner", desktop / "qa_manager", desktop)
+            data = lib.load(path)
+            self.assertEqual(data["repo_root"], "outer/inner")
+            commands = [item["check"] for _, _, item in lib.iter_test_items(data)]
+            self.assertEqual(commands, ["python ../../qa_manager/scripts/check_exposure_hotspots.py ."])
+
     def test_refuses_to_overwrite_an_existing_checklist(self) -> None:
         tmp, desktop = self._sandbox()
         with tmp:
@@ -53,7 +63,7 @@ class NewProjectTests(unittest.TestCase):
         """The starter's command string matches what the registered projects already run."""
         registered = (ROOT / "projects" / "ai_test" / "checklist.yaml").read_text(encoding="utf-8")
         self.assertIn("python ../qa_manager/scripts/check_exposure_hotspots.py .", registered)
-        self.assertIn("python ../qa_manager/scripts/check_exposure_hotspots.py .", new_project.TEMPLATE)
+        self.assertIn("python ../qa_manager/scripts/check_exposure_hotspots.py .", new_project.TEMPLATE.replace("{up}", "../"))
 
 
 if __name__ == "__main__":

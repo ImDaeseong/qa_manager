@@ -85,6 +85,18 @@ class ExposureHotspotScannerTests(unittest.TestCase):
             (Path(tmp) / "new_server.py").write_text('run(host="0.0.0.0")' + chr(10), encoding="utf-8")
             self.assertTrue(any("CWE-1327" in f for f in scanner.scan(Path(tmp))))
 
+    def test_non_ascii_filename_in_a_git_repo_is_scanned(self) -> None:
+        import subprocess
+
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run(["git", "init", "-q", tmp], check=True)
+            (Path(tmp) / "서버.py").write_text('run(host="0.0.0.0")' + chr(10), encoding="utf-8")
+            self.assertTrue(any("CWE-1327" in f for f in scanner.scan(Path(tmp))))
+
+    def test_empty_host_and_trailing_host_binds_are_detected(self) -> None:
+        self.assertTrue(any("CWE-1327" in f for f in self._scan("srv.py", 'HTTPServer(("", 8080), Handler)' + chr(10))))
+        self.assertTrue(any("CWE-1327" in f for f in self._scan("srv.js", 'server.listen(3000, "0.0.0.0");' + chr(10))))
+
     def test_gitignored_file_is_not_scanned(self) -> None:
         import subprocess
 

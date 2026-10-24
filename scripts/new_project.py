@@ -23,7 +23,7 @@ DESKTOP = QA_ROOT.parent
 NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]*")
 
 TEMPLATE = """project: {name}
-repo_root: {repo_root}
+repo_root: "{repo_root}"
 updated: {today}
 requirements:
   - id: R1
@@ -36,7 +36,7 @@ requirements:
           - id: exposure-hotspots-guard
             category: basic
             description: "CWE-1327/CWE-770/CWE-400 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 앞단 프록시/WAF 유무는 보지 못합니다."
-            check: "python ../qa_manager/scripts/check_exposure_hotspots.py ."
+            check: "python {up}qa_manager/scripts/check_exposure_hotspots.py ."
             status: pending
 """
 
@@ -51,9 +51,11 @@ def create(name: str, repo_root: str, qa_root: Path = QA_ROOT, desktop: Path = D
     target = qa_root / "projects" / name / "checklist.yaml"
     if target.exists():
         raise FileExistsError(f"{target} already exists; edit it instead of regenerating")
+    relative = repo.relative_to(desktop.resolve())
+    up = "../" * len(relative.parts)  # checks run with the repo as cwd; qa_manager sits beside the Desktop-level folders
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
-        TEMPLATE.format(name=name, repo_root=repo_root.replace("\\", "/"), today=date.today().isoformat()),
+        TEMPLATE.format(name=name, repo_root=relative.as_posix(), up=up, today=date.today().isoformat()),
         encoding="utf-8",
     )
     return target

@@ -103,10 +103,10 @@ RULES = [
 def tracked_files(root: Path) -> list[Path]:
     try:
         result = subprocess.run(
-            ["git", "-C", str(root), "ls-files"],
-            capture_output=True, text=True, timeout=30, check=True,
+            ["git", "-C", str(root), "ls-files", "-z"],
+            capture_output=True, timeout=30, check=True,
         )
-        names = [line for line in result.stdout.splitlines() if line]
+        names = [name for name in result.stdout.decode("utf-8", errors="replace").split("\0") if name]
         return [root / name for name in names]
     except (subprocess.SubprocessError, OSError):
         return [
