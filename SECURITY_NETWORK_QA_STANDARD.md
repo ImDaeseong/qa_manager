@@ -39,7 +39,7 @@
 - **볼류메트릭(대역폭 소진)은 개별 앱 코드로 막을 수 없다.** 회선 앞단(ISP·클라우드 DDoS 방어 서비스)의 몫이며, CISA 지침도 노출 서비스 식별·자산 중요도 분류·DDoS 방어 서비스 가입·ISP/클라우드 제공 보호 확인·대응 계획을 사전 조치로 든다. 이 저장소의 검사로 "볼류메트릭 DDoS에 안전하다"고 선언하지 않는다.
 - **프로토콜 계층**: TCP SYN 폭주의 완화책(필터링, 백로그 확대, SYN-RECEIVED 타이머 단축, 가장 오래된 반개방 TCB 재활용, SYN cache, SYN cookies, 방화벽·프록시)은 RFC 4987이 정리했고 대부분 OS·방화벽 설정 영역이다. RFC 4987 자신이 SYN cookies의 가장 큰 대가로 window scaling 비활성화를 든다. 위조 출발지 주소 차단(ingress filtering)은 BCP 38(RFC 2827)로, ISP 경계의 책임이다. 반사·증폭 공격(UDP 기반 프로토콜 14종 조사, Rossow 2014)은 UDP 서비스를 직접 여는 프로젝트에만 해당한다.
 - **프로토콜 구현 취약점**: HTTP/2 Rapid Reset(CVE-2023-44487)은 2023-08~10 실제 공격에 쓰였고 CISA는 HTTP/2 서비스 운영자에게 패치 적용과 설정 변경을 권고한다. 서버·프록시 버전 고정과 보안 공지 확인은 공급망 항목(`RELEASE_READINESS_STANDARD.md`)에서 사람이 본다.
-- **애플리케이션 계층(이 저장소가 직접 검사하는 부분)**: 요청 크기·빈도·자원 상한과 로컬 바인딩 기본값. NIST SP 800-53 Rev.5 SC-5는 정의된 서비스 거부 유형에 대해 보호하거나 영향을 제한하는 통제를 요구하며, 경계 장치의 패킷 필터링과 대역폭·중복성 확충을 예로 든다(NIST 원문 대신 보조 사이트로 확인한 요약이므로 인용 전 csrc.nist.gov 원문 대조 필요).
+- **애플리케이션 계층(이 저장소가 직접 검사하는 부분)**: 요청 크기·빈도·자원 상한과 로컬 바인딩 기본값. NIST SP 800-53 Rev.5 SC-5는 정의된 서비스 거부 유형에 대해 보호하거나 영향을 제한하는 통제를 요구하며, 경계 장치의 패킷 필터링과 대역폭·중복성 확충을 예로 든다(NIST 공식 OSCAL 카탈로그 Rev 5.2.0의 SC-5 원문과 대조함, 2026-10-24).
 
 ## DDoS 외 공격 유형별 근거와 검사 방식
 
@@ -85,8 +85,8 @@
 - MITRE, *CWE-1327: Binding to an Unrestricted IP Address*, *CWE-770: Allocation of Resources Without Limits or Throttling*, *CWE-1333: Inefficient Regular Expression Complexity*. https://cwe.mitre.org/
 - CISA, *HTTP/2 Rapid Reset Vulnerability, CVE-2023-44487*, 2023-10-10. https://www.cisa.gov/news-events/alerts/2023/10/10/http2-rapid-reset-vulnerability-cve-2023-44487
 - CISA/FBI/MS-ISAC, *Understanding and Responding to Distributed Denial-of-Service Attacks*, 2022-10, updated 2024-03-21. https://www.cisa.gov/resources-tools/resources/understanding-and-responding-distributed-denial-service-attacks
-- NIST SP 800-53 Rev. 5, SC-5 Denial-of-Service Protection (본문은 보조 사이트 요약으로만 확인, 원문 대조 필요).
+- NIST SP 800-53 Rev. 5.2.0, SC-5 Denial-of-service Protection — NIST 공식 OSCAL 카탈로그(github.com/usnistgov/oscal-content, `NIST_SP-800-53_rev5_catalog.json`, 카탈로그 수정일 2026-10-22)의 통제 본문과 지침을 직접 읽어 확인: (a) 정의된 DoS 이벤트 유형의 영향을 '보호하거나(protect against) 제한(limit)'하고 (b) 유형별 통제를 정의한다. 지침은 경계 보호 장치의 패킷 필터링, 네트워크 용량·대역폭 증설과 서비스 중복을 예로 든다.
 
-출처 확인 방식(2026-10-24): 위 논문·RFC·CVE 항목은 존재와 서지정보를 웹 검색으로 확인했고, OWASP API4·CWE-1327·CWE-770·CWE-1333·RFC 4987·CISA Rapid Reset은 원문 페이지를 직접 열어 인용 내용을 대조했다. Mirkovic·Zargar·Crosby·Davis·Kettle·Greshake·Rossow·BCP 38은 초록·서지정보 수준까지만 확인했고 본문 수치는 인용하지 않았다.
+출처 확인 방식(2026-10-24): 위 논문·RFC·CVE 항목은 존재와 서지정보를 웹 검색으로 확인했고, OWASP API4·CWE-1327·CWE-770·CWE-1333·RFC 4987·CISA Rapid Reset은 원문 페이지를, NIST SC-5는 NIST 공식 OSCAL 카탈로그 파일을 직접 열어 인용 내용을 대조했다. Mirkovic·Zargar·Crosby·Davis·Kettle·Greshake·Rossow·BCP 38은 초록·서지정보 수준까지만 확인했고 본문 수치는 인용하지 않았다.
 
 조회일: 2026-09-18(CWE/OWASP Top 순위 대조 기준 — 노출면·가용성 절의 출처는 위 "출처 확인 방식"의 2026-10-24 기준이며 이 날짜를 갱신하지 않음). 이 표는 정적 패턴 목록이며, 새로운 CWE Top 25가 매년 갱신되므로 최소 연 1회 이 문서의 표를 최신 순위와 대조한다(AGENTS.md Currency Rule).

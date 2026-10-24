@@ -135,6 +135,12 @@ requirements:
             check: "python scripts/check_exposure_hotspots.py ."
             status: pass
             last_verified: 2026-10-24
+          - id: R3-D1-T7
+            category: regression
+            description: 새 프로젝트 시작용 체크리스트 생성기가 노출 검사를 기본 등록하고 덮어쓰기·경로 이탈·잘못된 이름을 거부하는지 확인한다.
+            check: "python -m unittest tests.test_new_project -q"
+            status: pass
+            last_verified: 2026-10-24
             last_verified: 2026-09-18
 
   # Added 2026-09-20 as part of applying the commercial-readiness rollup
