@@ -134,7 +134,8 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
 
 1. `python scripts/new_project.py <프로젝트명> <repo_root> --exposure T0|T1|T2`로 시작용 `projects/<프로젝트명>/checklist.yaml`을 만듭니다.
    서버 노출 검사(`check_exposure_hotspots.py`)가 처음부터 등록되어 있어, 서버 코드가 있는 프로젝트가 이 검사를 빠뜨리지
-   않습니다(빠지면 `tests/test_exposure_hotspots.py`가 실패). 수동으로 만들 때의 스키마는
+   않습니다(빠지면 `tests/test_exposure_hotspots.py`가 실패). 운영 준비도 검사(`check_operational_readiness.py`,
+   `OPERATIONS_QA_STANDARD.md`)도 선언한 계층에 맞춰 함께 등록됩니다. 수동으로 만들 때의 스키마는
    `projects/hermes-agents/checklist.yaml` 상단 주석을 따릅니다.
    공개 HTML에 프로젝트 이름·설명·검사 명령을 포함해도 되는지 검토한 뒤
    `scripts/_checklist_lib.py`의 `PUBLIC_PROJECTS`에 이름을 추가합니다.
