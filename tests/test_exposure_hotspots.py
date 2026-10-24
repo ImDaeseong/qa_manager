@@ -48,6 +48,19 @@ class ExposureHotspotScannerTests(unittest.TestCase):
         body = "MAX_REQUEST_BYTES = 20_000\nraw = self.rfile.read(n)\n"
         self.assertEqual(self._scan("web.py", body), [])
 
+    def test_unrelated_max_names_do_not_mask_a_missing_body_cap(self) -> None:
+        body = "MAX_OUTPUT_CHARS = 4000\nMAX_WORKERS = 4\nmax_length = 10\nraw = self.rfile.read(n)\n"
+        self.assertTrue(any("CWE-770" in f for f in self._scan("web.py", body)))
+
+    def test_upload_and_content_named_caps_count(self) -> None:
+        for name in ("MAX_UPLOAD_BYTES", "MAX_CONTENT_LENGTH", "MAX_BODY", "max_request_size"):
+            with self.subTest(name=name):
+                self.assertEqual(self._scan("web.py", f"{name} = 1\nraw = self.rfile.read(n)\n"), [])
+
+    def test_content_length_validator_call_counts_as_cap(self) -> None:
+        body = "validate_content_length(length, POLICY)\nraw = self.rfile.read(length)\n"
+        self.assertEqual(self._scan("web.py", body), [])
+
     def test_content_length_comparison_counts_as_cap(self) -> None:
         body = "if int(self.headers['Content-Length']) > LIMIT:\n    return\nraw = self.rfile.read(n)\n"
         self.assertEqual(self._scan("web.py", body), [])
@@ -84,12 +97,14 @@ class RegisteredProjectCoverageTests(unittest.TestCase):
 
     def test_projects_with_server_code_register_the_exposure_check(self) -> None:
         missing = []
+        checked = 0
         for checklist in sorted((ROOT / "projects").glob("*/checklist.yaml")):
             text = checklist.read_text(encoding="utf-8")
             repo = re.search(r"(?m)^repo_root:\s*(\S+)", text)
             if not repo or not (DESKTOP / repo.group(1)).is_dir():
                 continue
             root = DESKTOP / repo.group(1)
+            checked += 1
             has_server = False
             for path in scanner.tracked_files(root):
                 rel = str(path.relative_to(root))
@@ -100,8 +115,10 @@ class RegisteredProjectCoverageTests(unittest.TestCase):
                 if SERVER_CODE.search(path.read_text(encoding="utf-8", errors="replace")):
                     has_server = True
                     break
-            if has_server and "check_exposure_hotspots" not in text:
+            if has_server and not re.search(r"(?m)^\s*check:\s*\".*check_exposure_hotspots", text):
                 missing.append(checklist.parent.name)
+        if checked == 0:
+            self.skipTest("no sibling project repositories are available to inspect")
         self.assertEqual(missing, [], f"projects with server code but no exposure check: {missing}")
 
 

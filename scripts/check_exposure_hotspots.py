@@ -36,7 +36,8 @@ TEST_PATH = re.compile(r"(?i)(?:^|[\\/])(?:tests?|__tests__)[\\/]|(?:^|[\\/])(?:
 ALL_INTERFACES = re.compile(r"""(?:host|HOST|bind|BIND)\b[^\n]{0,40}['"]0\.0\.0\.0['"]|\(\s*['"]0\.0\.0\.0['"]\s*,""")
 BODY_READ = re.compile(r"\brfile\.read\s*\(|\brequest\.(?:json|body|form|stream|get_json)\s*\(|\bawait\s+request\.(?:json|body|form)\b")
 BODY_CAP = re.compile(
-    r"(?i)\b[a-z_]*max_[a-z_]*(?:bytes|size|length|body|request|chars)[a-z_]*\b"
+    r"(?i)\b[a-z_]*max_[a-z_]*(?:request|body|content|upload|payload)[a-z_]*\b"
+    r"|\b(?:validate|check|enforce)_content_length\b"
     r"|MAX_CONTENT_LENGTH|client_max_body_size|content.?length[^\n]{0,60}\s(?:>=?|<=?)\s"
     r"|\s(?:>=?|<=?)\s[^\n]{0,60}content.?length"
 )
