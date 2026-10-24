@@ -155,7 +155,7 @@
 <div class="stat-grid">
   <div class="stat"><div class="n">14</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">70</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">161</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">162</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">14</div><div class="label">통과한 프로젝트</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
   <div class="stat"><div class="n">0</div><div class="label">출시 검토 근거 완료 프로젝트</div></div>
@@ -2928,7 +2928,7 @@
         <span>qa_manager</span>
         <span class="pill pass">통과</span>
         <span class="pill hold">보류</span> <span class="desc-inline">출시 검토 보류(15개 영역)</span>
-        <span class="counts-inline">요구사항 9개 · 검사항목 19개 · 실패 0건 · <a href="projects/qa_manager/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 9개 · 검사항목 20개 · 실패 0건 · <a href="projects/qa_manager/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       <section class="acceptance not-ready"><h2>제품 인수검수 HOLD · 사람이 수행하기 전</h2><p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p><h3>기능 검수</h3><ul class="acceptance-cases"><li class="acceptance-case pass"><div class="row"><code>QA-FEATURE-1</code><span class="pill pass">PASS</span></div><strong>Generate a project dashboard from a registered checklist</strong><p class="desc">사용자 역할: QA operator | 사전조건: A reviewed checklist and its repository are available</p><p class="desc">수행 단계: Run the project dashboard generator -&gt; Open the generated dashboard -&gt; Confirm technical and acceptance gates remain separate</p><p class="desc">기대 결과: The current checks and product acceptance status are both visible</p><p class="desc">실제 결과: The generator completed with 9 requirements, 16 test items, and 0 failures | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#feature-review</code></p></li></ul><h3>UI 검수</h3><ul class="acceptance-cases"><li class="acceptance-case blocked"><div class="row"><code>QA-UI-1</code><span class="pill blocked">BLOCKED</span></div><strong>Review the dashboard&#x27;s primary interaction states</strong><p class="desc">사용자 역할: QA operator | 사전조건: A current dashboard has been generated</p><p class="desc">수행 단계: Open the dashboard in a supported browser -&gt; Expand requirements and acceptance sections -&gt; Check keyboard focus and narrow viewport readability</p><p class="desc">기대 결과: All controls, states, and evidence remain readable and operable</p><p class="desc">실제 결과: Desktop rendering passed; mobile overflow was repaired, but the post-fix capture retained an unexplained viewport offset | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#ui-review</code></p></li></ul><h3>업무 흐름 검수</h3><ul class="acceptance-cases"><li class="acceptance-case pass"><div class="row"><code>QA-WORKFLOW-1</code><span class="pill pass">PASS</span></div><strong>Complete the checklist-to-release-review workflow</strong><p class="desc">사용자 역할: Release reviewer | 사전조건: Technical checks and acceptance cases are registered</p><p class="desc">수행 단계: Run the registered technical checks -&gt; Record feature and UI observations -&gt; Review evidence and make the release decision</p><p class="desc">기대 결과: Technical PASS cannot produce product approval without acceptance evidence</p><p class="desc">실제 결과: Technical PASS remained separate from product acceptance and the UI BLOCKED result kept the product gate on HOLD | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#workflow-review</code></p></li></ul></section>
 
@@ -2989,7 +2989,7 @@
         <code>R3</code> <span class="pill pass">통과</span>
         <span class="desc-inline">등록 프로젝트의 보안·해킹·네트워크 허점을 근거 기반 기준으로 탐지한다.</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 7개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 8개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -3059,6 +3059,15 @@
           </div>
           <p class="desc">새 프로젝트 시작용 체크리스트 생성기가 노출 검사를 기본 등록하고 덮어쓰기·경로 이탈·잘못된 이름을 거부하는지 확인한다.</p>
           <p class="check">실행 명령: <code>python -m unittest tests.test_new_project -q</code></p>
+        </li>
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>R3-D1-T8</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">보안 구현 조각(속도 제한기, 본문 상한 읽기, 바인딩 옵트인)이 동작하고 자신의 두 스캐너를 통과하는지 확인한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_security_templates -q</code></p>
         </li>
         </ul>
       </details>

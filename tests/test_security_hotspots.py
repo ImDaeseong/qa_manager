@@ -24,6 +24,16 @@ class SecurityHotspotScannerTests(unittest.TestCase):
         )
         self.assertTrue(any("CWE-798" in f for f in findings))
 
+    def test_sqlite_tokenize_option_is_not_a_credential(self) -> None:
+        line = "connection.execute(" + '"' + "CREATE VIRTUAL TABLE t USING fts5(body, tokenize='unicode61')" + '"' + ")" + chr(10)
+        findings = self._scan_one(Path(self._make_tmp_dir()), "db.py", line)
+        self.assertEqual(findings, [])
+
+    def test_real_token_assignment_is_still_flagged(self) -> None:
+        line = "ACCESS_TOKEN = " + '"' + "abcdefghijklmnop1234" + '"' + chr(10)
+        findings = self._scan_one(Path(self._make_tmp_dir()), "cfg.py", line)
+        self.assertTrue(any("CWE-798" in item for item in findings))
+
     def test_placeholder_credential_not_flagged(self) -> None:
         findings = self._scan_one(
             Path(self._make_tmp_dir()), "app.py",

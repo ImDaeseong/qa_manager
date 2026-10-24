@@ -52,7 +52,7 @@ RULES = [
     Rule(
         "CWE-798", "하드코딩된 자격증명",
         "리터럴 값을 지우고 환경변수/시크릿 관리자에서 읽도록 바꾸세요.",
-        r"(?i)\b[A-Z0-9_]*(?:API[_-]?KEY|SECRET|PASSWORD|TOKEN|CREDENTIAL)[A-Z0-9_]*"
+        r"(?i)\b[A-Z0-9_]*(?:API[_-]?KEY|SECRET|PASSWORD|TOKEN(?!IZE\b)|CREDENTIAL)[A-Z0-9_]*"
         r"\s*[:=]\s*['\"](?!(?:xxx|changeme|your_|example|redacted|dummy|test|<|\$\{|\{\{))"
         r"[A-Za-z0-9/+._-]{8,}['\"]",
     ),
