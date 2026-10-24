@@ -18,6 +18,7 @@ or firewall in front of the process, and a cap-looking name does not prove the c
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -67,9 +68,21 @@ def scan_text(rel: str, text: str) -> list[str]:
     return findings
 
 
+def candidate_files(root: Path) -> list[Path]:
+    """Tracked plus new-but-untracked files (minus ignored ones), so a server added since the last commit is still scanned."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--cached", "--others", "--exclude-standard"],
+            capture_output=True, text=True, timeout=30, check=True,
+        )
+        return [root / name for name in result.stdout.splitlines() if name]
+    except (subprocess.SubprocessError, OSError):
+        return tracked_files(root)
+
+
 def scan(root: Path) -> list[str]:
     findings: list[str] = []
-    for path in tracked_files(root):
+    for path in candidate_files(root):
         if path.name in SELF_EXCLUDE or path.suffix.lower() not in SOURCE_EXTENSIONS or not path.is_file():
             continue
         if TEST_PATH.search(str(path.relative_to(root))):

@@ -77,6 +77,23 @@ class ExposureHotspotScannerTests(unittest.TestCase):
         line = 'run(host="0.0.0.0")  # qa:allow CWE-1327 - behind reverse proxy and firewall\n'
         self.assertEqual(self._scan("app.py", line), [])
 
+    def test_untracked_server_file_in_a_git_repo_is_scanned(self) -> None:
+        import subprocess
+
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run(["git", "init", "-q", tmp], check=True)
+            (Path(tmp) / "new_server.py").write_text('run(host="0.0.0.0")' + chr(10), encoding="utf-8")
+            self.assertTrue(any("CWE-1327" in f for f in scanner.scan(Path(tmp))))
+
+    def test_gitignored_file_is_not_scanned(self) -> None:
+        import subprocess
+
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run(["git", "init", "-q", tmp], check=True)
+            (Path(tmp) / ".gitignore").write_text("scratch.py" + chr(10), encoding="utf-8")
+            (Path(tmp) / "scratch.py").write_text('run(host="0.0.0.0")' + chr(10), encoding="utf-8")
+            self.assertEqual(scanner.scan(Path(tmp)), [])
+
     def test_test_files_are_skipped(self) -> None:
         self.assertEqual(self._scan("tests/test_cfg.py", 'assert reject(host="0.0.0.0")\n'), [])
         self.assertEqual(self._scan("test_cfg.py", 'assert reject(host="0.0.0.0")\n'), [])
