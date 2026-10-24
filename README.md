@@ -131,7 +131,7 @@ python scripts\run_verification_loop.py projects\sample\checklist.yaml auth-e2e 
 
 ## 프로젝트 추가 방법
 
-1. `python scripts/new_project.py <프로젝트명> <repo_root>`로 시작용 `projects/<프로젝트명>/checklist.yaml`을 만듭니다.
+1. `python scripts/new_project.py <프로젝트명> <repo_root> --exposure T0|T1|T2`로 시작용 `projects/<프로젝트명>/checklist.yaml`을 만듭니다.
    서버 노출 검사(`check_exposure_hotspots.py`)가 처음부터 등록되어 있어, 서버 코드가 있는 프로젝트가 이 검사를 빠뜨리지
    않습니다(빠지면 `tests/test_exposure_hotspots.py`가 실패). 수동으로 만들 때의 스키마는
    `projects/hermes-agents/checklist.yaml` 상단 주석을 따릅니다.
