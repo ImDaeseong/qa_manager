@@ -130,6 +130,24 @@ class _Echo(BaseHTTPRequestHandler):
         return
 
 
+class _Stub:
+    """Minimal handler stand-in for header values http.client cannot send."""
+
+    def __init__(self, declared: list[str]) -> None:
+        self.headers = self
+        self._declared = declared
+        self.errors: list[int] = []
+
+    def get(self, name: str, default: object = None) -> object:
+        return default
+
+    def get_all(self, name: str) -> list[str]:
+        return list(self._declared)
+
+    def send_error(self, code: int, message: str = "") -> None:
+        self.errors.append(code)
+
+
 class ReadLimitedBodyTests(unittest.TestCase):
     def _request(self, headers: dict[str, str], body: bytes = b"") -> int:
         server = HTTPServer(("127.0.0.1", 0), _Echo)
@@ -162,19 +180,18 @@ class ReadLimitedBodyTests(unittest.TestCase):
         self.assertEqual(self._request({"Content-Length": "abc"}), 400)
 
     def test_values_that_cannot_travel_over_http_client_are_refused_by_the_helper_itself(self) -> None:
-        class Stub:
-            def __init__(self, declared: str) -> None:
-                self.headers = {"Content-Length": declared}
-                self.errors: list[int] = []
-
-            def send_error(self, code: int, message: str = "") -> None:
-                self.errors.append(code)
-
-        for value in (" 5", "5 ", "٥", "５", ""):
-            with self.subTest(value=value):
-                stub = Stub(value)
+        arabic_five = chr(0x0665)
+        fullwidth_five = chr(0xFF15)
+        for value in (" 5", "5 ", arabic_five, fullwidth_five, "", "9" * 21, "9" * 5000):
+            with self.subTest(value=value[:12]):
+                stub = _Stub([value])
                 self.assertIsNone(limits_mod.read_limited_body(stub, 100))
                 self.assertEqual(stub.errors, [400])
+
+    def test_duplicate_content_length_headers_are_refused(self) -> None:
+        stub = _Stub(["5", "5"])
+        self.assertIsNone(limits_mod.read_limited_body(stub, 100))
+        self.assertEqual(stub.errors, [400])
 
     def test_missing_length_is_refused(self) -> None:
         self.assertEqual(self._request({}), 411)

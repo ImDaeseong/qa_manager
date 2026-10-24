@@ -17,11 +17,16 @@ def read_limited_body(handler: BaseHTTPRequestHandler, max_request_bytes: int) -
     if handler.headers.get("Transfer-Encoding"):
         handler.send_error(411, "Content-Length is required; chunked bodies are not accepted")
         return None
-    declared = handler.headers.get("Content-Length")
-    if declared is None:
+    declared_values = handler.headers.get_all("Content-Length") or []
+    if not declared_values:
         handler.send_error(411, "Content-Length is required")
         return None
-    if not (declared.isascii() and declared.isdigit()):  # int() would also accept "+5", " 5", "1_0"; a proxy may read those differently
+    if len(declared_values) > 1:  # duplicate headers are a request-smuggling hazard; a proxy may pick the other one
+        handler.send_error(400, "Multiple Content-Length headers")
+        return None
+    declared = declared_values[0]
+    # more than 20 digits exceeds any realistic limit, and int() itself raises ValueError above 4300 digits
+    if len(declared) > 20 or not (declared.isascii() and declared.isdigit()):  # int() would also accept "+5", " 5", "1_0"; a proxy may read those differently
         handler.send_error(400, "Content-Length must be a plain decimal number")
         return None
     length = int(declared)
