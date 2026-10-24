@@ -269,3 +269,28 @@ requirements:
             description: 무변경 재시도 1회, 최대 3회, 동일 위치 수정 실패와 고위험 HOLD 판정을 검증한다.
             check: "python -m unittest tests.test_verification_loop -q"
             status: pass
+  - id: R10
+    quality_dimension: reliability
+    description: "넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)"
+    dev_items:
+      - id: R10-D1
+        description: "오류 처리 정적 패턴 스캐너(qa_manager/scripts/check_error_handling_hotspots.py)"
+        test_items:
+          - id: error-handling-hotspots-guard
+            category: basic
+            description: "CWE-390/CWE-755 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 삼키는 것이 옳은지는 판단하지 못하고 사유가 적혀 있는지만 봅니다."
+            check: "python ../qa_manager/scripts/check_error_handling_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-24
+          - id: error-handling-scanner-tests
+            category: regression
+            description: 오류 처리 스캐너의 실탐/오탐, 사유 인정, 외부 코드 제외, 등록 누락 방지를 자동 검증한다.
+            check: "python -m unittest tests.test_error_handling_hotspots -q"
+            status: pass
+            last_verified: 2026-10-24
+          - id: boundary-errors-template-tests
+            category: regression
+            description: 경계 오류 기록 템플릿(분류, 원인 사슬, 한 번만 기록, 데이터 계약 검증)과 세 스캐너 통과를 자동 검증한다.
+            check: "python -m unittest tests.test_boundary_errors -q"
+            status: pass
+            last_verified: 2026-10-24

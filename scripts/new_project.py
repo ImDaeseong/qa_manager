@@ -4,8 +4,8 @@ Usage: python scripts/new_project.py <project-name> <repo-root-relative-to-Deskt
 
 A project that is never registered is never scanned, so registration is where
 SECURITY_NETWORK_QA_STANDARD.md's controls would otherwise get dropped. The starter carries the checks that
-already exist and run (scripts/check_security_hotspots.py and scripts/check_exposure_hotspots.py, both usable on
-any repo) and records the project's exposure tier, which selects the controls the standard's matrix requires:
+already exist and run (scripts/check_security_hotspots.py, check_exposure_hotspots.py and check_error_handling_hotspots.py, all usable
+on any repo) and records the project's exposure tier, which selects the controls the standard's matrix requires:
 
   T0  local only (127.0.0.1, one user)      T1  reachable from the same network (LAN/phone)
   T2  reachable from the public internet
@@ -51,6 +51,11 @@ requirements:
             category: basic
             description: "CWE-1327/CWE-770/CWE-400 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 앞단 프록시/WAF 유무는 보지 못합니다."
             check: "python {up}qa_manager/scripts/check_exposure_hotspots.py ."
+            status: pending
+          - id: error-handling-hotspots-guard
+            category: basic
+            description: "넓은 예외를 잡고도 아무 조치를 하지 않는 핸들러(CWE-390)와 핸들러 안의 TODO/FIXME(CWE-755)가 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 봅니다."
+            check: "python {up}qa_manager/scripts/check_error_handling_hotspots.py ."
             status: pending
 """
 

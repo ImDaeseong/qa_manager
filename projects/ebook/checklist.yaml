@@ -118,3 +118,16 @@ requirements:
             required_output: ["stored result is FRESH for this EPUB"]
             status: pass
             last_verified: 2026-10-13
+  - id: R6
+    quality_dimension: reliability
+    description: "넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)"
+    dev_items:
+      - id: R6-D1
+        description: "오류 처리 정적 패턴 스캐너(qa_manager/scripts/check_error_handling_hotspots.py)"
+        test_items:
+          - id: error-handling-hotspots-guard
+            category: basic
+            description: "CWE-390/CWE-755 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 삼키는 것이 옳은지는 판단하지 못하고 사유가 적혀 있는지만 봅니다."
+            check: "python ../qa_manager/scripts/check_error_handling_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-24

@@ -154,9 +154,9 @@
 <h1>qa_manager</h1>
 <p class="meta">projects/qa_manager/checklist.yaml 기반 (검사 프로젝트: qa_manager), 생성시각 2026-10-24 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">9</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">20</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">9</div><div class="label">통과한 요구사항</div></div>
+  <div class="stat"><div class="n">10</div><div class="label">요구사항</div></div>
+  <div class="stat"><div class="n">23</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">10</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
 <section class="acceptance not-ready"><h2>제품 인수검수 HOLD · 사람이 수행하기 전</h2><p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p><h3>기능 검수</h3><ul class="acceptance-cases"><li class="acceptance-case pass"><div class="row"><code>QA-FEATURE-1</code><span class="pill pass">PASS</span></div><strong>Generate a project dashboard from a registered checklist</strong><p class="desc">사용자 역할: QA operator | 사전조건: A reviewed checklist and its repository are available</p><p class="desc">수행 단계: Run the project dashboard generator -&gt; Open the generated dashboard -&gt; Confirm technical and acceptance gates remain separate</p><p class="desc">기대 결과: The current checks and product acceptance status are both visible</p><p class="desc">실제 결과: The generator completed with 9 requirements, 16 test items, and 0 failures | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#feature-review</code></p></li></ul><h3>UI 검수</h3><ul class="acceptance-cases"><li class="acceptance-case blocked"><div class="row"><code>QA-UI-1</code><span class="pill blocked">BLOCKED</span></div><strong>Review the dashboard&#x27;s primary interaction states</strong><p class="desc">사용자 역할: QA operator | 사전조건: A current dashboard has been generated</p><p class="desc">수행 단계: Open the dashboard in a supported browser -&gt; Expand requirements and acceptance sections -&gt; Check keyboard focus and narrow viewport readability</p><p class="desc">기대 결과: All controls, states, and evidence remain readable and operable</p><p class="desc">실제 결과: Desktop rendering passed; mobile overflow was repaired, but the post-fix capture retained an unexplained viewport offset | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#ui-review</code></p></li></ul><h3>업무 흐름 검수</h3><ul class="acceptance-cases"><li class="acceptance-case pass"><div class="row"><code>QA-WORKFLOW-1</code><span class="pill pass">PASS</span></div><strong>Complete the checklist-to-release-review workflow</strong><p class="desc">사용자 역할: Release reviewer | 사전조건: Technical checks and acceptance cases are registered</p><p class="desc">수행 단계: Run the registered technical checks -&gt; Record feature and UI observations -&gt; Review evidence and make the release decision</p><p class="desc">기대 결과: Technical PASS cannot produce product approval without acceptance evidence</p><p class="desc">실제 결과: Technical PASS remained separate from product acceptance and the UI BLOCKED result kept the product gate on HOLD | 증빙: <code>evidence/qa_manager-acceptance/ACCEPTANCE.md#workflow-review</code></p></li></ul></section>
@@ -518,11 +518,55 @@
       </details>
       </div>
     </details>
+    <details class="requirement pass" open>
+      <summary>
+        <code>R10</code> <span class="pill pass">통과</span>
+        <span class="desc-inline">넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)</span>
+      </summary>
+      <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 3개 연결됨</p>
+      <div class="dev-items">
+      <details class="dev-item pass" open>
+        <summary>
+          <code>R10-D1</code> <span class="pill pass">통과</span>
+          <span class="desc-inline">오류 처리 정적 패턴 스캐너(qa_manager/scripts/check_error_handling_hotspots.py)</span>
+        </summary>
+        <ul class="test-items">
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>error-handling-hotspots-guard</code>
+            <span class="category">기본검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">CWE-390/CWE-755 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 삼키는 것이 옳은지는 판단하지 못하고 사유가 적혀 있는지만 봅니다.</p>
+          <p class="check">실행 명령: <code>python ../qa_manager/scripts/check_error_handling_hotspots.py .</code></p>
+        </li>
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>error-handling-scanner-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">오류 처리 스캐너의 실탐/오탐, 사유 인정, 외부 코드 제외, 등록 누락 방지를 자동 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_error_handling_hotspots -q</code></p>
+        </li>
+        <li class="test-item pass pass">
+          <div class="row">
+            <code>boundary-errors-template-tests</code>
+            <span class="category">재발방지검사</span>
+            <span class="pill pass">통과</span>
+          </div>
+          <p class="desc">경계 오류 기록 템플릿(분류, 원인 사슬, 한 번만 기록, 데이터 계약 검증)과 세 스캐너 통과를 자동 검증한다.</p>
+          <p class="check">실행 명령: <code>python -m unittest tests.test_boundary_errors -q</code></p>
+        </li>
+        </ul>
+      </details>
+      </div>
+    </details>
 
     <div class="readiness not-ready">
       <h2>출시 검토 보류 — 미검토·실패·승인 누락 확인</h2>
       <p>최종 승인 기록 없음 · 연결된 자동 검사의 통과만으로 품질 영역 전체가 검증되지는 않습니다.</p>
-      <ul class="dimensions"><li><span class="pill pending_review">검토 대기</span> 기능 적합성 — 주요 사용자 작업과 정확성 — <code>R5</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#기능-적합성</code></li><li><span class="pill pending_review">검토 대기</span> 성능 효율성 — 응답 시간·자원·용량 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#성능-효율성</code></li><li><span class="pill pending_review">검토 대기</span> 호환성 — 지원 환경과 연동 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#호환성</code></li><li><span class="pill pending_review">검토 대기</span> 상호작용 능력 — 사용성·포용성·접근성 — <code>R8</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#상호작용-능력</code></li><li><span class="pill pending_review">검토 대기</span> 신뢰성 — 장애 처리·복구·가용성 — <code>R4, R9</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#신뢰성</code></li><li><span class="pill pending_review">검토 대기</span> 보안 — 위협·권한·입력·비밀정보 검증 — <code>R1, R3</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#보안</code></li><li><span class="pill pending_review">검토 대기</span> 유지보수성 — 변경·진단·검증 가능성 — <code>R2</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유지보수성</code></li><li><span class="pill pending_review">검토 대기</span> 유연성·이식성 — 설치·환경 적응·확장 — <code>R7</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유연성-이식성</code></li><li><span class="pill pending_review">검토 대기</span> 안전성 — 위해·오용 위험과 실패 시 안전 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#안전성</code></li><li><span class="pill pending_review">검토 대기</span> 실사용 품질 — 실제 사용자·맥락에서의 결과 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#실사용-품질</code></li><li><span class="pill pending_review">검토 대기</span> 개인정보·데이터 거버넌스 — 수집·보관·삭제·권리 — <code>R6</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#개인정보-데이터-거버넌스</code></li><li><span class="pill pending_review">검토 대기</span> 공급망·라이선스 — 구성요소·취약점·배포 권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#공급망-라이선스</code></li><li><span class="pill pending_review">검토 대기</span> 배포·운영 — 재현 빌드·관측·백업·롤백·지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#배포-운영</code></li><li><span class="pill pending_review">검토 대기</span> 법률·규제 — 판매 지역·산업별 의무와 계약 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#법률-규제</code></li><li><span class="pill pending_review">검토 대기</span> 사업 운영 — 가격·결제·환불·고객 지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#사업-운영</code></li></ul>
+      <ul class="dimensions"><li><span class="pill pending_review">검토 대기</span> 기능 적합성 — 주요 사용자 작업과 정확성 — <code>R5</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#기능-적합성</code></li><li><span class="pill pending_review">검토 대기</span> 성능 효율성 — 응답 시간·자원·용량 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#성능-효율성</code></li><li><span class="pill pending_review">검토 대기</span> 호환성 — 지원 환경과 연동 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#호환성</code></li><li><span class="pill pending_review">검토 대기</span> 상호작용 능력 — 사용성·포용성·접근성 — <code>R8</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#상호작용-능력</code></li><li><span class="pill pending_review">검토 대기</span> 신뢰성 — 장애 처리·복구·가용성 — <code>R4, R9, R10</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#신뢰성</code></li><li><span class="pill pending_review">검토 대기</span> 보안 — 위협·권한·입력·비밀정보 검증 — <code>R1, R3</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#보안</code></li><li><span class="pill pending_review">검토 대기</span> 유지보수성 — 변경·진단·검증 가능성 — <code>R2</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유지보수성</code></li><li><span class="pill pending_review">검토 대기</span> 유연성·이식성 — 설치·환경 적응·확장 — <code>R7</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#유연성-이식성</code></li><li><span class="pill pending_review">검토 대기</span> 안전성 — 위해·오용 위험과 실패 시 안전 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#안전성</code></li><li><span class="pill pending_review">검토 대기</span> 실사용 품질 — 실제 사용자·맥락에서의 결과 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#실사용-품질</code></li><li><span class="pill pending_review">검토 대기</span> 개인정보·데이터 거버넌스 — 수집·보관·삭제·권리 — <code>R6</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#개인정보-데이터-거버넌스</code></li><li><span class="pill pending_review">검토 대기</span> 공급망·라이선스 — 구성요소·취약점·배포 권리 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#공급망-라이선스</code></li><li><span class="pill pending_review">검토 대기</span> 배포·운영 — 재현 빌드·관측·백업·롤백·지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#배포-운영</code></li><li><span class="pill pending_review">검토 대기</span> 법률·규제 — 판매 지역·산업별 의무와 계약 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#법률-규제</code></li><li><span class="pill pending_review">검토 대기</span> 사업 운영 — 가격·결제·환불·고객 지원 — <code>연결된 요구사항 없음</code> · 검토 기록: <code>QA_MANAGER_RELEASE_REVIEW.md#사업-운영</code></li></ul>
     </div>
 </body>
 </html>

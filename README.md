@@ -12,7 +12,8 @@
 
 **구조 문서 →** [qa-manager-architecture.html](qa-manager-architecture.html)  
 **LLM 검수 기준 →** [LLM_QA_STANDARD.md](LLM_QA_STANDARD.md)  
-**보안·해킹·네트워크 허점 검수 기준 →** [SECURITY_NETWORK_QA_STANDARD.md](SECURITY_NETWORK_QA_STANDARD.md)
+**보안·해킹·네트워크 허점 검수 기준 →** [SECURITY_NETWORK_QA_STANDARD.md](SECURITY_NETWORK_QA_STANDARD.md)  
+**호출·연동 경계의 오류 검수 기준 →** [ERROR_BOUNDARY_QA_STANDARD.md](ERROR_BOUNDARY_QA_STANDARD.md)
 **상용 출시 검토 기준 →** [RELEASE_READINESS_STANDARD.md](RELEASE_READINESS_STANDARD.md)
 **qa_manager 출시 검토 기록 →** [QA_MANAGER_RELEASE_REVIEW.md](QA_MANAGER_RELEASE_REVIEW.md)
 

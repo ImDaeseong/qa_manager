@@ -16,6 +16,7 @@ from scripts import _checklist_lib as lib
 
 SECURITY = "python ../qa_manager/scripts/check_security_hotspots.py ."
 EXPOSURE = "python ../qa_manager/scripts/check_exposure_hotspots.py ."
+ERRORS = "python ../qa_manager/scripts/check_error_handling_hotspots.py ."
 
 
 class NewProjectTests(unittest.TestCase):
@@ -34,8 +35,8 @@ class NewProjectTests(unittest.TestCase):
             self.assertEqual(data["project"], "demo")
             self.assertEqual(data["repo_root"], "demo_app")
             commands = [item["check"] for _, _, item in lib.iter_test_items(data)]
-            self.assertEqual(commands, [SECURITY, EXPOSURE])
-            for script in ("check_security_hotspots.py", "check_exposure_hotspots.py"):
+            self.assertEqual(commands, [SECURITY, EXPOSURE, ERRORS])
+            for script in ("check_security_hotspots.py", "check_exposure_hotspots.py", "check_error_handling_hotspots.py"):
                 self.assertTrue((ROOT / "scripts" / script).is_file())
 
     def test_exposure_tier_defaults_to_local_and_is_recorded(self) -> None:
@@ -63,6 +64,7 @@ class NewProjectTests(unittest.TestCase):
             self.assertEqual(commands, [
                 "python ../../qa_manager/scripts/check_security_hotspots.py .",
                 "python ../../qa_manager/scripts/check_exposure_hotspots.py .",
+                "python ../../qa_manager/scripts/check_error_handling_hotspots.py .",
             ])
 
     def test_refuses_to_overwrite_an_existing_checklist(self) -> None:
@@ -86,6 +88,7 @@ class NewProjectTests(unittest.TestCase):
         template = new_project.TEMPLATE.replace("{up}", "../")
         self.assertIn(SECURITY, template)
         self.assertIn(EXPOSURE, template)
+        self.assertIn(ERRORS, template)
 
     def test_the_standard_documents_every_tier_the_script_accepts(self) -> None:
         standard = (ROOT / "SECURITY_NETWORK_QA_STANDARD.md").read_text(encoding="utf-8")
