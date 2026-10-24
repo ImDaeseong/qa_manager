@@ -147,7 +147,6 @@ requirements:
             check: "python -m unittest tests.test_security_templates -q"
             status: pass
             last_verified: 2026-10-24
-            last_verified: 2026-09-18
           - id: R3-D1-T9
             category: regression
             description: 운영 준비도 스캐너(브라우저 노출 비밀값, 과한 DB 권한, 테스트 없는 핵심 기능, T2 알림·백업 흔적)의 실탐/오탐을 자동 검증한다(OPERATIONS_QA_STANDARD.md).
