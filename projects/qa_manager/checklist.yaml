@@ -148,6 +148,18 @@ requirements:
             status: pass
             last_verified: 2026-10-24
             last_verified: 2026-09-18
+          - id: R3-D1-T9
+            category: regression
+            description: 운영 준비도 스캐너(브라우저 노출 비밀값, 과한 DB 권한, 테스트 없는 핵심 기능, T2 알림·백업 흔적)의 실탐/오탐을 자동 검증한다(OPERATIONS_QA_STANDARD.md).
+            check: "python -m unittest tests.test_operational_readiness -q"
+            status: pass
+            last_verified: 2026-10-25
+          - id: R3-D1-T10
+            category: basic
+            description: qa_manager 자체 코드에 미검토 운영 준비도 허점이 없는지 확인한다.
+            check: "python scripts/check_operational_readiness.py ."
+            status: pass
+            last_verified: 2026-10-25
 
   # Added 2026-09-20 as part of applying the commercial-readiness rollup
   # (see quality_dimension header comment in ../hermes-agents/checklist.yaml)
