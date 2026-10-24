@@ -199,3 +199,16 @@ requirements:
             check: "python -m pytest tests/test_security_hotspots.py -q"
             status: pass
             last_verified: 2026-09-18
+  - id: R4
+    quality_dimension: security
+    description: "서버 코드가 모든 인터페이스(0.0.0.0) 바인딩, 크기 상한 없는 요청 바디 읽기, 속도 제한 없는 외부 노출을 미검토 상태로 남기면 안 된다(스캐너/PHP 취약점 탐색 트래픽 폭주 대비)"
+    dev_items:
+      - id: R4-D1
+        description: "노출면·가용성 정적 패턴 스캐너(qa_manager/scripts/check_exposure_hotspots.py)"
+        test_items:
+          - id: exposure-hotspots-guard
+            category: basic
+            description: "CWE-1327/CWE-770/CWE-400 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 앞단 프록시/WAF 유무는 보지 못합니다."
+            check: "python ../qa_manager/scripts/check_exposure_hotspots.py ."
+            status: fail
+            last_verified: 2026-10-24

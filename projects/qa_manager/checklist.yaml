@@ -123,6 +123,18 @@ requirements:
             description: 모든 qa:allow 억제 주석이 CWE 번호와 실제 사유를 갖추고 있는지 감사한다(무근거 억제 방지).
             check: "python scripts/check_qa_allow_audit.py"
             status: pass
+          - id: R3-D1-T5
+            category: regression
+            description: 노출면·가용성 스캐너(0.0.0.0 바인딩, 요청 바디 크기 상한, 속도 제한)의 실탐/오탐을 자동 검증한다.
+            check: "python -m unittest tests.test_exposure_hotspots -q"
+            status: pass
+            last_verified: 2026-10-24
+          - id: R3-D1-T6
+            category: basic
+            description: qa_manager 자체 코드에 미검토 노출면/가용성 허점이 없는지 확인한다.
+            check: "python scripts/check_exposure_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-24
             last_verified: 2026-09-18
 
   # Added 2026-09-20 as part of applying the commercial-readiness rollup

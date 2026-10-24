@@ -1,0 +1,109 @@
+"""Regression tests for scripts/check_exposure_hotspots.py (see SECURITY_NETWORK_QA_STANDARD.md)."""
+
+from __future__ import annotations
+
+import re
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import check_exposure_hotspots as scanner
+
+
+class ExposureHotspotScannerTests(unittest.TestCase):
+    def _scan(self, filename: str, content: str) -> list[str]:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / filename
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding="utf-8")
+            return scanner.scan(Path(tmp))
+
+    def test_detects_all_interfaces_bind_and_missing_rate_limit(self) -> None:
+        findings = self._scan("app.py", 'uvicorn.run(app, host="0.0.0.0", port=8000)\n')
+        self.assertTrue(any("CWE-1327" in f for f in findings))
+        self.assertTrue(any("CWE-400" in f for f in findings))
+
+    def test_detects_tuple_style_bind(self) -> None:
+        findings = self._scan("srv.py", 'server = HTTPServer(("0.0.0.0", 8080), Handler)\n')
+        self.assertTrue(any("CWE-1327" in f for f in findings))
+
+    def test_loopback_bind_not_flagged(self) -> None:
+        self.assertEqual(self._scan("app.py", 'uvicorn.run(app, host="127.0.0.1", port=8000)\n'), [])
+
+    def test_rate_limit_present_suppresses_only_cwe_400(self) -> None:
+        findings = self._scan("app.py", 'limiter = SlidingWindowLimiter(30)\nrun(host="0.0.0.0")\n')
+        self.assertTrue(any("CWE-1327" in f for f in findings))
+        self.assertFalse(any("CWE-400" in f for f in findings))
+
+    def test_detects_uncapped_body_read_once_per_file(self) -> None:
+        body = "a = self.rfile.read(n)\nb = self.rfile.read(m)\n"
+        findings = self._scan("web.py", body)
+        self.assertEqual(len([f for f in findings if "CWE-770" in f]), 1)
+
+    def test_body_cap_constant_suppresses_cwe_770(self) -> None:
+        body = "MAX_REQUEST_BYTES = 20_000\nraw = self.rfile.read(n)\n"
+        self.assertEqual(self._scan("web.py", body), [])
+
+    def test_content_length_comparison_counts_as_cap(self) -> None:
+        body = "if int(self.headers['Content-Length']) > LIMIT:\n    return\nraw = self.rfile.read(n)\n"
+        self.assertEqual(self._scan("web.py", body), [])
+
+    def test_arrow_after_content_length_is_not_a_cap(self) -> None:
+        body = "const n = headers['content-length'] => 0;\nraw = self.rfile.read(n)\n"
+        self.assertTrue(any("CWE-770" in f for f in self._scan("web.py", body)))
+
+    def test_detects_framework_body_read(self) -> None:
+        findings = self._scan("route.ts", "const data = await request.json();\n")
+        self.assertTrue(any("CWE-770" in f for f in findings))
+
+    def test_qa_allow_on_flagged_line_acknowledges_risk(self) -> None:
+        line = 'run(host="0.0.0.0")  # qa:allow CWE-1327 - behind reverse proxy and firewall\n'
+        self.assertEqual(self._scan("app.py", line), [])
+
+    def test_test_files_are_skipped(self) -> None:
+        self.assertEqual(self._scan("tests/test_cfg.py", 'assert reject(host="0.0.0.0")\n'), [])
+        self.assertEqual(self._scan("test_cfg.py", 'assert reject(host="0.0.0.0")\n'), [])
+
+    def test_non_test_file_with_test_substring_still_scanned(self) -> None:
+        findings = self._scan("contest.py", 'run(host="0.0.0.0")\n')
+        self.assertTrue(any("CWE-1327" in f for f in findings))
+
+
+SERVER_CODE = re.compile(
+    r"http\.server|HTTPServer|uvicorn\.run|FastAPI\(|Flask\(|express\(\)|\.createServer\(|app\.listen\(|NextRequest|socketserver"
+)
+DESKTOP = ROOT.parent
+
+
+class RegisteredProjectCoverageTests(unittest.TestCase):
+    """A registered project that ships server code must run the exposure scan (guards a forgotten registration)."""
+
+    def test_projects_with_server_code_register_the_exposure_check(self) -> None:
+        missing = []
+        for checklist in sorted((ROOT / "projects").glob("*/checklist.yaml")):
+            text = checklist.read_text(encoding="utf-8")
+            repo = re.search(r"(?m)^repo_root:\s*(\S+)", text)
+            if not repo or not (DESKTOP / repo.group(1)).is_dir():
+                continue
+            root = DESKTOP / repo.group(1)
+            has_server = False
+            for path in scanner.tracked_files(root):
+                rel = str(path.relative_to(root))
+                if path.suffix.lower() not in scanner.SOURCE_EXTENSIONS or scanner.TEST_PATH.search(rel):
+                    continue
+                if path.name in scanner.SELF_EXCLUDE or not path.is_file():
+                    continue
+                if SERVER_CODE.search(path.read_text(encoding="utf-8", errors="replace")):
+                    has_server = True
+                    break
+            if has_server and "check_exposure_hotspots" not in text:
+                missing.append(checklist.parent.name)
+        self.assertEqual(missing, [], f"projects with server code but no exposure check: {missing}")
+
+
+if __name__ == "__main__":
+    unittest.main()
