@@ -63,7 +63,10 @@ ALERTING = re.compile(
 BACKUP_TOOL = re.compile(
     r"(?i)pg_dump|mysqldump|mongodump|sqlite3?[^\n]{0,60}\.backup|\.backup\(|litestream|\brestic\b|\bborg\b|rclone|wal-g|pgbackrest|aws\s+s3\s+(?:sync|cp)|\bbackup[_-]?(?:script|job|db|database)\b"
 )
-BACKUP_SCHEDULE = re.compile(r"(?i)\bcron:|schedule:|crontab|schtasks|systemd[^\n]{0,40}\.timer|OnCalendar=|\bcron\b")
+BACKUP_SCHEDULE = re.compile(
+    r"(?i)crontab|schtasks|systemd[^\n]{0,40}\.timer|OnCalendar=|\bcron:\s*[\"'][^\n]+"
+    r"|(?:backup|dump|restic|borg|rclone|litestream|백업)[^\n]{0,80}\bcron\b|\bcron\b[^\n]{0,80}(?:backup|dump|restic|borg|rclone|litestream|백업)"
+)
 RESTORE_DOC = re.compile(r"(?i)\b(?:restore|복원)[^\n]{0,120}(?:\b(?:test|tested|drill)\b|시험|검증|확인)|(?:\b(?:test|tested|drill)\b|시험|검증|확인)[^\n]{0,120}(?:\brestore|복원)")
 ALERT_DOC = re.compile(r"(?i)\b(?:alert|알림)[^\n]{0,120}(?:\b(?:test|tested|drill)\b|시험|확인|수신)|(?:\b(?:test|tested|drill)\b|시험|확인|수신)[^\n]{0,120}(?:\balert|알림)")
 

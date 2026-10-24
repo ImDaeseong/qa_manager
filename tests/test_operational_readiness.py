@@ -78,6 +78,14 @@ class OperationalReadinessTests(unittest.TestCase):
         findings = self._scan(real, "T2")
         self.assertFalse(any("알림이 실제로 오는지" in f or "복원을 시험한 기록" in f for f in findings))
 
+    def test_t2_backup_schedule_needs_a_real_schedule_not_a_stray_word(self) -> None:
+        records = "alert test sent; restore test done\nimport sentry_sdk\n"
+        stray = {"README.md": "pg_dump is used by hand\nschedule: weekly team review\nthe cron topic is unrelated\n" + records}
+        self.assertTrue(any("백업이 일정에 따라" in f for f in self._scan(stray, "T2")))
+        for real in ("0 3 * * * pg_dump app > b.sql  # cron\n", "  - cron: '0 3 * * *'\n", "schtasks /create /tn backup\n"):
+            files = {"README.md": "pg_dump nightly\n" + real + records}
+            self.assertFalse(any("백업이 일정에 따라" in f for f in self._scan(files, "T2")), real)
+
     def test_invalid_tier_rejected(self) -> None:
         with self.assertRaises(ValueError):
             scanner.scan(Path("."), "T9")
