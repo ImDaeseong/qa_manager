@@ -4,7 +4,7 @@ Usage: python scripts/new_project.py <project-name> <repo-root-relative-to-Deskt
 
 A project that is never registered is never scanned, so registration is where
 SECURITY_NETWORK_QA_STANDARD.md's controls would otherwise get dropped. The starter carries the checks that
-already exist and run (scripts/check_security_hotspots.py, check_exposure_hotspots.py and check_error_handling_hotspots.py, all usable
+already exist and run (scripts/check_security_hotspots.py, check_exposure_hotspots.py, check_error_handling_hotspots.py and check_operational_readiness.py, all usable
 on any repo) and records the project's exposure tier, which selects the controls the standard's matrix requires:
 
   T0  local only (127.0.0.1, one user)      T1  reachable from the same network (LAN/phone)
@@ -56,6 +56,11 @@ requirements:
             category: basic
             description: "넓은 예외를 잡고도 아무 조치를 하지 않는 핸들러(CWE-390)와 핸들러 안의 TODO/FIXME(CWE-755)가 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 봅니다."
             check: "python {up}qa_manager/scripts/check_error_handling_hotspots.py ."
+            status: pending
+          - id: operational-readiness-guard
+            category: basic
+            description: "브라우저로 노출되는 비밀값(CWE-540), 과한 DB 권한(CWE-250), 테스트 없는 결제·계정 코드를 확인하고, 노출 계층 T2에서는 알림·백업·복원 시험의 흔적도 요구합니다(OPERATIONS_QA_STANDARD.md). 흔적의 유무만 보며 알림 도달과 복원 성공은 사람이 시험합니다."
+            check: "python {up}qa_manager/scripts/check_operational_readiness.py . --tier {tier}"
             status: pending
 """
 

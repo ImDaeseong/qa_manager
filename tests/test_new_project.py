@@ -17,6 +17,7 @@ from scripts import _checklist_lib as lib
 SECURITY = "python ../qa_manager/scripts/check_security_hotspots.py ."
 EXPOSURE = "python ../qa_manager/scripts/check_exposure_hotspots.py ."
 ERRORS = "python ../qa_manager/scripts/check_error_handling_hotspots.py ."
+OPERATIONS = "python ../qa_manager/scripts/check_operational_readiness.py ."
 
 
 class NewProjectTests(unittest.TestCase):
@@ -35,8 +36,8 @@ class NewProjectTests(unittest.TestCase):
             self.assertEqual(data["project"], "demo")
             self.assertEqual(data["repo_root"], "demo_app")
             commands = [item["check"] for _, _, item in lib.iter_test_items(data)]
-            self.assertEqual(commands, [SECURITY, EXPOSURE, ERRORS])
-            for script in ("check_security_hotspots.py", "check_exposure_hotspots.py", "check_error_handling_hotspots.py"):
+            self.assertEqual(commands, [SECURITY, EXPOSURE, ERRORS, OPERATIONS + " --tier T0"])
+            for script in ("check_security_hotspots.py", "check_exposure_hotspots.py", "check_error_handling_hotspots.py", "check_operational_readiness.py"):
                 self.assertTrue((ROOT / "scripts" / script).is_file())
 
     def test_exposure_tier_defaults_to_local_and_is_recorded(self) -> None:
@@ -46,6 +47,8 @@ class NewProjectTests(unittest.TestCase):
             public = lib.load(new_project.create("b", "demo_app", desktop / "qa_manager", desktop, tier="T2"))
             self.assertEqual(default["exposure_tier"], "T0")
             self.assertEqual(public["exposure_tier"], "T2")
+            last = [item["check"] for _, _, item in lib.iter_test_items(public)][-1]
+            self.assertEqual(last, OPERATIONS + " --tier T2")
 
     def test_unknown_tier_is_refused(self) -> None:
         tmp, desktop = self._sandbox()
@@ -65,6 +68,7 @@ class NewProjectTests(unittest.TestCase):
                 "python ../../qa_manager/scripts/check_security_hotspots.py .",
                 "python ../../qa_manager/scripts/check_exposure_hotspots.py .",
                 "python ../../qa_manager/scripts/check_error_handling_hotspots.py .",
+                "python ../../qa_manager/scripts/check_operational_readiness.py . --tier T0",
             ])
 
     def test_refuses_to_overwrite_an_existing_checklist(self) -> None:
