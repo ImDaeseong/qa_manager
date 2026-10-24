@@ -36,7 +36,7 @@
 
 - OP3은 NIST·CWE가 아니라 이 저장소의 정책이다. "테스트가 기능을 언급하는가"만 보며 테스트의 질은 보지 못한다.
 - OP1은 이름과 형식 패턴이라 변수명이 평범한 비밀값, 난독화된 키, 환경변수 파일 바깥의 노출은 놓친다.
-- OP5의 "자동 일정"은 crontab·작업 스케줄러·systemd 타이머·`cron: '...'` 항목이나, 백업 도구와 같은 줄에 있는 `cron`만 인정한다. 일정이 백업을 실제로 실행하는지는 확인하지 못한다(예: 무관한 작업의 `cron:`도 인정된다).
+- OP5의 "자동 일정"은 `crontab`·`schtasks`라는 단어, systemd 타이머(`OnCalendar=`, `.timer` 파일), Kubernetes `kind: CronJob`, `cron:`·`schedule:` 뒤의 cron 표현식(5필드 또는 `@daily` 등), 줄 머리의 cron 표현식(crontab 파일 본문), 백업 도구와 같은 줄에 있는 `cron`만 인정한다. 일정이 백업을 실제로 실행하는지는 확인하지 못한다(무관한 작업의 `cron:`도 인정되고, 산문 속 `crontab` 단어도 인정된다). Docker Compose 사이드카의 사설 변수 이름(`SCHEDULE` 등)은 표현식 모양일 때만 인정된다.
 - OP4·OP5의 "시험 기록"은 `test`·`drill`을 단어 단위로, 또는 시험·검증·확인·수신 같은 표현이 알림·복원 표현 근처에 있는지만 본다. 그 기록이 사실인지는 확인하지 못한다.
 - OP2는 URL 문자열만 본다. 환경변수로 주입되는 계정의 권한은 보지 못한다.
 - 비밀 값 자체의 저장소 유출은 `check_security_hotspots.py`와 `check_no_example_secrets.py` 쪽 범위다.

@@ -34,7 +34,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 SELF_EXCLUDE = {"check_operational_readiness.py", "test_operational_readiness.py"}
 TIERS = ("T0", "T1", "T2")
-CODE_SUFFIXES = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".vue", ".svelte", ".html", ".htm", ".json", ".yml", ".yaml", ".toml", ".sh", ".ps1", ".bat", ".cmd", ".md", ".txt", ".env", ".sql", ".cfg", ".ini"}
+CODE_SUFFIXES = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".vue", ".svelte", ".html", ".htm", ".json", ".yml", ".yaml", ".toml", ".sh", ".ps1", ".bat", ".cmd", ".md", ".txt", ".env", ".sql", ".cfg", ".ini", ".timer", ".service", ".crontab"}
 SOURCE_SUFFIXES = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".vue", ".svelte"}
 BROWSER_SUFFIXES = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".vue", ".svelte", ".html", ".htm"}
 
@@ -63,8 +63,12 @@ ALERTING = re.compile(
 BACKUP_TOOL = re.compile(
     r"(?i)pg_dump|mysqldump|mongodump|sqlite3?[^\n]{0,60}\.backup|\.backup\(|litestream|\brestic\b|\bborg\b|rclone|wal-g|pgbackrest|aws\s+s3\s+(?:sync|cp)|\bbackup[_-]?(?:script|job|db|database)\b"
 )
+CRON_FIELD = r"(?:[\d*/,\-?#]+|[A-Za-z]{3}(?:[,\-][A-Za-z]{3})*)"
+CRON_EXPRESSION = r"(?:@(?:yearly|annually|monthly|weekly|daily|midnight|hourly)\b|[\d*/,\-]+(?:[ \t]+" + CRON_FIELD + r"){4})"
 BACKUP_SCHEDULE = re.compile(
-    r"(?i)crontab|schtasks|systemd[^\n]{0,40}\.timer|OnCalendar=|\bcron:\s*[\"'][^\n]+"
+    r"(?im)crontab|schtasks|systemd[^\n]{0,40}\.timer|OnCalendar=|\bkind:\s*CronJob\b"
+    r"|^[ \t]*[\d*/,\-?]+(?:[ \t]+[\d*/,\-?]+){4}[ \t]+\S"
+    r"|\b(?:cron|schedule):\s*[\"']?" + CRON_EXPRESSION +
     r"|(?:backup|dump|restic|borg|rclone|litestream|백업)[^\n]{0,80}\bcron\b|\bcron\b[^\n]{0,80}(?:backup|dump|restic|borg|rclone|litestream|백업)"
 )
 RESTORE_DOC = re.compile(r"(?i)\b(?:restore|복원)[^\n]{0,120}(?:\b(?:test|tested|drill)\b|시험|검증|확인)|(?:\b(?:test|tested|drill)\b|시험|검증|확인)[^\n]{0,120}(?:\brestore|복원)")
@@ -79,7 +83,7 @@ def readable_files(root: Path) -> list[tuple[Path, str, str]]:
             continue
         name = path.name.lower()
         suffix = path.suffix.lower()
-        if suffix not in CODE_SUFFIXES and not name.startswith(".env"):
+        if suffix not in CODE_SUFFIXES and not name.startswith(".env") and name != "crontab":
             continue
         rel = str(path.relative_to(root))
         if VENDORED.search(rel):

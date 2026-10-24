@@ -82,9 +82,17 @@ class OperationalReadinessTests(unittest.TestCase):
         records = "alert test sent; restore test done\nimport sentry_sdk\n"
         stray = {"README.md": "pg_dump is used by hand\nschedule: weekly team review\nthe cron topic is unrelated\n" + records}
         self.assertTrue(any("백업이 일정에 따라" in f for f in self._scan(stray, "T2")))
-        for real in ("0 3 * * * pg_dump app > b.sql  # cron\n", "  - cron: '0 3 * * *'\n", "schtasks /create /tn backup\n"):
+        for real in ("0 3 * * * pg_dump app > b.sql  # cron\n", "  - cron: '0 3 * * *'\n", "schtasks /create /tn backup\n",
+                     "  - cron: 0 3 * * *\n", '  - cron: "0 3 * * *"  # nightly\n', 'kind: CronJob\n',
+                     'schedule: "0 2 * * *"\n', 'SCHEDULE: "@daily"\n'):
             files = {"README.md": "pg_dump nightly\n" + real + records}
             self.assertFalse(any("백업이 일정에 따라" in f for f in self._scan(files, "T2")), real)
+        for name, content in (("backup.timer", "OnCalendar=daily\n"), ("crontab", "0 3 * * * /usr/bin/backup\n")):
+            files = {name: content, "README.md": "pg_dump nightly\n" + records}
+            self.assertFalse(any("백업이 일정에 따라" in f for f in self._scan(files, "T2")), name)
+        for stray in ("schedule: weekly team review\n", "schedule: 1 2 3\n", "cron: later\n", "schedule: 5 things to do now\n"):
+            files = {"README.md": "pg_dump by hand\n" + stray + records}
+            self.assertTrue(any("백업이 일정에 따라" in f for f in self._scan(files, "T2")), stray)
 
     def test_invalid_tier_rejected(self) -> None:
         with self.assertRaises(ValueError):
