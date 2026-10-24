@@ -141,6 +141,12 @@ requirements:
             check: "python -m unittest tests.test_new_project -q"
             status: pass
             last_verified: 2026-10-24
+          - id: R3-D1-T8
+            category: regression
+            description: 보안 구현 조각(속도 제한기, 본문 상한 읽기, 바인딩 옵트인)이 동작하고 자신의 두 스캐너를 통과하는지 확인한다.
+            check: "python -m unittest tests.test_security_templates -q"
+            status: pass
+            last_verified: 2026-10-24
             last_verified: 2026-09-18
 
   # Added 2026-09-20 as part of applying the commercial-readiness rollup
