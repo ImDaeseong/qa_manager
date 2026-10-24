@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
@@ -47,6 +49,34 @@ class OperationalReadinessTests(unittest.TestCase):
         findings = self._scan({"a.py": "x = 1\n"}, "T2")
         self.assertTrue(any("OP4" in f for f in findings))
         self.assertTrue(any("OP5" in f for f in findings))
+
+    def _main(self, *argv: str) -> int:
+        old = sys.argv
+        sys.argv = ["check_operational_readiness.py", *argv]
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                return scanner.main()
+        finally:
+            sys.argv = old
+
+    def test_tier_equals_form_is_honored_and_bad_cli_input_exits_2(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "a.py").write_text("x = 1\n", encoding="utf-8")
+            self.assertEqual(self._main(tmp, "--tier=T2"), 1)  # T2 evidence missing -> FAIL, not a silent T0 PASS
+            self.assertEqual(self._main(tmp, "--tier=T0"), 0)
+            self.assertEqual(self._main(tmp, "--tier=T9"), 2)
+            self.assertEqual(self._main(tmp, "--bogus"), 2)
+            self.assertEqual(self._main(str(Path(tmp) / "missing")), 2)
+            self.assertEqual(self._main(str(Path(tmp) / "a.py")), 2)
+
+    def test_t2_test_record_needs_a_whole_word_not_latest(self) -> None:
+        docs = {"README.md": "alert on failure; latest\ncron job pg_dump; restore of latest\nimport sentry_sdk\n"}
+        findings = self._scan(docs, "T2")
+        self.assertTrue(any("알림이 실제로 오는지" in f for f in findings))
+        self.assertTrue(any("복원을 시험한 기록" in f for f in findings))
+        real = {"README.md": "alert test: sent a test alert, received\ncron job pg_dump; restore test done\nimport sentry_sdk\n"}
+        findings = self._scan(real, "T2")
+        self.assertFalse(any("알림이 실제로 오는지" in f or "복원을 시험한 기록" in f for f in findings))
 
     def test_invalid_tier_rejected(self) -> None:
         with self.assertRaises(ValueError):

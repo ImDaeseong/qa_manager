@@ -64,8 +64,8 @@ BACKUP_TOOL = re.compile(
     r"(?i)pg_dump|mysqldump|mongodump|sqlite3?[^\n]{0,60}\.backup|\.backup\(|litestream|\brestic\b|\bborg\b|rclone|wal-g|pgbackrest|aws\s+s3\s+(?:sync|cp)|\bbackup[_-]?(?:script|job|db|database)\b"
 )
 BACKUP_SCHEDULE = re.compile(r"(?i)\bcron:|schedule:|crontab|schtasks|systemd[^\n]{0,40}\.timer|OnCalendar=|\bcron\b")
-RESTORE_DOC = re.compile(r"(?i)(?:restore|복원)[^\n]{0,120}(?:test|drill|시험|검증|확인)|(?:test|drill|시험|검증|확인)[^\n]{0,120}(?:restore|복원)")
-ALERT_DOC = re.compile(r"(?i)(?:alert|알림)[^\n]{0,120}(?:test|drill|시험|확인|수신)|(?:test|drill|시험|확인)[^\n]{0,120}(?:alert|알림)")
+RESTORE_DOC = re.compile(r"(?i)\b(?:restore|복원)[^\n]{0,120}(?:\b(?:test|tested|drill)\b|시험|검증|확인)|(?:\b(?:test|tested|drill)\b|시험|검증|확인)[^\n]{0,120}(?:\brestore|복원)")
+ALERT_DOC = re.compile(r"(?i)\b(?:alert|알림)[^\n]{0,120}(?:\b(?:test|tested|drill)\b|시험|확인|수신)|(?:\b(?:test|tested|drill)\b|시험|확인|수신)[^\n]{0,120}(?:\balert|알림)")
 
 
 def readable_files(root: Path) -> list[tuple[Path, str, str]]:
@@ -149,6 +149,10 @@ def scan(root: Path, tier: str = "T0") -> tuple[list[str], list[str]]:
 def main() -> int:
     args = sys.argv[1:]
     tier = "T0"
+    for index, arg in enumerate(args):
+        if arg.startswith("--tier="):
+            args[index:index + 1] = ["--tier", arg.split("=", 1)[1]]
+            break
     if "--tier" in args:
         index = args.index("--tier")
         if index + 1 >= len(args):
@@ -159,7 +163,13 @@ def main() -> int:
     if tier not in TIERS:
         print(f"FAIL: tier must be one of {', '.join(TIERS)}: {tier!r}")
         return 2
+    if len(args) > 1 or any(arg.startswith("--") for arg in args):
+        print(__doc__)
+        return 2
     root = Path(args[0]).resolve() if args else Path(".").resolve()
+    if not root.is_dir():
+        print(f"FAIL: path is not an existing folder: {root}")
+        return 2
     failures, info = scan(root, tier)
     if failures:
         print(f"FAIL: {len(failures)} unacknowledged operational-readiness gap(s) found (tier {tier}):")
