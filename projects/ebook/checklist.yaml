@@ -116,8 +116,8 @@ requirements:
             description: 저장된 DAISY Ace 결과가 현재 ebook-preview.epub의 해시와 일치(FRESH)하는지 확인한다. 낡았거나 없으면 실패한다.
             check: "python -B scripts/run_ace.py ebook-preview.epub --require-current"
             required_output: ["stored result is FRESH for this EPUB"]
-            status: pass
-            last_verified: 2026-10-13
+            status: fail
+            last_verified: 2026-10-27
   - id: R6
     quality_dimension: reliability
     description: "넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)"
