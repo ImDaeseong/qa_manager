@@ -111,12 +111,12 @@ requirements:
             check: "python -B -m unittest test_epub_reproducibility -q"
             status: pass
             last_verified: 2026-10-13
-          - id: ace-evidence-current
+          - id: ace-stale-never-reported-as-pass
             category: regression
-            description: 저장된 DAISY Ace 결과가 현재 ebook-preview.epub의 해시와 일치(FRESH)하는지 확인한다. 낡았거나 없으면 실패한다.
-            check: "python -B scripts/run_ace.py ebook-preview.epub --require-current"
-            required_output: ["stored result is FRESH for this EPUB"]
-            status: fail
+            description: 저자가 2026-10-27 Ace를 추가 설치하지 않기로 했다. 현재 EPUB에 맞지 않는 저장 Ace 결과는 PASS로 승계되지 않고 NOT RUN·STALE로 보고되어야 한다(Ace를 설치해 최신 결과가 생기면 이 항목을 --require-current 검사로 되돌린다).
+            check: "python -B scripts/run_ace.py ebook-preview.epub"
+            required_output: ["NOT RUN", "stored result is STALE for this EPUB"]
+            status: pass
             last_verified: 2026-10-27
   - id: R6
     quality_dimension: reliability
