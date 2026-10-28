@@ -179,7 +179,7 @@ qa_manager, ai_history_dashboard, llm-wiki, career, ebook, ebook_source — 총 
 
 `ai_test3`는 2026-09-06 CareerDiff가 `ai_test2`로 이동하면서 등록 프로젝트가
 0개가 돼 2026-09-07에 이 목록에서 제외했습니다(테스트 항목은 `ai_test2`
-checklist.yaml의 R1-D7~D10으로 이관).
+checklist.yaml의 R1-D7~D10으로 이관). 2026-10-29 `marketing_command_center`와 `community_integrations`가 `ai_test3`로 옮겨 가면서 `ai_test2` 체크리스트의 `marketing_command_center` 항목(R1-D12)도 제거했습니다. `ai_test3`는 공개 문서(DESIGN.md·ELI5.html) 준비 전이라 아직 등록하지 않았습니다.
 
 ## 검증됨 (2026-08-17)
 

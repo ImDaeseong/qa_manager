@@ -151,43 +151,43 @@
 </head>
 <body>
 <h1>검수 시스템</h1>
-<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-10-27 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
+<p class="meta">모든 프로젝트의 요구사항 · 개발항목 · 검사항목을 한 곳에서 확인합니다. 생성시각 2026-10-29 — 각 항목은 방금 실제로 실행한 결과입니다. 프로젝트를 추가하려면 README.md 참고.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">14</div><div class="label">프로젝트</div></div>
   <div class="stat"><div class="n">83</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">179</div><div class="label">검사항목</div></div>
-  <div class="stat"><div class="n">14</div><div class="label">통과한 프로젝트</div></div>
-  <div class="stat fail"><div class="n">0</div><div class="label">실패한 프로젝트</div></div>
+  <div class="stat"><div class="n">174</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">13</div><div class="label">통과한 프로젝트</div></div>
+  <div class="stat fail"><div class="n">1</div><div class="label">실패한 프로젝트</div></div>
   <div class="stat"><div class="n">0</div><div class="label">출시 검토 근거 완료 프로젝트</div></div>
 </div>
 
-    <details class="project pass" >
+    <details class="project fail" open>
       <summary>
         <span>ai-workspace</span>
-        <span class="pill pass">통과</span>
+        <span class="pill fail">실패</span>
         <span class="pill excluded">제외</span> <span class="desc-inline">공개 출시 대상 제외</span>
-        <span class="counts-inline">요구사항 8개 · 검사항목 10개 · 실패 0건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 8개 · 검사항목 10개 · 실패 2건 · <a href="projects/ai-workspace/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       <section class="acceptance not-ready"><h2>제품 인수검수 HOLD · 사람이 수행하기 전</h2><p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p><h3>기능 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R1</code><span class="pill not_run">NOT RUN</span></div><strong>작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R2</code><span class="pill not_run">NOT RUN</span></div><strong>문서 안의 내부 링크가 깨지지 않아야 한다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R3</code><span class="pill not_run">NOT RUN</span></div><strong>작업 인계 문서를 점검하는 도구 자체에 오류가 재발하면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R4</code><span class="pill not_run">NOT RUN</span></div><strong>전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R5</code><span class="pill not_run">NOT RUN</span></div><strong>검사 과정에서 파일이 실수로 바뀌었는지 감지하는 안전장치 자체가 실제로 작동해야 한다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R6</code><span class="pill not_run">NOT RUN</span></div><strong>커밋되는 파일에 실제로 사용 가능한 비밀정보(API 키, 토큰)가 들어가면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R7</code><span class="pill not_run">NOT RUN</span></div><strong>커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R8</code><span class="pill not_run">NOT RUN</span></div><strong>넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>UI 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-UI-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai-workspace 주요 화면과 UI 상태 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace가 지원 브라우저 또는 인터페이스에서 실행 중임</p><p class="desc">수행 단계: 주요 화면에 모두 진입한다 -&gt; 버튼·입력폼·링크·대화상자를 조작한다 -&gt; 로딩·빈 화면·유효성 오류·실패 상태를 확인한다 -&gt; 키보드 포커스와 좁은 화면 가독성을 확인한다</p><p class="desc">기대 결과: 주요 조작 요소와 상태가 명확히 보이고 이해·조작 가능하다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>업무 흐름 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-WORKFLOW-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai-workspace 핵심 업무 전체 흐름 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai-workspace를 문서화된 시작 지점에서 실행할 수 있음</p><p class="desc">수행 단계: 정상 실행기 또는 시작 화면에서 업무를 시작한다 -&gt; 필요한 모든 단계를 거쳐 핵심 사용자 업무를 완료한다 -&gt; 최종 결과를 다시 열거나 재사용할 수 있는지 확인한다 -&gt; 예상 가능한 실패를 1회 발생시켜 복구 안내를 확인한다</p><p class="desc">기대 결과: 숨은 수작업 보정 없이 사용자가 의도한 결과에 도달하고 결과를 유지할 수 있다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul></section>
 
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R1</code> <span class="pill pass">통과</span>
+        <code>R1</code> <span class="pill fail">실패</span>
         <span class="desc-inline">작업 인계 문서(HANDOFF.md)가 근거 없이 &#x27;완료(100%)&#x27;로 표시되거나, 요약 없이 지나치게 길어지면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R1-D1</code> <span class="pill pass">통과</span>
+          <code>R1-D1</code> <span class="pill fail">실패</span>
           <span class="desc-inline">작업 인계 문서 점검 — 새로 커밋되는 내용과 현재 파일 상태를 함께 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass pass">
+        <li class="test-item fail fail">
           <div class="row">
             <code>handoff-hygiene-guard</code>
             <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">가장 최근에 기록된 작업 항목이 단계별 근거 없이 곧바로 &#x27;완료&#x27;로 표시되지 않았는지, 그리고 문서가 전체 이력을 나열하는 대신 현재 상태 위주로 유지되는지 확인합니다.</p>
           <p class="check">실행 명령: <code>python scripts/check_handoff_hygiene.py --both</code></p>
@@ -248,24 +248,24 @@
       </details>
       </div>
     </details>
-    <details class="requirement pass" open>
+    <details class="requirement fail" open>
       <summary>
-        <code>R4</code> <span class="pill pass">통과</span>
+        <code>R4</code> <span class="pill fail">실패</span>
         <span class="desc-inline">전체 자동 검사를 한꺼번에 실행해도 문제없이 통과해야 하고, 검사 과정 자체가 실수로 파일을 바꾸면 안 된다</span>
       </summary>
       <p class="coverage covered">커버리지: 개발항목 1개 · 검사항목 1개 연결됨</p>
       <div class="dev-items">
-      <details class="dev-item pass" open>
+      <details class="dev-item fail" open>
         <summary>
-          <code>R4-D1</code> <span class="pill pass">통과</span>
+          <code>R4-D1</code> <span class="pill fail">실패</span>
           <span class="desc-inline">통합 검사 실행기 — 위 R1, R2의 검사를 순서대로 실행하고, 검사 전후로 파일이 바뀌지 않았는지 확인</span>
         </summary>
         <ul class="test-items">
-        <li class="test-item pass pass">
+        <li class="test-item fail fail">
           <div class="row">
             <code>verify-repo-full</code>
             <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
+            <span class="pill fail">실패</span>
           </div>
           <p class="desc">작업 인계 문서 점검과 링크 검사를 순서대로 실행하고, 실행 전후로 저장소 파일이 의도치 않게 바뀌지 않았는지 함께 확인합니다.</p>
           <p class="check">실행 명령: <code>powershell.exe -NoProfile -File scripts/verify_repo.ps1</code></p>
@@ -2025,7 +2025,7 @@
         <span>ai_test2</span>
         <span class="pill pass">통과</span>
         <span class="pill hold">보류</span> <span class="desc-inline">출시 검토 보류(15개 영역)</span>
-        <span class="counts-inline">요구사항 4개 · 검사항목 19개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
+        <span class="counts-inline">요구사항 4개 · 검사항목 14개 · 실패 0건 · <a href="projects/ai_test2/dashboard.html">전체 페이지 열기 →</a></span>
       </summary>
       <section class="acceptance not-ready"><h2>제품 인수검수 HOLD · 사람이 수행하기 전</h2><p>사용자 업무 결과는 자동 기술검사와 별도로 판정합니다.</p><h3>기능 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R1</code><span class="pill not_run">NOT RUN</span></div><strong>이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R2</code><span class="pill not_run">NOT RUN</span></div><strong>커밋되는 소스 코드에 OWASP/CWE 근거 기반 보안·해킹·네트워크 허점이 미검토 상태로 남으면 안 된다</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R3</code><span class="pill not_run">NOT RUN</span></div><strong>서버 코드가 모든 인터페이스(0.0.0.0) 바인딩, 크기 상한 없는 요청 바디 읽기, 속도 제한 없는 외부 노출을 미검토 상태로 남기면 안 된다(스캐너/PHP 취약점 탐색 트래픽 폭주 대비)</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-F-R4</code><span class="pill not_run">NOT RUN</span></div><strong>넓은 예외(bare except·Exception·catch)를 잡고도 아무 조치를 하지 않는 오류 핸들러, 핸들러 안의 TODO/FIXME가 사유 없이 남으면 안 된다(오류 처리 코드는 마지막 방어선: Yuan 등 OSDI 2014)</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2가 실행 가능하고 대표 테스트 데이터가 준비됨</p><p class="desc">수행 단계: 정상 사용자 진입 경로에서 기능을 연다 -&gt; 유효한 데이터로 주 작업을 완료한다 -&gt; 잘못된 값 또는 경계값으로 다시 수행한다 -&gt; 저장·출력·화면 표시 결과를 확인한다</p><p class="desc">기대 결과: 정상 업무는 완료되고 거부된 입력에는 이해 가능한 안내가 표시된다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>UI 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-UI-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai_test2 주요 화면과 UI 상태 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2가 지원 브라우저 또는 인터페이스에서 실행 중임</p><p class="desc">수행 단계: 주요 화면에 모두 진입한다 -&gt; 버튼·입력폼·링크·대화상자를 조작한다 -&gt; 로딩·빈 화면·유효성 오류·실패 상태를 확인한다 -&gt; 키보드 포커스와 좁은 화면 가독성을 확인한다</p><p class="desc">기대 결과: 주요 조작 요소와 상태가 명확히 보이고 이해·조작 가능하다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul><h3>업무 흐름 검수</h3><ul class="acceptance-cases"><li class="acceptance-case not_run"><div class="row"><code>ACCEPT-WORKFLOW-1</code><span class="pill not_run">NOT RUN</span></div><strong>ai_test2 핵심 업무 전체 흐름 검수</strong><p class="desc">사용자 역할: 실제 업무 사용자 | 사전조건: ai_test2를 문서화된 시작 지점에서 실행할 수 있음</p><p class="desc">수행 단계: 정상 실행기 또는 시작 화면에서 업무를 시작한다 -&gt; 필요한 모든 단계를 거쳐 핵심 사용자 업무를 완료한다 -&gt; 최종 결과를 다시 열거나 재사용할 수 있는지 확인한다 -&gt; 예상 가능한 실패를 1회 발생시켜 복구 안내를 확인한다</p><p class="desc">기대 결과: 숨은 수작업 보정 없이 사용자가 의도한 결과에 도달하고 결과를 유지할 수 있다</p><p class="desc">실제 결과: 미수행 | 증빙: <code>미등록</code></p></li></ul></section>
 
@@ -2034,7 +2034,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 15개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 10개 · 검사항목 10개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -2203,59 +2203,6 @@
           </div>
           <p class="desc">종료된 모델 표기, 외부 AI SDK 유입, yt-dlp 보안 기준선 및 오디오 의존성 기준의 드리프트를 검사한다.</p>
           <p class="check">실행 명령: <code>python -m unittest tests.test_ai_api_contract</code></p>
-        </li>
-        </ul>
-      </details>
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R1-D12</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">marketing_command_center — 채널별 마케팅 문안 작성·점검과 수동 커뮤니티 게시 인계</span>
-        </summary>
-        <ul class="test-items">
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-unit</code>
-            <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">문안 품질 규칙과 6개 채널 예시가 회귀 없이 동작하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm test</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-api-contract</code>
-            <span class="category">재발방지검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">OpenAI 요청·응답 허용 목록, 실패 분류, 키 없는 무호출 경계를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; python -m unittest discover -s tests -p &quot;test_*.py&quot;</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-contract</code>
-            <span class="category">재발방지검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">공개 파일 구성과 제거된 기능 용어의 드리프트를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm run validate</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-browser-e2e</code>
-            <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">실제 Chrome에서 작성, 점검, 커뮤니티 열기, 기록, 모바일 화면을 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm run e2e</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-lifecycle</code>
-            <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">로컬 서버 시작·보안 헤더·포트 충돌·키 없는 AI 경로·종료를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; python scripts\smoke_lifecycle.py</code></p>
         </li>
         </ul>
       </details>

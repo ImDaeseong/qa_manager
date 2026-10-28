@@ -152,10 +152,10 @@
 <body>
 <a class="back" href="../../index.html">← 검수 시스템 전체 (모든 프로젝트)</a>
 <h1>ai_test2</h1>
-<p class="meta">projects/ai_test2/checklist.yaml 기반 (검사 프로젝트: ai_test2), 생성시각 2026-10-27 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
+<p class="meta">projects/ai_test2/checklist.yaml 기반 (검사 프로젝트: ai_test2), 생성시각 2026-10-29 — 각 항목은 생성 시점에 실제로 실행된 결과입니다 (기록된 status가 아님). 로컬 절대경로와 비밀값은 공개 보고서에 기록하지 않습니다.</p>
 <div class="stat-grid">
   <div class="stat"><div class="n">4</div><div class="label">요구사항</div></div>
-  <div class="stat"><div class="n">19</div><div class="label">검사항목</div></div>
+  <div class="stat"><div class="n">14</div><div class="label">검사항목</div></div>
   <div class="stat"><div class="n">4</div><div class="label">통과한 요구사항</div></div>
   <div class="stat fail"><div class="n">0</div><div class="label">실패한 요구사항</div></div>
 </div>
@@ -166,7 +166,7 @@
         <code>R1</code> <span class="pill pass">통과</span>
         <span class="desc-inline">이 저장소는 여러 개별 프로그램의 모음이라 전체를 한 번에 검사하는 도구가 없다. 그래서 각 프로그램이 자기 자신의 테스트를 개별적으로 통과해야 한다 (검사 방법은 저장소 안 VERIFICATION.md 문서에 정리되어 있음)</span>
       </summary>
-      <p class="coverage covered">커버리지: 개발항목 11개 · 검사항목 15개 연결됨</p>
+      <p class="coverage covered">커버리지: 개발항목 10개 · 검사항목 10개 연결됨</p>
       <div class="dev-items">
       <details class="dev-item pass" open>
         <summary>
@@ -335,59 +335,6 @@
           </div>
           <p class="desc">종료된 모델 표기, 외부 AI SDK 유입, yt-dlp 보안 기준선 및 오디오 의존성 기준의 드리프트를 검사한다.</p>
           <p class="check">실행 명령: <code>python -m unittest tests.test_ai_api_contract</code></p>
-        </li>
-        </ul>
-      </details>
-      <details class="dev-item pass" open>
-        <summary>
-          <code>R1-D12</code> <span class="pill pass">통과</span>
-          <span class="desc-inline">marketing_command_center — 채널별 마케팅 문안 작성·점검과 수동 커뮤니티 게시 인계</span>
-        </summary>
-        <ul class="test-items">
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-unit</code>
-            <span class="category">기본검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">문안 품질 규칙과 6개 채널 예시가 회귀 없이 동작하는지 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm test</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-api-contract</code>
-            <span class="category">재발방지검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">OpenAI 요청·응답 허용 목록, 실패 분류, 키 없는 무호출 경계를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; python -m unittest discover -s tests -p &quot;test_*.py&quot;</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-contract</code>
-            <span class="category">재발방지검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">공개 파일 구성과 제거된 기능 용어의 드리프트를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm run validate</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-browser-e2e</code>
-            <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">실제 Chrome에서 작성, 점검, 커뮤니티 열기, 기록, 모바일 화면을 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; npm run e2e</code></p>
-        </li>
-        <li class="test-item pass pass">
-          <div class="row">
-            <code>marketing-command-center-lifecycle</code>
-            <span class="category">통합검사</span>
-            <span class="pill pass">통과</span>
-          </div>
-          <p class="desc">로컬 서버 시작·보안 헤더·포트 충돌·키 없는 AI 경로·종료를 확인합니다.</p>
-          <p class="check">실행 명령: <code>cd marketing_command_center &amp;&amp; python scripts\smoke_lifecycle.py</code></p>
         </li>
         </ul>
       </details>
