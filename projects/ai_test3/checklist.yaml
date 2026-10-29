@@ -1,0 +1,91 @@
+project: ai_test3
+repo_root: "ai_test3"
+exposure_tier: T0
+updated: 2026-10-29
+requirements:
+  - id: R1
+    quality_dimension: security
+    description: "커밋되는 소스에 자격증명·명령/SQL 삽입·TLS 비활성화 같은 알려진 위험 패턴과, 0.0.0.0 바인딩·크기 상한 없는 요청 바디·속도 제한 없는 외부 노출이 미검토 상태로 남으면 안 된다. 노출 계층(T0)별 추가 통제는 SECURITY_NETWORK_QA_STANDARD.md의 상황별 매트릭스를 따른다"
+    dev_items:
+      - id: R1-D1
+        description: "정적 패턴 스캐너(qa_manager/scripts/check_security_hotspots.py, check_exposure_hotspots.py)"
+        test_items:
+          - id: security-hotspots-guard
+            category: basic
+            description: "CWE 매핑된 위험 패턴(자격증명, 명령/SQL 삽입, 역직렬화, TLS, CORS)이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 봅니다."
+            check: "python ../qa_manager/scripts/check_security_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-29
+          - id: exposure-hotspots-guard
+            category: basic
+            description: "CWE-1327/CWE-770/CWE-400 패턴이 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 보며 앞단 프록시/WAF 유무는 보지 못합니다."
+            check: "python ../qa_manager/scripts/check_exposure_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-29
+          - id: error-handling-hotspots-guard
+            category: basic
+            description: "넓은 예외를 잡고도 아무 조치를 하지 않는 핸들러(CWE-390)와 핸들러 안의 TODO/FIXME(CWE-755)가 qa:allow 사유 없이 남아있지 않은지 확인합니다. 정적 패턴만 봅니다."
+            check: "python ../qa_manager/scripts/check_error_handling_hotspots.py ."
+            status: pass
+            last_verified: 2026-10-29
+          - id: operational-readiness-guard
+            category: basic
+            description: "브라우저로 노출되는 비밀값(CWE-540), 과한 DB 권한(CWE-250), 테스트 없는 결제·계정 코드를 확인하고, 노출 계층 T2에서는 알림·백업·복원 시험의 흔적도 요구합니다(OPERATIONS_QA_STANDARD.md). 흔적의 유무만 보며 알림 도달과 복원 성공은 사람이 시험합니다."
+            check: "python ../qa_manager/scripts/check_operational_readiness.py . --tier T0"
+            status: pass
+            last_verified: 2026-10-29
+  - id: R2
+    quality_dimension: functional_suitability
+    description: "ai_test3의 두 프로젝트(마케팅 문안 도구, 채널 연동 점검 도구)가 오프라인에서 회귀 없이 동작하고, 저장소 계약이 지켜져야 한다. 실제 채널 API(Meta 앱·동의 승인)와 커뮤니티 규칙 검수는 사람 몫이라 이 항목에 포함하지 않는다."
+    dev_items:
+      - id: R2-D1
+        description: "marketing_command_center — 채널별 마케팅 문안 작성·점검과 수동 커뮤니티 게시 인계"
+        test_items:
+          - id: marketing-command-center-unit
+            category: basic
+            description: "문안 품질 규칙과 6개 채널 예시가 회귀 없이 동작하는지 확인합니다."
+            check: "cd marketing_command_center && npm test"
+            status: pass
+            last_verified: 2026-10-29
+          - id: marketing-command-center-api-contract
+            category: regression
+            description: "OpenAI 요청·응답 허용 목록, 실패 분류, 키 없는 무호출 경계를 확인합니다."
+            check: "cd marketing_command_center && python -m unittest discover -s tests -p \"test_*.py\""
+            status: pass
+            last_verified: 2026-10-29
+          - id: marketing-command-center-contract
+            category: regression
+            description: "공개 파일 구성과 제거된 기능 용어의 드리프트를 확인합니다."
+            check: "cd marketing_command_center && npm run validate"
+            status: pass
+            last_verified: 2026-10-29
+          - id: marketing-command-center-browser-e2e
+            category: full
+            description: "실제 Chrome에서 작성, 점검, 커뮤니티 열기, 기록, 모바일 화면을 확인합니다."
+            check: "cd marketing_command_center && npm run e2e"
+            status: pass
+            last_verified: 2026-10-29
+          - id: marketing-command-center-lifecycle
+            category: full
+            description: "로컬 서버 시작·보안 헤더·포트 충돌·키 없는 AI 경로·종료를 확인합니다."
+            check: "cd marketing_command_center && python scripts/smoke_lifecycle.py"
+            status: pass
+            last_verified: 2026-10-29
+      - id: R2-D2
+        description: "community_integrations — 채널별 공식 API 지원 범위, 설정 점검, 게시 미리보기(기본 DRY_RUN)"
+        test_items:
+          - id: community-integrations-offline
+            category: full
+            description: "프로젝트 자체 테스트, 초보자 점검, 런처, threads 테스트, 저장소 계약·보안·source-only 검사를 비밀값 없이 오프라인으로 한 번에 실행합니다."
+            check: "cd community_integrations && python verify_offline.py"
+            status: pass
+            last_verified: 2026-10-29
+      - id: R2-D3
+        description: "저장소 루트 계약 — 프로젝트 목록·문서·미디어/실행파일 비추적 경계"
+        test_items:
+          - id: repository-contract
+            category: basic
+            description: "루트 README·프로젝트 구성과 저장소 계약이 어긋나지 않았는지 확인합니다."
+            check: "python -m unittest discover -s tests"
+            status: pass
+            last_verified: 2026-10-29

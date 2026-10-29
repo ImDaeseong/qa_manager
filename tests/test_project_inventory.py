@@ -32,7 +32,7 @@ class ProjectInventoryTests(unittest.TestCase):
     def test_reviewed_projects_have_checklists_and_checks(self):
         expected = {
             "hermes-agents", "ai_prompt", "ai-workspace", "skills", "ai_test",
-            "ai_test1", "ai_test2", "ai_agent", "qa_manager", "ai_history_dashboard",
+            "ai_test1", "ai_test2", "ai_test3", "ai_agent", "qa_manager", "ai_history_dashboard",
             "llm-wiki", "career", "ebook", "ebook_source",
         }
         actual = {path.parent.name for path in (lib.QA_ROOT / "projects").glob("*/checklist.yaml")}
@@ -90,7 +90,7 @@ class ProjectInventoryTests(unittest.TestCase):
 
     def test_design_docs_have_project_specific_detailed_views(self):
         """Detailed views stay evidence-backed and specific to each registered project."""
-        expected_markers = {'ai-workspace': 'scripts/build_context_packet.py', 'ai_agent': 'src/agentlab/', 'ai_history_dashboard': 'scripts/regenerate.js', 'ai_prompt': 'promotion-manifest.json', 'ai_test': 'windows-port-monitor/', 'ai_test1': 'aim_music_character_app/', 'ai_test2': 'timeline.json / shot_list.md / CapCut draft', 'career': 'private evidence record (ignored local storage)', 'ebook': 'validate_manuscript.py + unit tests', 'ebook_source': 'verify_distribution.py', 'hermes-agents': 'MCP/tool permission boundary', 'llm-wiki': 'wiki-extension content script', 'qa_manager': 'verifier judgment (PASS / DETECTED / MISSED / INVALID)', 'skills': 'runtime-dependencies.lock.json'}
+        expected_markers = {'ai-workspace': 'scripts/build_context_packet.py', 'ai_agent': 'src/agentlab/', 'ai_history_dashboard': 'scripts/regenerate.js', 'ai_prompt': 'promotion-manifest.json', 'ai_test': 'windows-port-monitor/', 'ai_test1': 'aim_music_character_app/', 'ai_test2': 'timeline.json / shot_list.md / CapCut draft', 'ai_test3': 'verify_offline.py runs community, threads, repository, security, and source-only gates', 'career': 'private evidence record (ignored local storage)', 'ebook': 'validate_manuscript.py + unit tests', 'ebook_source': 'verify_distribution.py', 'hermes-agents': 'MCP/tool permission boundary', 'llm-wiki': 'wiki-extension content script', 'qa_manager': 'verifier judgment (PASS / DETECTED / MISSED / INVALID)', 'skills': 'runtime-dependencies.lock.json'}
         detailed_sections = set()
         for name in sorted(lib.PUBLIC_PROJECTS):
             with self.subTest(name=name):
